@@ -1,0 +1,61 @@
+@import "../styles/globals.css";
+@import "../styles/typography.css";
+@import "../styles/animations.css";
+
+html, body {
+  background-color: var(--bg-void);
+  color: var(--text-primary);
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-body);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: var(--text-accent);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+a:hover {
+  color: var(--accent-300);
+}
+
+/* Premium Card Components */
+.btn-docs {
+  display: block;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  color: var(--text-primary);
+  font-weight: 600;
+  transition: all var(--duration-fast) var(--ease-out);
+  text-align: center;
+}
+
+.btn-docs:hover {
+  border-color: var(--border-accent);
+  background: var(--accent-900);
+  color: var(--accent-300) !important;
+}
+
+.btn-cta {
+  display: block;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  background: var(--gradient-cta);
+  color: var(--text-inverse);
+  font-weight: 700;
+  box-shadow: var(--shadow-accent-sm);
+  transition: transform var(--duration-fast) var(--ease-out);
+  text-align: center;
+}
+
+.btn-cta:hover {
+  transform: translateY(-2px);
+  color: var(--text-inverse) !important;
+}

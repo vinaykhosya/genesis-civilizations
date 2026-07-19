@@ -1,12 +1,12 @@
-# Project Genesis: An Agentic Artificial Life & Evolutionary Biology Simulator
+# Project Genesis: Agentic Artificial Life & Evolutionary Biology Simulator
 
-Project Genesis is a high-resolution simulation of artificial life, ecology, and natural selection. It models the survival, cognition, genetics, and emergent behavior of autonomous agents navigating a dynamic world.
+Project Genesis is a high-resolution simulation of artificial life, ecology, natural selection, and cognitive emergence. It is designed to model the survival, decision-making, genetic trait expression, resource competition, and social dynamics of autonomous agents in a dynamically evolving world.
 
 ---
 
-## 🔬 Core System Architecture
+## 🔬 Core System Architecture & Research Goals
 
-The simulation is built as a layered pipeline that mirrors real-world biological and ecological structures:
+The primary goal of Project Genesis is to observe and study **evolutionary adaptations and emergent cooperative/competitive behaviors** in agent populations. The simulation architecture maps a 14-gene genotype to complex motor actions and episodic memories through a layered biological pipeline:
 
 ```
 Genetics (14-gene genotype to brain parameters)
@@ -26,47 +26,103 @@ Motor Actions (Pathfinding, resource extraction, sheltering)
 Episodic Memory (Spatial mapping, relationship trust, win/loss history)
 ```
 
----
-
-## 🌍 Key Subsystems & Features
-
-### 1. Unified State Container (`world/state.py`)
-All simulation stages receive, mutate, and return a single, centralized `WorldState` object. To ensure maximum vectorization performance, all grids are stored as 2D NumPy arrays (`float32` or `int32`).
-
-### 2. Whittaker Biome Matrix (`world/biomes.py`)
-Dynamic continental temperature and rainfall maps translate to 9 distinct biomes via a resolution-independent Whittaker mapping:
-* `OCEAN` (0) | `GLACIER` (1) | `TUNDRA` (2) | `TAIGA` (3) | `TEMPERATE_FOREST` (4) | `GRASSLAND` (5) | `DESERT` (6) | `RAINFOREST` (7) | `LAKE` (8)
-
-### 3. Physical Hydrology & Climate
-* **Resolution Independence**: Environmental rates scale dynamically with grid size to ensure map preset invariance.
-* **Wind Advection Clamping**: Winds blow across flat water; height maps are clamped to sea level (`0.3`) for advection calculations.
-* **Land Transpiration**: Moisture recyclers prevent dry continental centers.
-* **Priority-Flood Hydrology**: Heap-queue Priority-Flood resolves sinks to trace realistic river drainage basins.
-* **Mountainous Resource Belets**: Terrestrial mineral clusters (Iron, Copper) are generated using low-frequency noise masks on mountainous regions.
-
-### 4. Innate Reflexes & Combat Layer v2 (`world/agents/decision.py`)
-We hardcode biological primitives, while allowing strategies and thresholds to evolve via genetics:
-* **Home-Radius Safe Zones**: Agents claim home coordinates with a genome-derived radius (`15 + aggression_mult * 10`). Territorial disputes are suppressed if either agent is inside their nesting grounds.
-* **Threat Display Stage**: Fights enter a non-damaging warning phase. Agents exchange injury damage only if both hold their ground. If one backs down, they suffer a fear/stress spike instead.
-* **Confidence-Based Retreat**: Relative strength components are calculated based on health, injury, and genetic aggression:
-  $$\text{confidence} = \frac{\text{my strength}}{\text{my strength} + \text{their strength}}$$
-  Agents retreat if confidence falls below their risk tolerance threshold.
-* **Winner/Loser Memory**: Fights are registered as winning/losing outcomes in episodic memory, influencing future interaction confidence.
-* **Fear Cooldown**: Deferring immediate re-engagement using a stress cooldown timer proportional to injury level.
+By leveraging this multi-layered framework, research tasks focus on:
+* **Territoriality & Colony Boundaries**: How home nesting coordinates and genetic aggression parameters affect territorial friction.
+* **Cooperation & Resource Sharing**: Under what food/water scarcity conditions sharing behavior emerges among colony members.
+* **Cognitive Decision Modeling**: How prediction models improve food/water collection and settlement planning over thousands of generations.
+* **Evolutionary Resiliency**: How populations adapt to environmental disasters, seasonal shifts, and resource depletion.
 
 ---
 
-## 📈 Running the Simulation
+## 🌍 Directory Structure
 
-Initialize the standard validation suite:
+* `world/` — Core simulation engine.
+  * `state.py` — Centralized `WorldState` container holding spatial grids as 2D NumPy arrays.
+  * `generator.py` — World map generation pipeline using FBM noise.
+  * `biomes.py` — Whittaker biome matrix mapper (9 distinct biomes).
+  * `agents/` — Agent logic modules.
+    * `agent.py` — Agent class, memory caches, and physiological properties.
+    * `decision.py` — Utility functions, context vector generation, and motor actions.
+    * `drives.py` — Biological and emotional drive regulators.
+    * `genetics.py` — Genome definitions and neural expressions.
+    * `reproduction.py` — Mate-finding and breeding gates.
+    * `simulation.py` — Main agent loop processor.
+* `portal/` — Supabase-backed React ingestion dashboard for running large-scale experiment telemetry.
+* `tests/` — Automated Pytest suite.
+* `run_test.py` — Local validation run script.
+* `run_resume.py` — Tool to resume experiments from saved JSON checkpoints.
+* `run_profiler_benchmark.py` — Deep performance observatory profiling script.
+* `batch3a_micro_profile.py` — Focused micro-profiler for mathematical sub-systems.
+* `visualizer.html` — Interactive client-side real-time rendering frontend.
+
+---
+
+## ⚙️ Installation & Setup
+
+### 1. Python Simulation Engine
+The simulation runs on **Python 3.10 or 3.11**. 
+
+Install the required Python packages:
+```bash
+pip install numpy pytest
+```
+
+### 2. Dashboard Portal (Optional)
+The optional web ingestion dashboard runs on Node.js.
+Navigate to the `portal/` directory and install dependencies:
+```bash
+cd portal
+pnpm install
+# or npm install / bun install
+```
+
+Configure local environment variables by copying `portal/.env.local` and entering your Supabase URL and credentials if connecting to an online database.
+
+---
+
+## 🚀 Running the Simulator
+
+### 1. Local Validation Suite
+Run the control test script to verify that the local physics engines are initialized correctly:
 ```bash
 python run_test.py
 ```
+This runs a 2,000-tick run with a 200-agent cap and outputs status updates to the console. You can tweak parameters such as seed, scarcity, and climate epoch modes at the top configuration panel inside `run_test.py`.
 
-### Configuration Panel (`run_test.py`)
-You can tweak map seeds, scarcity, disputes, and climate epoch modes directly from the top panel inside `run_test.py`.
+### 2. Real-Time Visualization
+To view the agent population heatmaps, lineage trees, and genetic distributions in real time:
+1. Start the simulation via `run_test.py` or `run_resume.py`.
+2. Open `visualizer.html` directly in your browser. The visualizer will dynamically read `live_state.js` as it is generated by the simulation.
 
-### Interactive Dashboard
-To view real-time population heatmaps, lineage trees, and genetic distributions:
-1. Run the simulation.
-2. Open `visualizer.html` in your browser.
+### 3. Resuming From Checkpoints
+To resume a previous experiment from a saved checkpoint JSON file:
+```bash
+python run_resume.py
+```
+By default, this will scan for checkpoints in `experiments/` and load the specified state.
+
+### 4. Running Web Ingestion Portal Dashboard
+To run the developer visualization portal:
+```bash
+cd portal
+pnpm dev
+```
+Open `http://localhost:5173` to explore telemetry dashboards, lineage tracking, and live statistics.
+
+---
+
+## 📊 Performance Profiling & Benchmarking
+
+Genesis features granular profiling infrastructure to avoid optimization blind spots:
+
+* **Subsystem Benchmarking**: Run the 2,000-tick deep benchmark to profile execution hotspots:
+  ```bash
+  python run_profiler_benchmark.py
+  ```
+  This outputs a detailed subsystem breakdown (Perception, Evaluate Utility, Drives, etc.) and exports metrics to `experiments/_profiler_benchmark/summary.json`.
+
+* **Micro-Profiling**: To isolate mathematical bottlenecks, run the micro-profiler:
+  ```bash
+  python batch3a_micro_profile.py
+  ```
+  This profiles individual function internals (array conversions, list indexes, properties, coordinate index operations) to identify microsecond-level overhead.

@@ -1,0 +1,144 @@
+/* Design System Color Variables (GDS) */
+
+:root {
+  /* Background Stack */
+  --bg-void:      hsl(222, 30%, 4%);    /* #070A10 — absolute dark, page background */
+  --bg-primary:   hsl(222, 28%, 7%);    /* #0C1019 — primary surface */
+  --bg-secondary: hsl(222, 24%, 10%);   /* #141824 — slightly elevated cards */
+  --bg-surface:   hsl(222, 20%, 14%);   /* #1C2130 — elevated elements (inputs, etc.) */
+  --bg-elevated:  hsl(222, 18%, 18%);   /* #242C3D — highest elevation (modals) */
+
+  /* Accent — Bioluminescent Teal */
+  --accent-50:   hsl(172, 80%, 95%);
+  --accent-100:  hsl(172, 75%, 88%);
+  --accent-200:  hsl(172, 75%, 75%);
+  --accent-300:  hsl(172, 75%, 62%);
+  --accent-400:  hsl(172, 80%, 52%);   /* Main accent */
+  --accent-500:  hsl(172, 80%, 45%);
+  --accent-600:  hsl(172, 70%, 36%);
+  --accent-700:  hsl(172, 60%, 28%);
+  --accent-800:  hsl(172, 50%, 18%);
+  --accent-900:  hsl(172, 40%, 10%);
+
+  --accent-glow-sm:  0 0 12px hsl(172, 80%, 48%, 0.20);
+  --accent-glow-md:  0 0 24px hsl(172, 80%, 48%, 0.25);
+  --accent-glow-lg:  0 0 48px hsl(172, 80%, 48%, 0.30);
+
+  /* Colony Colors */
+  --colony-alpha:       hsl(210, 85%, 58%);    /* Cobalt Blue */
+  --colony-alpha-dim:   hsl(210, 60%, 30%);
+  --colony-alpha-glow:  hsl(210, 85%, 58%, 0.20);
+
+  --colony-beta:        hsl(35,  88%, 58%);    /* Warm Amber */
+  --colony-beta-dim:    hsl(35,  60%, 30%);
+  --colony-beta-glow:   hsl(35,  88%, 58%, 0.20);
+
+  --colony-gamma:       hsl(280, 78%, 63%);    /* Violet */
+  --colony-gamma-dim:   hsl(280, 55%, 30%);
+  --colony-gamma-glow:  hsl(280, 78%, 63%, 0.20);
+
+  --colony-delta:       hsl(140, 68%, 52%);    /* Emerald Green */
+  --colony-delta-dim:   hsl(140, 50%, 26%);
+  --colony-delta-glow:  hsl(140, 68%, 52%, 0.20);
+
+  /* Semantic Event Colors */
+  --event-birth:          hsl(120, 58%, 52%);
+  --event-death:          hsl(0,   68%, 52%);
+  --event-milestone:      hsl(45,  88%, 58%);
+  --event-disaster:       hsl(18,  88%, 52%);
+  --event-dispute:        hsl(300, 58%, 58%);
+  --event-climate:        hsl(195, 75%, 52%);
+  --event-extinction:     hsl(0,   50%, 38%);
+
+  --event-birth-shadow:   0 0 6px hsl(120, 58%, 52%, 0.5);
+  --event-death-shadow:   0 0 6px hsl(0,   68%, 52%, 0.5);
+  --event-milestone-shadow: 0 0 6px hsl(45, 88%, 58%, 0.5);
+
+  /* Biome Colors */
+  --biome-ocean:          hsl(207, 75%, 28%);
+  --biome-glacier:        hsl(200, 35%, 82%);
+  --biome-tundra:         hsl(200, 22%, 60%);
+  --biome-taiga:          hsl(142, 38%, 30%);
+  --biome-temperate:      hsl(118, 48%, 36%);
+  --biome-grassland:      hsl(78,  58%, 42%);
+  --biome-desert:         hsl(36,  65%, 50%);
+  --biome-rainforest:     hsl(152, 68%, 26%);
+  --biome-lake:           hsl(202, 72%, 48%);
+
+  /* Text Colors */
+  --text-primary:    hsl(220, 18%, 92%);    /* Near white */
+  --text-secondary:  hsl(220, 14%, 68%);    /* Muted */
+  --text-tertiary:   hsl(220, 10%, 48%);    /* Very muted */
+  --text-accent:     hsl(172, 80%, 52%);    /* Teal */
+  --text-inverse:    hsl(222, 28%, 7%);     /* Dark */
+  --text-danger:     hsl(0,   70%, 60%);
+  --text-warning:    hsl(38,  85%, 58%);
+  --text-success:    hsl(142, 65%, 52%);
+
+  /* Border Colors */
+  --border-subtle:   hsl(222, 20%, 18%);
+  --border-default:  hsl(222, 20%, 24%);
+  --border-hover:    hsl(222, 20%, 32%);
+  --border-accent:   hsl(172, 60%, 32%);
+  --border-danger:   hsl(0,   60%, 40%);
+
+  /* Spacing Scale (4px base unit) */
+  --space-0:   0;
+  --space-px:  1px;
+  --space-0-5: 0.125rem;  /* 2px */
+  --space-1:   0.25rem;   /* 4px */
+  --space-2:   0.5rem;    /* 8px */
+  --space-3:   0.75rem;   /* 12px */
+  --space-4:   1rem;      /* 16px */
+  --space-5:   1.25rem;   /* 20px */
+  --space-6:   1.5rem;    /* 24px */
+  --space-7:   1.75rem;   /* 28px */
+  --space-8:   2rem;      /* 32px */
+  --space-10:  2.5rem;    /* 40px */
+  --space-12:  3rem;      /* 48px */
+  --space-16:  4rem;      /* 64px */
+  --space-20:  5rem;      /* 80px */
+  --space-24:  6rem;      /* 96px */
+  --space-32:  8rem;      /* 128px */
+
+  /* Border Radii */
+  --radius-none: 0;
+  --radius-sm:   3px;
+  --radius-md:   6px;
+  --radius-lg:   10px;
+  --radius-xl:   14px;
+  --radius-2xl:  20px;
+  --radius-3xl:  28px;
+  --radius-full: 9999px;
+
+  /* Layout Variables */
+  --max-width:       1280px;
+  --content-width:   800px;
+  --sidebar-width:   240px;
+  --grid-gap:        1.5rem;
+  --grid-gap-sm:     1rem;
+  --grid-gap-lg:     2rem;
+
+  /* Responsive Breakpoints */
+  --bp-xs:  360px;
+  --bp-sm:  640px;
+  --bp-md:  768px;
+  --bp-lg:  1024px;
+  --bp-xl:  1280px;
+  --bp-2xl: 1536px;
+}
+
+/* Glassmorphism Styles */
+.glass {
+  background: hsl(222, 24%, 10%, 0.75);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid hsl(222, 20%, 22%);
+  border-top-color: hsl(222, 20%, 28%);
+}
+
+.glass-strong {
+  background: hsl(222, 24%, 8%, 0.88);
+  backdrop-filter: blur(32px) saturate(180%);
+  border: 1px solid hsl(222, 20%, 22%);
+}

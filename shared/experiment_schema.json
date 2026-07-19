@@ -1,0 +1,156 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "GenesisExperimentExport",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "engine_version",
+    "export_version",
+    "config",
+    "summary"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "The semantic version of this experiment schema format.",
+      "default": "1.0.0"
+    },
+    "engine_version": {
+      "type": "string",
+      "description": "The version of the simulation engine used to generate the data.",
+      "default": "9.2.0"
+    },
+    "export_version": {
+      "type": "string",
+      "description": "The version of the exporter tool packaging this experiment."
+    },
+    "config": {
+      "type": "object",
+      "required": [
+        "seed",
+        "ticks",
+        "scarcity",
+        "max_population",
+        "mutation_rate"
+      ],
+      "properties": {
+        "seed": { "type": "integer" },
+        "ticks": { "type": "integer" },
+        "scarcity": { "type": "number", "minimum": 0.1, "maximum": 10.0 },
+        "max_population": { "type": "integer" },
+        "mutation_rate": { "type": "number" },
+        "reproduction_enabled": { "type": "boolean" },
+        "disputes_enabled": { "type": "boolean" },
+        "disasters_enabled": { "type": "boolean" },
+        "healing_speed_mult": { "type": "number" },
+        "shelter_build_speed_mult": { "type": "number" },
+        "shelter_search_dist": { "type": "number" },
+        "planner_enabled": { "type": "boolean" },
+        "sleep_consolidation_enabled": { "type": "boolean" },
+        "checkpoint_interval": { "type": "integer" },
+        "world_preset": {
+          "type": ["string", "null"],
+          "enum": ["island_chains", "arid_continent", "green_continent", "boreal_highlands", "tropical_ring", null]
+        },
+        "climate_epoch_mode": {
+          "type": "string",
+          "enum": ["legacy", "stable", "slow_change", "rapid_change", "random"]
+        },
+        "ecology_ablation": {
+          "type": "object",
+          "properties": {
+            "dehydration_ramp": { "type": "boolean" },
+            "memory_fidelity": { "type": "boolean" },
+            "water_caching": { "type": "boolean" },
+            "deposit_utility_fix": { "type": "boolean" }
+          }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": [
+        "timestamp",
+        "experiment",
+        "seed",
+        "ticks",
+        "scarcity",
+        "survivors"
+      ],
+      "properties": {
+        "timestamp": { "type": "string", "format": "date-time" },
+        "experiment": { "type": "string" },
+        "seed": { "type": "integer" },
+        "ticks": { "type": "integer" },
+        "scarcity": { "type": "number" },
+        "survivors": { "type": "string" },
+        "avg_radius": { "type": "number" },
+        "avg_discoveries": { "type": "number" },
+        "tests_passed": { "type": "boolean" },
+        "max_generation": { "type": "integer" },
+        "derived_metrics": {
+          "type": "object",
+          "properties": {
+            "avg_generation_interval": { "type": "number" },
+            "population_doubling_time": { "type": "number" },
+            "colony_lifespans": {
+              "type": "object",
+              "additionalProperties": { "type": "number" }
+            },
+            "avg_genetic_diversity": { "type": "number" },
+            "food_efficiency": { "type": "number" },
+            "water_efficiency": { "type": "number" },
+            "energy_efficiency": { "type": "number" },
+            "avg_prediction_error": { "type": "number" },
+            "concept_formation_rate": { "type": "number" },
+            "procedure_creation_rate": { "type": "number" },
+            "avg_children": { "type": "number" },
+            "avg_grandchildren: { "type": "number" },
+            "avg_descendants": { "type": "number" },
+            "avg_distance_from_birthplace": { "type": "number" },
+            "avg_shelter_occupancy": { "type": "number" },
+            "avg_social_degree": { "type": "number" },
+            "avg_cooperation_score": { "type": "number" },
+            "avg_conflict_score": { "type": "number" }
+          }
+        },
+        "distributions": {
+          "type": "object",
+          "properties": {
+            "lifespan": { "type": "object", "additionalProperties": { "type": "number" } },
+            "children": { "type": "object", "additionalProperties": { "type": "number" } },
+            "shelter": { "type": "object", "additionalProperties": { "type": "number" } },
+            "generation": { "type": "object", "additionalProperties": { "type": "number" } },
+            "prediction_confidence": { "type": "object", "additionalProperties": { "type": "number" } },
+            "concepts": { "type": "object", "additionalProperties": { "type": "number" } }
+          }
+        },
+        "leaderboards": {
+          "type": "object",
+          "properties": {
+            "longest_surviving": { "type": "array", "items": { "$ref": "#/definitions/ColonyEntry" } },
+            "largest_size": { "type": "array", "items": { "$ref": "#/definitions/ColonyEntry" } },
+            "highest_health": { "type": "array", "items": { "$ref": "#/definitions/ColonyEntry" } },
+            "most_generations": { "type": "array", "items": { "$ref": "#/definitions/ColonyEntry" } },
+            "cognitive_mastery": { "type": "array", "items": { "$ref": "#/definitions/ColonyEntry" } }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ColonyEntry": {
+      "type": "object",
+      "required": ["founder_id", "colony_id", "size", "longevity_ticks", "max_generation", "avg_health", "avg_prediction_accuracy"],
+      "properties": {
+        "founder_id": { "type": "integer" },
+        "colony_id": { "type": "integer" },
+        "size": { "type": "integer" },
+        "longevity_ticks": { "type": "integer" },
+        "max_generation": { "type": "integer" },
+        "avg_health": { "type": "number" },
+        "avg_prediction_accuracy": { "type": "number" }
+      }
+    }
+  }
+}

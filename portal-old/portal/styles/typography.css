@@ -1,0 +1,117 @@
+/* Typography Specifications (GDS) */
+
+:root {
+  --font-display:  'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --font-body:     'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono:     'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+
+  /* Type Scale */
+  --text-2xs:  0.625rem;   /* 10px */
+  --text-xs:   0.75rem;    /* 12px */
+  --text-sm:   0.875rem;   /* 14px */
+  --text-base: 1rem;       /* 16px */
+  --text-lg:   1.125rem;   /* 18px */
+  --text-xl:   1.25rem;    /* 20px */
+  --text-2xl:  1.5rem;     /* 24px */
+  --text-3xl:  1.875rem;   /* 30px */
+  --text-4xl:  2.25rem;    /* 36px */
+  --text-5xl:  3rem;       /* 48px */
+  --text-6xl:  3.75rem;    /* 60px */
+
+  /* Line Heights */
+  --leading-none:     1;
+  --leading-tight:    1.2;
+  --leading-snug:     1.35;
+  --leading-normal:   1.5;
+  --leading-relaxed:  1.7;
+  --leading-loose:    2.0;
+
+  /* Letter Spacing */
+  --tracking-tighter: -0.03em;
+  --tracking-tight:   -0.01em;
+  --tracking-normal:  0;
+  --tracking-wide:    0.04em;
+  --tracking-wider:   0.08em;
+  --tracking-widest:  0.14em;
+}
+
+/* Prose Reader Layout Styles */
+.prose {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading-loose);
+  color: var(--text-primary);
+  max-width: var(--content-width);
+}
+
+.prose h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-4xl);
+  line-height: var(--leading-tight);
+  margin-bottom: 2rem;
+}
+
+.prose h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-2xl);
+  line-height: var(--leading-tight);
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+}
+
+.prose h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-xl);
+  line-height: var(--leading-snug);
+  margin-top: 2rem;
+}
+
+.prose p {
+  margin-bottom: 1.5rem;
+}
+
+.prose code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--bg-elevated);
+  padding: 0.1em 0.4em;
+  border-radius: var(--radius-sm);
+}
+
+.prose pre {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  overflow-x: auto;
+}
+
+.prose blockquote {
+  border-left: 3px solid var(--accent-700);
+  padding-left: 1.5rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.prose th, .prose td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+  text-align: left;
+}
+
+.prose th {
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: var(--text-sm);
+  line-height: 1;
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+}

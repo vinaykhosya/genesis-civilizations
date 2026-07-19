@@ -886,13 +886,13 @@ def compute_memory_importance(
     # ------------------------------------------------------------------ #
     # Emotional intensity amplifier                                        #
     # ------------------------------------------------------------------ #
-    emo_amp = 1.0 + float(np.clip(emotional_intensity, 0.0, 1.0)) * 0.5
+    emo_amp = 1.0 + min(max(float(emotional_intensity), 0.0), 1.0) * 0.5
 
     # ------------------------------------------------------------------ #
     # Combine: geometric blend to prevent any one factor dominating       #
     # ------------------------------------------------------------------ #
     raw = (novelty * 0.30 + survival_impact * 0.40 + social_impact * 0.30) * emo_amp
-    return float(np.clip(raw, 0.05, 1.0))
+    return min(max(raw, 0.05), 1.0)
 
 
 # ---------------------------------------------------------------------------

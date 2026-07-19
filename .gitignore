@@ -47,3 +47,19 @@ Desktop.ini
 experiments/
 *.csv
 *.png
+
+# Dependency & Build folders
+node_modules/
+dist/
+.output/
+.vinxi/
+.nitro/
+.vercel/
+.wrangler/
+.env.local
+.env.*.local
+*.local
+
+# Temporary/Scratch files
+scratch_*
+scratch/

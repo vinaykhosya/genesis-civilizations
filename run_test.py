@@ -5,27 +5,28 @@ import numpy as np
 
 # Add project root to python path to ensure imports work cleanly
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 # ==============================================================================
 # 🎮 USER CONFIGURATION PANEL (Modify these values to change the simulation!)
 # ==============================================================================
 
 # 🌍 MAP & ENVIRONMENT SETTINGS
-SEED = 65654                # Map shape seed (Change this to get a new layout)
-TICKS = 1000000           # How long the simulation runs (1 tick = ~10 mins real-world)
+SEED = 1720               # Map shape seed (Change this to get a new layout)
+TICKS = 10000000             # How long the simulation runs (1 tick = ~10 mins real-world)
                            # 100,000 ticks  ≈  277 years  (recommended for 300-year experiments)
                            # 1,000,000 ticks ≈ 2,777 years (multi-millennial mega-runs)
-SCARCITY = 5           # Scarcity of resources:
+SCARCITY = 3.0           # Scarcity of resources:
                            #   1.0 = Normal (Default)
                            #   0.2 = Harsh Desert (Very difficult to survive!)
                            #   2.0 = Rich (Abundant food & water)
-EXPERIMENT_NAME = "fights alowwed with insta heal , new seed" # Name of this run (shown in history table and experiment folder)
+EXPERIMENT_NAME = "emergence_social_bonds_accelerated" # Name of this run (shown in history table and experiment folder)
 
 # 📈 LONG-RUN TREND DATA SETTINGS
 # Adjust these for long experiments (e.g. 20,000+ ticks):
-LONG_RUN = True            # Enable long-run mode (optimized memory and epoch snapshot tracking)
-SAMPLE_INTERVAL = 5000      # Ticks per epoch snapshot
-SAVE_PATHS = False        # Set to False to stop saving full path coordinates (prevents memory crash for long runs)
+LONG_RUN = False            # Enable long-run mode (optimized memory and epoch snapshot tracking)
+SAMPLE_INTERVAL = 50000     # Ticks per epoch snapshot
+SAVE_PATHS = True        # Set to False to stop saving full path coordinates (prevents memory crash for long runs)
 SAVE_EPOCHS = True         # Set to True to save epoch trends stats for visualizer charts
 
 
@@ -37,7 +38,7 @@ COLONY_SPAWNING = True     # Set to True to use Phase 5 colony spawning (highly 
                            # Set to False to fall back to the legacy archetype spawning below.
 
 # 📍 EXPERIMENTAL COLONY SPAWNING MODES
-SPAWN_MODE = "random_valid"               # Available modes:
+SPAWN_MODE = "fixed"               # Available modes:
                                    #   "fixed"           = control; NMS spots, same every run
                                    #   "random_valid"    = random valid land locations with resources
                                    #   "random_anywhere" = true chaos; random land cells
@@ -59,11 +60,11 @@ TARGETED_BIOMES = ["Desert", "Forest", "Tundra", "Coast"]
 
 # 🌍 WORLD PRESET (Aesthetic continental biome distribution)
 # Options: None (default random), "arid_continent", "green_continent", "island_chains", "boreal_highlands", "tropical_ring"
-WORLD_PRESET = "island_chains"
+WORLD_PRESET = "None"
 
 # 🌀 CLIMATE EPOCH MODE (Transitions of environmental selection pressures)
 # Options: "legacy" (original repeating cycle), "stable" (no events), "slow_change" (30yr), "rapid_change" (10yr), "random"
-CLIMATE_EPOCH_MODE = "slow_change"
+CLIMATE_EPOCH_MODE = "legacy"
 
 
 MUTATION_RATE = 0.05       # Standard deviation of Gaussian gene mutations on birth [0.0, 0.2]
@@ -71,9 +72,9 @@ MAX_POPULATION =200        # Carrying capacity limit of the world (soft pressure
 
 # 🔬 BOTTLENECK & SURVIVAL PRESSURE SETTINGS (Modify these to analyze population dynamics)
 REPRODUCTION_ENABLED = True      # Enable sexual reproduction and agent birth (True/False)
-DISPUTES_ENABLED = True        # Enable territorial disputes / friction when agents meet on same tile (True/False)
+DISPUTES_ENABLED = False        # Enable territorial disputes / friction when agents meet on same tile (True/False)
 DISASTERS_ENABLED = True         # Enable global weather/famine events (Drought, Cold Wave, Famine, Heatwave) (True/False)
-HEALING_SPEED_MULT = 2  # Multiplier for rest-based healing and health restoration rate (float)
+HEALING_SPEED_MULT = 2000000.0  # Multiplier for rest-based healing and health restoration rate (float)
                                   # NOTE: Set to 1.0 for realistic survival pressure. Values >> 1 suppress injury mortality.
 SHELTER_BUILD_SPEED_MULT = 1.0   # Multiplier for shelter construction/durability repair speed (float)
 SHELTER_SEARCH_DIST = 100.0      # Maximum grid distance to scan and claim an abandoned shelter (float)
@@ -95,11 +96,11 @@ SLEEP_CONSOLIDATION_ENABLED = True  # Enable sleep-state learning consolidation 
                                     #   False = learning happens immediately every tick (always-on baseline).
 
 # Phase 8 Ablation Controls (True = System Active, False = Ablated / Clamped to Neutral)
-EMOTION_ENABLED = True              # Enable continuous drive emotional updates (fear, frustration, boredom, etc.)
-RELATIONSHIPS_ENABLED = True        # Enable relationship trust/attachment graph updates
-MEMORY_IMPORTANCE_ENABLED = True    # Enable emotional memory importance weighting
-MOTIVATION_ENABLED = True           # Enable motivation priority drift and lateral inhibition modulation
-PREDICTION_ERROR_ENABLED = True     # Enable prediction error expectations feedback loop
+EMOTION_ENABLED = False              # Enable continuous drive emotional updates (fear, frustration, boredom, etc.)
+RELATIONSHIPS_ENABLED = False        # Enable relationship trust/attachment graph updates
+MEMORY_IMPORTANCE_ENABLED = False    # Enable emotional memory importance weighting
+MOTIVATION_ENABLED = False           # Enable motivation priority drift and lateral inhibition modulation
+PREDICTION_ERROR_ENABLED = False     # Enable prediction error expectations feedback loop
 
 # ⏳ SIMULATION LIVE PACING
 # Sleep duration in seconds per live callback update to pace the simulation for smooth real-time viewing.
@@ -181,11 +182,46 @@ def archive_experiment(world, summary_record, exp_folder, epoch_stats=None):
     import json
     import os
     import numpy as np
-    
+    import subprocess
+    import sys
+    import hashlib
+    import datetime
+
+    # 0. Gather rich provenance metadata
+    try:
+        git_c = subprocess.run(["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True).stdout.strip()
+        git_b = subprocess.run(["git", "rev-parse", "--abbrev-ref", "HEAD"], capture_output=True, text=True).stdout.strip()
+        git_d = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True).stdout.strip() != ""
+    except Exception:
+        git_c, git_b, git_d = "N/A", "N/A", False
+
+    def hash_array(arr):
+        if arr is not None:
+            return hashlib.md5(np.ascontiguousarray(arr).tobytes()).hexdigest()
+        return "N/A"
+
+    provenance = {
+        "git_commit": git_c,
+        "git_branch": git_b,
+        "git_dirty": git_d,
+        "engine_version": "v1.5.0",
+        "simulation_schema": "phase8.4",
+        "python_version": sys.version.split()[0],
+        "created_at": datetime.datetime.now().isoformat(),
+        "generator": sys.argv[0] if len(sys.argv) > 0 else "unknown",
+        "world_hashes": {
+            "elevation_hash": hash_array(getattr(world, "elevation", None)),
+            "rainfall_hash": hash_array(getattr(world, "rainfall", None)),
+            "temperature_hash": hash_array(getattr(world, "temperature", None)),
+            "biome_hash": hash_array(getattr(world, "biome", None))
+        }
+    }
+
     # 1. config.json
     config_data = {
         "seed": int(world.seed),
         "ticks": int(world.tick),
+        "ticks_limit": int(TICKS),
         "scarcity": float(SCARCITY),
         "max_population": int(world.max_population),
         "mutation_rate": float(world.mutation_rate),
@@ -200,7 +236,8 @@ def archive_experiment(world, summary_record, exp_folder, epoch_stats=None):
         "checkpoint_interval": int(CHECKPOINT_INTERVAL),
         "world_preset":        WORLD_PRESET,
         "climate_epoch_mode":  CLIMATE_EPOCH_MODE,
-        "ecology_ablation":    dict(world.ecology_ablation) if hasattr(world, "ecology_ablation") else {}
+        "ecology_ablation":    dict(world.ecology_ablation) if hasattr(world, "ecology_ablation") else {},
+        "provenance": provenance
     }
     with open(os.path.join(exp_folder, "config.json"), "w") as f:
         json.dump(config_data, f, indent=2)
@@ -306,9 +343,19 @@ def archive_experiment(world, summary_record, exp_folder, epoch_stats=None):
                 concepts_cnt, procedures_cnt
             ])
             
-    # 10. Copy world.png from simulation.png if it exists
-    if os.path.exists("simulation.png"):
-        shutil.copy("simulation.png", os.path.join(exp_folder, "world.png"))
+    # 10. Generate and archive all visual map assets & manifest directly from the world state
+    try:
+        from main import export_experiment_assets
+        export_experiment_assets(
+            world=world,
+            output_dir=exp_folder,
+            settlements=None,
+            include_traces=True
+        )
+        print("  Successfully generated and archived all 8 maps and manifest.json.")
+    except Exception as e:
+        print(f"  Warning: Failed to generate experiment maps/assets: {e}")
+
         
     # 11. replay.json
     from main import save_simulation_data
@@ -545,10 +592,14 @@ def main():
     import shutil
     import csv
     
+    # Change CWD to project root to resolve relative paths in unit tests & visualizer
+    os.chdir(PROJECT_ROOT)
+    
     # Set up experiment folder
-    os.makedirs("experiments", exist_ok=True)
+    exp_dir = os.path.join(PROJECT_ROOT, "experiments")
+    os.makedirs(exp_dir, exist_ok=True)
     timestamp_str = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    exp_folder = os.path.join("experiments", f"{timestamp_str}_{EXPERIMENT_NAME}")
+    exp_folder = os.path.join(exp_dir, f"{timestamp_str}_{EXPERIMENT_NAME}")
     os.makedirs(exp_folder, exist_ok=True)
     
     log_file = open(os.path.join(exp_folder, "simulation.log"), "w", encoding="utf-8")
@@ -811,15 +862,15 @@ def main():
             
             try:
                 # Atomically replace files using temp swap to prevent browser read collisions on disk
-                temp_json = "live_state.json.tmp"
-                temp_js = "live_state.js.tmp"
+                temp_json = os.path.join(PROJECT_ROOT, "live_state.json.tmp")
+                temp_js = os.path.join(PROJECT_ROOT, "live_state.js.tmp")
                 with open(temp_json, "w") as f:
                     json.dump(live_state, f)
                 with open(temp_js, "w") as f:
                     f.write(f"window.LIVE_STATE = {json.dumps(live_state)};")
                 
-                os.replace(temp_json, "live_state.json")
-                os.replace(temp_js, "live_state.js")
+                os.replace(temp_json, os.path.join(PROJECT_ROOT, "live_state.json"))
+                os.replace(temp_js, os.path.join(PROJECT_ROOT, "live_state.js"))
             except Exception as e:
                 print(f"Warning: Failed to write live state files atomically: {e}")
 
@@ -925,7 +976,7 @@ def main():
     print("-" * 80)
     
     # 6. Save visual traces map
-    generate_simulation_map(world, "simulation.png")
+    generate_simulation_map(world, os.path.join(exp_folder, "simulation.png"))
     
     # 7. Collect statistics
     alive_count = sum(1 for a in world.agents if not a.dead)
@@ -1236,11 +1287,24 @@ def main():
         leaderboards["most_generations"] = sorted(founder_stats, key=lambda x: x["max_generation"], reverse=True)[:5]
         leaderboards["cognitive_mastery"] = sorted(founder_stats, key=lambda x: x["avg_prediction_accuracy"], reverse=True)[:5]
 
+    # Extract colony center spawn locations from Gen 0 founders
+    colony_locations = {}
+    colony_names = {0: "Alpha", 1: "Beta", 2: "Gamma", 3: "Delta"}
+    for a in world.agents:
+        if getattr(a, "generation", 0) == 0 and hasattr(a, "sampled_path_history") and a.sampled_path_history:
+            cid = getattr(a, "colony_id", 0)
+            cname = colony_names.get(cid, f"Colony-{cid}")
+            if cname not in colony_locations:
+                first_coord = a.sampled_path_history[0]
+                if len(first_coord) >= 2:
+                    colony_locations[cname] = [int(first_coord[0]), int(first_coord[1])] # [x, y] in JS/Canvas standard
+
     summary_record = {
         "timestamp": timestamp,
         "experiment": EXPERIMENT_NAME,
         "seed": SEED,
         "ticks": TICKS,
+        "actual_ticks": int(world.tick),
         "scarcity": SCARCITY,
         "survivors": f"{alive_count}/{total_agents}",
         "avg_radius": round(avg_radius, 1),
@@ -1249,7 +1313,8 @@ def main():
         "max_generation": max_generation,
         "derived_metrics": derived_metrics,
         "distributions": distributions,
-        "leaderboards": leaderboards
+        "leaderboards": leaderboards,
+        "colony_locations": colony_locations
     }
     
     run_metadata = {
@@ -1269,7 +1334,7 @@ def main():
         world=world,
         experiment_name=EXPERIMENT_NAME,
         scarcity_val=SCARCITY,
-        filepath="simulation_data.js",
+        filepath=os.path.join(PROJECT_ROOT, "simulation_data.js"),
         test_results=test_results,
         run_metadata=run_metadata,
         save_paths=save_paths,
@@ -1292,9 +1357,17 @@ def main():
     sys.stderr = original_stderr
     log_file.close()
     
-    print("Archiving experiment data (13 files)...")
+    print("Archiving experiment data...")
     archive_experiment(world, summary_record, exp_folder, epoch_stats=epoch_stats)
     print(f"Experiment successfully archived to: {exp_folder}")
+    
+    # 13. Create a ZIP package of the experiment folder
+    try:
+        shutil.make_archive(exp_folder, "zip", exp_folder)
+        print(f"ZIP package created successfully: {exp_folder}.zip")
+    except Exception as ze:
+        print(f"  Warning: Failed to create ZIP package: {ze}")
+
 
 if __name__ == "__main__":
     main()

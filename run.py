@@ -9,6 +9,7 @@ import numpy as np
 
 # Add project root to python path to ensure imports work cleanly
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 from world.generator import generate_world
 from world.predictor import predict_settlements
@@ -127,8 +128,8 @@ def spawn_custom_agents(world, agents_config):
 
 def update_history(summary_record):
     """Updates the run_history.json and dumps run_history.js."""
-    history_json_path = "run_history.json"
-    history_js_path = "run_history.js"
+    history_json_path = os.path.join(PROJECT_ROOT, "run_history.json")
+    history_js_path = os.path.join(PROJECT_ROOT, "run_history.js")
     
     history = []
     if os.path.exists(history_json_path):
@@ -152,6 +153,9 @@ def update_history(summary_record):
     print(f"Run history database updated in {history_js_path}")
 
 def main():
+    # Change CWD to project root to resolve relative paths in unit tests & visualizer
+    os.chdir(PROJECT_ROOT)
+    
     # 1. Run Unit Tests programmatically
     test_results = run_unit_tests()
     

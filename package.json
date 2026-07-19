@@ -1,0 +1,11 @@
+{
+  "name": "genesis-root",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter portal dev",
+    "build": "pnpm --filter portal build",
+    "start": "pnpm --filter portal start",
+    "lint": "pnpm --filter portal lint",
+    "publish": "pnpm --filter portal publish"
+  }
+}

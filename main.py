@@ -210,6 +210,122 @@ def generate_simulation_map(world, filepath="simulation.png"):
     Image.fromarray(bg_rgb).save(filepath)
     print(f"Simulation traces map successfully saved to {filepath}")
 
+def export_experiment_assets(world, output_dir, settlements=None, include_traces=True):
+    """
+    Orchestrates the export of all visual and metadata assets for an experiment archive.
+    Generates:
+      - Clean biomes map as world.png and biomes.png
+      - Elevation, temperature, rainfall, rivers, habitability, and trade maps
+      - Optionally the simulation trace map (simulation.png)
+      - manifest.json listing all exported assets
+    """
+    from PIL import Image
+    from world.biomes import biomes_to_rgb
+    from world.predictor import predict_settlements
+    
+    os.makedirs(output_dir, exist_ok=True)
+    
+    if settlements is None:
+        print("  Generating settlements list for habitability overlays...")
+        settlements = predict_settlements(world, count=10, exclusion_radius=45.0)
+        
+    maps_generated = []
+    
+    # 1. Elevation map
+    elevation_stops = [
+        (0.0, (10, 20, 45)),      # Deep Ocean
+        (0.3, (30, 75, 125)),     # Shallow Ocean/Coast
+        (0.31, (220, 205, 160)),  # Beach Sand
+        (0.45, (45, 115, 60)),    # Valley / Deciduous Forest
+        (0.65, (105, 135, 85)),   # High grassy foothills
+        (0.8, (120, 100, 80)),    # Exposed mountain rock
+        (1.0, (245, 245, 245))    # Glacier-snow peaks
+    ]
+    elev_rgb = interpolate_colormap(world.elevation, elevation_stops)
+    Image.fromarray(elev_rgb).save(os.path.join(output_dir, "elevation.png"))
+    maps_generated.append("elevation.png")
+    
+    # 2. Temperature map
+    temp_stops = [
+        (-15.0, (30, 60, 140)),   # Polar freeze (blue)
+        (0.0, (100, 180, 220)),   # Cold tundra (cyan)
+        (12.0, (230, 220, 120)),  # Temperate forest (yellow)
+        (24.0, (220, 100, 40)),   # Subtropical savanna (orange)
+        (35.0, (160, 20, 20))     # Equatorial hot (red)
+    ]
+    temp_rgb = interpolate_colormap(world.temperature, temp_stops)
+    Image.fromarray(temp_rgb).save(os.path.join(output_dir, "temperature.png"))
+    maps_generated.append("temperature.png")
+    
+    # 3. Rainfall map
+    rain_stops = [
+        (0.0, (225, 200, 150)),    # Dry sand
+        (250.0, (200, 205, 180)),  # Steppe
+        (750.0, (140, 190, 160)),  # Woodland
+        (1500.0, (80, 150, 190)),  # Wet forest
+        (3000.0, (15, 60, 130))    # Rainforest
+    ]
+    rain_rgb = interpolate_colormap(world.rainfall, rain_stops)
+    Image.fromarray(rain_rgb).save(os.path.join(output_dir, "rainfall.png"))
+    maps_generated.append("rainfall.png")
+    
+    # 4. Biomes map (clean representation)
+    biomes_rgb = biomes_to_rgb(world.biome)
+    Image.fromarray(biomes_rgb).save(os.path.join(output_dir, "biomes.png"))
+    maps_generated.append("biomes.png")
+    
+    # world.png cover thumbnail preview (corresponds to clean biomes map)
+    Image.fromarray(biomes_rgb).save(os.path.join(output_dir, "world.png"))
+    maps_generated.append("world.png")
+    
+    # 5. Rivers map
+    rivers_rgb = render_rivers_map(world, sea_level=0.3)
+    Image.fromarray(rivers_rgb).save(os.path.join(output_dir, "rivers.png"))
+    maps_generated.append("rivers.png")
+    
+    # 6. Habitability map with overlay markers
+    habitability_stops = [
+        (0.0, (160, 40, 40)),      # Uninhabitable Red
+        (30.0, (220, 100, 50)),    # Orange
+        (50.0, (230, 210, 110)),   # Yellow
+        (75.0, (120, 190, 100)),   # Light Green
+        (100.0, (30, 130, 50))     # Dark Green (Ideal)
+    ]
+    hab_rgb = interpolate_colormap(world.habitability, habitability_stops)
+    draw_settlement_markers(hab_rgb, settlements)
+    Image.fromarray(hab_rgb).save(os.path.join(output_dir, "habitability.png"))
+    maps_generated.append("habitability.png")
+    
+    # 7. Trade potential map
+    trade_stops = [
+        (0.0, (40, 25, 45)),       # Inactive dark purple
+        (25.0, (110, 60, 120)),    # Low purple
+        (50.0, (190, 100, 130)),   # Moderate pink
+        (75.0, (235, 170, 110)),   # High peach
+        (100.0, (250, 230, 140))   # Prime trade gold
+    ]
+    trade_rgb = interpolate_colormap(world.trade_potential, trade_stops)
+    Image.fromarray(trade_rgb).save(os.path.join(output_dir, "trade.png"))
+    maps_generated.append("trade.png")
+    
+    # 8. Optional simulation traces map
+    if include_traces:
+        generate_simulation_map(world, os.path.join(output_dir, "simulation.png"))
+        maps_generated.append("simulation.png")
+        
+    # 9. Generate manifest.json metadata file
+    manifest_data = {
+        "seed": int(world.seed),
+        "engine_version": "1.5.0",
+        "generated_at": datetime.datetime.now().isoformat(),
+        "maps": maps_generated
+    }
+    with open(os.path.join(output_dir, "manifest.json"), "w") as f:
+        json.dump(manifest_data, f, indent=2)
+        
+    print(f"  Generated {len(maps_generated)} maps and manifest.json in {output_dir}")
+
+
 def get_path_metrics(sampled_path_history, home_location):
     """
     Returns (exploration_radius, home_drift, sampled_path) from sampled_path_history.
@@ -655,87 +771,11 @@ if __name__ == "__main__":
             run_simulation(world, ticks=ticks_to_run, experiment_type=args.experiment, scarcity_level=scarcity_val)
             print_experiment_report(world, args.experiment)
     
-    # --- Export 7 PNG Maps ---
-    # Elevation map
-    elevation_stops = [
-        (0.0, (10, 20, 45)),      # Deep Ocean
-        (0.3, (30, 75, 125)),     # Shallow Ocean/Coast
-        (0.31, (220, 205, 160)),  # Beach Sand
-        (0.45, (45, 115, 60)),    # Valley / Deciduous Forest
-        (0.65, (105, 135, 85)),   # High grassy foothills
-        (0.8, (120, 100, 80)),    # Exposed mountain rock
-        (1.0, (245, 245, 245))    # Glacier-snow peaks
-    ]
-    print("Generating elevation.png...")
-    elev_rgb = interpolate_colormap(world.elevation, elevation_stops)
-    Image.fromarray(elev_rgb).save("elevation.png")
-    
-    # Temperature map
-    temp_stops = [
-        (-15.0, (30, 60, 140)),   # Polar freeze (blue)
-        (0.0, (100, 180, 220)),   # Cold tundra (cyan)
-        (12.0, (230, 220, 120)),  # Temperate forest (yellow)
-        (24.0, (220, 100, 40)),   # Subtropical savanna (orange)
-        (35.0, (160, 20, 20))     # Equatorial hot (red)
-    ]
-    print("Generating temperature.png...")
-    temp_rgb = interpolate_colormap(world.temperature, temp_stops)
-    Image.fromarray(temp_rgb).save("temperature.png")
-    
-    # Rainfall map
-    rain_stops = [
-        (0.0, (225, 200, 150)),    # Dry sand
-        (250.0, (200, 205, 180)),  # Steppe
-        (750.0, (140, 190, 160)),  # Woodland
-        (1500.0, (80, 150, 190)),  # Wet forest
-        (3000.0, (15, 60, 130))    # Rainforest
-    ]
-    print("Generating rainfall.png...")
-    rain_rgb = interpolate_colormap(world.rainfall, rain_stops)
-    Image.fromarray(rain_rgb).save("rainfall.png")
-    
-    # Biomes map
-    print("Generating biomes.png...")
-    biomes_rgb = biomes_to_rgb(world.biome)
-    Image.fromarray(biomes_rgb).save("biomes.png")
-    
-    # Rivers and Lakes map
-    print("Generating rivers.png...")
-    rivers_rgb = render_rivers_map(world, sea_level=0.3)
-    Image.fromarray(rivers_rgb).save("rivers.png")
-    
-    # Habitability map with overlay markers
-    habitability_stops = [
-        (0.0, (160, 40, 40)),      # Uninhabitable Red
-        (30.0, (220, 100, 50)),    # Orange
-        (50.0, (230, 210, 110)),   # Yellow
-        (75.0, (120, 190, 100)),   # Light Green
-        (100.0, (30, 130, 50))     # Dark Green (Ideal)
-    ]
-    print("Generating habitability.png...")
-    hab_rgb = interpolate_colormap(world.habitability, habitability_stops)
-    draw_settlement_markers(hab_rgb, settlements)
-    Image.fromarray(hab_rgb).save("habitability.png")
-    
-    # Trade potential map
-    trade_stops = [
-        (0.0, (40, 25, 45)),       # Inactive dark purple
-        (25.0, (110, 60, 120)),    # Low purple
-        (50.0, (190, 100, 130)),   # Moderate pink
-        (75.0, (235, 170, 110)),   # High peach
-        (100.0, (250, 230, 140))   # Prime trade gold
-    ]
-    print("Generating trade.png...")
-    trade_rgb = interpolate_colormap(world.trade_potential, trade_stops)
-    Image.fromarray(trade_rgb).save("trade.png")
-    
-    # Generate simulation paths if run
+    # --- Export Diagnostic Maps & Traces ---
+    print("Generating and exporting all diagnostic maps...")
+    export_experiment_assets(world, ".", settlements=settlements, include_traces=run_sim)
     if run_sim:
-        generate_simulation_map(world, "simulation.png")
         save_simulation_data(world, args.experiment, scarcity_val, "simulation_data.js")
-        
-    print("\nDiagnostic maps successfully saved to the workspace.")
-    
     # If direct query is requested, print and exit
     if args.query:
         run_query(world, args.query[0], args.query[1], settlements)

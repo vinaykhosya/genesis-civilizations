@@ -1,0 +1,47 @@
+/* Animation Timings and Easings (GDS) */
+
+:root {
+  /* Easing Functions */
+  --ease-linear:      linear;
+  --ease-in:          cubic-bezier(0.4, 0, 1, 1);
+  --ease-out:         cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out:      cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Genesis Specific Easings */
+  --ease-out-quart:   cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-spring:      cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-overshoot:   cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  --ease-slow-out:    cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Durations */
+  --duration-instant:  50ms;
+  --duration-fast:     100ms;
+  --duration-normal:   200ms;
+  --duration-moderate: 300ms;
+  --duration-slow:     500ms;
+  --duration-slower:   700ms;
+  --duration-page:     1000ms;
+}
+
+/* Page-level transitions */
+.route-transition-exit {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity var(--duration-normal) var(--ease-in), transform var(--duration-normal) var(--ease-in);
+}
+
+.route-transition-exit-active {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+.route-transition-enter {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity var(--duration-moderate) var(--ease-out), transform var(--duration-moderate) var(--ease-out);
+}
+
+.route-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+}

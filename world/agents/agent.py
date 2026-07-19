@@ -2,7 +2,7 @@ from dataclasses import dataclass
 import numpy as np
 from .genetics import Genome, neutral_genome, express_genome
 from .cognitive import Predictor, Concept, Procedure
-from .drives import DriveState, Relationship, MotivationProfile
+from .drives import DriveState, Relationship, MotivationProfile, compute_memory_importance
 
 
 # Memory / Knowledge type constants
@@ -245,6 +245,11 @@ class Agent:
         # Memory & Knowledge
         self.knowledge      = Knowledge()
         self.episodic_memory = []
+        # O(1) duplicate-detection index: (type, location, associated_id) -> Memory object.
+        # _memory_index_snapshot caches (id(list), len) so we can detect external mutations
+        # (e.g. decay or checkpoint restore) and rebuild the index automatically.
+        self._memory_index: dict = {}
+        self._memory_index_snapshot: tuple = (id(self.episodic_memory), 0)
         self.visited_chunks = set()   # set of (chunk_y, chunk_x) where chunk_size = 32
 
         # Cognitive Fields
@@ -334,6 +339,10 @@ class Agent:
         self.water_search_actual_distance = 0.0
         self.visited_dry_water_recently = False
         self.repro_terminal_outcome = None
+        self._cached_age_stage = -1
+        self._cached_stage = ""
+        self._cached_age_senescence = -1
+        self._cached_senescence = 0.0
 
     def recompute_brain(self):
         """Re-expresses the genome to update the agent's brain parameters."""
@@ -354,15 +363,20 @@ class Agent:
           Adult    (14–60 yr) — full capability, can reproduce
           Elder    (60+ yr)   — senescence applies, cannot reproduce
         """
+        if getattr(self, "_cached_age_stage", -1) == self.age:
+            return self._cached_stage
         age_years = self.age / 360.0
         if age_years < 3.0:
-            return "Infant"
+            stage = "Infant"
         elif age_years < 14.0:
-            return "Juvenile"
+            stage = "Juvenile"
         elif age_years < 60.0:
-            return "Adult"
+            stage = "Adult"
         else:
-            return "Elder"
+            stage = "Elder"
+        self._cached_age_stage = self.age
+        self._cached_stage = stage
+        return stage
 
     # ---------------------------------------------------------------------- #
     # Derived physiological properties                                         #
@@ -371,10 +385,16 @@ class Agent:
     @property
     def senescence_factor(self) -> float:
         """Continuous aging factor in the last 30% of lifespan, [0.0, 1.0]."""
+        if getattr(self, "_cached_age_senescence", -1) == self.age:
+            return self._cached_senescence
         threshold = 0.7 * self.max_age
         if self.age < threshold:
-            return 0.0
-        return float(np.clip((self.age - threshold) / (0.3 * self.max_age), 0.0, 1.0))
+            val = 0.0
+        else:
+            val = min(max((self.age - threshold) / (0.3 * self.max_age), 0.0), 1.0)
+        self._cached_age_senescence = self.age
+        self._cached_senescence = val
+        return val
 
     @property
     def effective_risk(self) -> float:
@@ -480,13 +500,25 @@ class Agent:
     # Memory system                                                            #
     # ---------------------------------------------------------------------- #
 
+    def _rebuild_memory_index(self):
+        """Rebuild _memory_index from scratch. Called when external code mutates episodic_memory."""
+        self._memory_index = {
+            (m.type, m.location, m.associated_id): m
+            for m in self.episodic_memory
+        }
+        self._memory_index_snapshot = (id(self.episodic_memory), len(self.episodic_memory))
+
+    def _ensure_memory_index(self):
+        """Ensure _memory_index is valid, rebuilding if external mutation is detected."""
+        snap = getattr(self, "_memory_index_snapshot", None)
+        if snap is None or snap != (id(self.episodic_memory), len(self.episodic_memory)):
+            self._rebuild_memory_index()
+
     def add_memory(self, mem_type: str, location: tuple, tick: int, importance: float, associated_id: int = -1, outcome: str = "neutral"):
         """Appends an episodic memory and upserts the generalised knowledge pools."""
         # Phase 8.15 Dynamic Memory Importance Scoring
         if getattr(self, "ablation", {}).get("memory_importance", True):
             try:
-                from .drives import compute_memory_importance
-                
                 # Check if this is the first encounter of this location/agent
                 is_first = True
                 if mem_type == WATER:
@@ -495,11 +527,11 @@ class Agent:
                     is_first = (location not in self.knowledge.food_sources)
                 elif mem_type == PERSON:
                     is_first = (associated_id >= 0 and associated_id not in self.known_agents)
-                
+
                 near_death = (self.health < 30.0)
                 arousal = self.drives.arousal if hasattr(self, "drives") else 0.0
-                
-                dynamic_importance = compute_memory_importance(
+
+                importance = compute_memory_importance(
                     agent=self,
                     mem_type=mem_type,
                     outcome=outcome,
@@ -507,27 +539,25 @@ class Agent:
                     is_first_encounter=is_first,
                     emotional_intensity=arousal
                 )
-                importance = dynamic_importance
             except Exception:
                 # Fallback to passed value if anything fails
                 pass
 
-        # Check if an episodic memory of this type and location already exists.
-        # If so, update it and move it to the end to maintain chronological order,
-        # avoiding duplicate entries and saving performance.
-        existing_mem = None
-        for idx_m, m in enumerate(self.episodic_memory):
-            if m.type == mem_type and m.location == location and m.associated_id == associated_id:
-                existing_mem = m
-                self.episodic_memory.pop(idx_m)
-                break
+        # --- O(1) duplicate detection via _memory_index ---
+        # Ensure the index is consistent with the current list (handles decay / restore).
+        self._ensure_memory_index()
+
+        key = (mem_type, location, associated_id)
+        existing_mem = self._memory_index.get(key)
 
         if existing_mem is not None:
+            # Update in-place; keep Memory object at its current list position
+            # (perception callers don't rely on chronological ordering for correctness).
             existing_mem.timestamp = tick
             existing_mem.importance = max(existing_mem.importance, importance)
             existing_mem.confidence = 1.0
             existing_mem.outcome = outcome
-            self.episodic_memory.append(existing_mem)
+            # Index entry already points to the same object — no update needed.
         else:
             mem = Memory(
                 type=mem_type, location=location,
@@ -535,6 +565,7 @@ class Agent:
                 associated_id=associated_id, outcome=outcome,
             )
             self.episodic_memory.append(mem)
+            self._memory_index[key] = mem
 
             # Cap episodic memory at 200 entries based primarily on importance (lowest evicted first).
             # We use (importance, timestamp) to sort: absolute lowest importance is evicted first,
@@ -542,7 +573,12 @@ class Agent:
             # importance in the prune score.
             if len(self.episodic_memory) > 200:
                 self.episodic_memory.sort(key=lambda m: (m.importance, m.timestamp))
-                self.episodic_memory.pop(0)
+                evicted = self.episodic_memory.pop(0)
+                evicted_key = (evicted.type, evicted.location, evicted.associated_id)
+                self._memory_index.pop(evicted_key, None)
+
+        # Update snapshot length after any append/pop
+        self._memory_index_snapshot = (id(self.episodic_memory), len(self.episodic_memory))
 
         season_id = (tick % 360) // 90
 

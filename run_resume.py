@@ -31,6 +31,7 @@ import json
 import numpy as np
 
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 # ==============================================================================
 # 📂 RESUME CONFIGURATION — Edit these values
@@ -39,10 +40,10 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 # Path to the full checkpoint file you want to resume from.
 # This is saved automatically by run_test.py or run_resume.py on Stop & Save
 # or at every FULL_CHECKPOINT_INTERVAL ticks.
-RESUME_FROM = r"experiments/2026-06-27_21-00-59_emotion with no fights and same spawn/full_checkpoint_11416.json"   # e.g. r"experiments\2026-06-27_my_run\full_checkpoint_36000.json"
+RESUME_FROM = r"experiments\2026-07-18_15-01-35_emergence_social_bonds_accelerated\full_checkpoint_36000.json"   # e.g. r"experiments\2026-06-27_my_run\full_checkpoint_36000.json"
 
 # How many additional ticks to run in this session.
-ADDITIONAL_TICKS = 36000   # 36,000 ticks ≈ 100 simulated years
+ADDITIONAL_TICKS = 100000  # 36,000 ticks ≈ 100 simulated years
 
 # ==============================================================================
 # ✏️ OPTIONAL OVERRIDES
@@ -99,6 +100,9 @@ class DualWriter:
 
 
 def main():
+    # Change CWD to project root to resolve relative paths in unit tests & visualizer
+    os.chdir(PROJECT_ROOT)
+    
     if not RESUME_FROM:
         print("ERROR: RESUME_FROM is not set.")
         print("  Edit run_resume.py and set RESUME_FROM to the path of your full checkpoint file.")
@@ -439,6 +443,8 @@ def main():
 
     # --- Write summary config ---
     try:
+        resume_config["ticks"] = int(world.tick)
+        resume_config["ticks_limit"] = int(resume_config.get("ticks_limit", resume_tick + ADDITIONAL_TICKS))
         with open(os.path.join(exp_folder, "config.json"), "w") as f:
             json.dump(resume_config, f, indent=2)
     except Exception:

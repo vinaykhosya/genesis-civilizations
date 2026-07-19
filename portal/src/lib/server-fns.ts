@@ -1,0 +1,123 @@
+"use server";
+
+import { createServerFn } from "@tanstack/react-start";
+import { redirect } from "@tanstack/react-router";
+import { createSessionToken, verifySessionToken } from "./auth";
+import { supabaseServer } from "./supabase-server";
+
+// Atlas URL builder - single source of truth for storage paths
+const SUPABASE_STORAGE_BASE = "https://tyajlotsxwocxxawcwta.supabase.co/storage/v1/object/public/experiments";
+
+export function buildAtlasUrls(experimentId: string) {
+  const base = `${SUPABASE_STORAGE_BASE}/${experimentId}/atlas`;
+  return {
+    biomes: `${base}/biomes.png`,
+    elevation: `${base}/elevation.png`,
+    temperature: `${base}/temperature.png`,
+    rainfall: `${base}/rainfall.png`,
+    rivers: `${base}/rivers.png`,
+    habitability: `${base}/habitability.png`,
+    trade: `${base}/trade.png`,
+    simulation: `${base}/simulation.png`,
+  };
+}
+
+// 1. Authenticate login credentials and set cookie
+export const loginAction = createServerFn({ method: "POST" })
+  .validator((password: string) => password)
+  .handler(async ({ data: password }) => {
+    const expectedPassword = process.env.ADMIN_PASSWORD || "admin-genesis";
+    if (password !== expectedPassword) {
+      throw new Error("Unauthorized: Invalid password");
+    }
+
+    const token = await createSessionToken();
+    
+    // Set HttpOnly session cookie natively via Response headers
+    return new Response(JSON.stringify({ success: true }), {
+      status: 200,
+      headers: {
+        "Set-Cookie": `genesis_admin_session=${token}; Path=/; HttpOnly; SameSite=Strict; Secure; Max-Age=86400`,
+        "Content-Type": "application/json"
+      }
+    });
+  });
+
+// 2. Verify auth session cookie on control panel
+export const verifyAdminAuth = createServerFn({ method: "GET" })
+  .handler(async ({ request }) => {
+    const cookies = request.headers.get("cookie") || "";
+    const match = cookies.match(/genesis_admin_session=([^;]+)/);
+    const token = match ? match[1] : "";
+
+    if (!token || !(await verifySessionToken(token))) {
+      throw redirect({ to: "/control/login" });
+    }
+    return { authenticated: true };
+  });
+
+
+// 3. Fetch published experiments from database (includes computed atlas URLs)
+export const fetchCivilizations = createServerFn({ method: "GET" })
+  .handler(async () => {
+    const { data: civilizations, error } = await supabaseServer
+      .from("experiments")
+      .select("id, slug, title, seed, world_preset, scarcity, ticks, total_agents, survivors_count, max_generation, published_at, thumbnail_url, cover_url, is_featured, tags, abstract, engine_version")
+      .eq("is_published", true)
+      .order("published_at", { ascending: false });
+
+    if (error) {
+      throw new Error(`Database query failed: ${error.message}`);
+    }
+
+    // Enrich each record with computed atlas URLs - UI never hardcodes storage paths
+    const enriched = (civilizations || []).map((civ: any) => ({
+      ...civ,
+      atlas: buildAtlasUrls(civ.id),
+      // Prefer atlas biome map, fallback to thumbnail, then cover
+      previewUrl: civ.thumbnail_url || civ.cover_url || buildAtlasUrls(civ.id).biomes,
+    }));
+
+    return enriched;
+  });
+
+// 4. Fetch a single experiment + 3 related ones (includes atlas URLs)
+export const fetchCivilizationData = createServerFn({ method: "GET" })
+  .validator((id: string) => id)
+  .handler(async ({ data: id }) => {
+    console.log("[fetchCivilizationData] Requesting ID:", id);
+    const { data: record, error } = await supabaseServer
+      .from("experiments")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+    if (error) {
+      console.error("[fetchCivilizationData] DB query error:", error.message, error.details || "");
+    }
+    console.log("[fetchCivilizationData] Record retrieved:", !!record);
+
+    if (error || !record) {
+      throw new Error("Civilization not found");
+    }
+
+    const { data: relatedData } = await supabaseServer
+      .from("experiments")
+      .select("id, slug, title, seed, world_preset, scarcity, ticks, total_agents, survivors_count, max_generation, published_at, thumbnail_url, is_featured, tags")
+      .eq("is_published", true)
+      .neq("id", id)
+      .limit(3);
+
+    return {
+      record: {
+        ...record,
+        atlas: buildAtlasUrls(record.id),
+        previewUrl: record.thumbnail_url || record.cover_url || buildAtlasUrls(record.id).biomes,
+      },
+      related: (relatedData || []).map((r: any) => ({
+        ...r,
+        atlas: buildAtlasUrls(r.id),
+        previewUrl: r.thumbnail_url || r.cover_url || buildAtlasUrls(r.id).biomes,
+      }))
+    };
+  });

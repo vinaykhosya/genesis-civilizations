@@ -1,7 +1,15 @@
 import numpy as np
+import math
 from .agent import Agent, WATER, FOOD, DANGER, PERSON, LANDMARK
 from .genetics import express_genome
 from .drives import compute_drive_modulation
+
+_ACTION_IDX = {
+    "Resting": 0, "Drinking": 1, "Eating": 2, "Exploring": 3, "Building Shelter": 4, 
+    "Sheltering": 5, "Reproduce": 6, "Store Food": 7, "Store Water": 8, "Share Food": 9, 
+    "Share Water": 10, "Drink Stored Water": 11, "Eat Stored Food": 12, "Deposit Food": 13, 
+    "Deposit Water": 14, "Withdraw Food": 15, "Withdraw Water": 16
+}
 
 def sigmoid_utility(need: float, threshold: float, scale: float) -> float:
     """Computes a biological sigmoid curve for utility values to simulate soft thresholds."""
@@ -65,16 +73,7 @@ def get_predictor_context(agent: Agent, action_name: str, target_loc: tuple, wor
         colony_food = world.colonies[c_id].get("stored_food", 0.0)
         colony_water = world.colonies[c_id].get("stored_water", 0.0)
         
-    action_names = [
-        "Resting", "Drinking", "Eating", "Exploring", "Building Shelter", 
-        "Sheltering", "Reproduce", "Store Food", "Store Water", "Share Food", 
-        "Share Water", "Drink Stored Water", "Eat Stored Food", "Deposit Food", 
-        "Deposit Water", "Withdraw Food", "Withdraw Water"
-    ]
-    try:
-        action_idx = action_names.index(action_name)
-    except ValueError:
-        action_idx = 0
+    action_idx = _ACTION_IDX.get(action_name, 0)
         
     vec = np.array([
         agent.hunger / 100.0,
@@ -153,7 +152,7 @@ def get_environmental_modulation(agent: Agent, y: int, x: int, world) -> float:
     val = float(np.dot(agent.feature_weights, features))
     
     # Return exponential modulation multiplier, clamped to prevent extreme values
-    return float(np.clip(np.exp(val), 0.1, 5.0))
+    return min(max(math.exp(val), 0.1), 5.0)
 
 # ==============================================================================
 # COMBAT HELPER FUNCTIONS
