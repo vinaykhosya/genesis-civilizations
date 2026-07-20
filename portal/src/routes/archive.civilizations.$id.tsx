@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { fetchCivilizationData } from "@/lib/server-fns";
+import { fetchCivilizationData, updateExperimentData } from "@/lib/server-fns";
 import CivilizationCard, { ExperimentCardProps } from "@/components/civilization/CivilizationCard";
 import { BIOME_COLORS } from "@/lib/biome-palette";
 
@@ -271,6 +271,195 @@ function CivilizationRecordPage() {
     "research" | "chronicle" | "observatory" | "technical"
   >("research");
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+
+  // User identity state for pseudo-anonymous comments / peer reviews
+  const [userId, setUserId] = useState<string>("User #1001");
+  const [isAuthorMode, setIsAuthorMode] = useState<boolean>(false);
+
+  // Editable Abstract State
+  const [abstractText, setAbstractText] = useState<string>(record.abstract || "");
+  const [isEditingAbstract, setIsEditingAbstract] = useState<boolean>(false);
+
+  // Editable Key Findings State
+  const [findingsList, setFindingsList] = useState<string[]>(
+    meta?.findings || [
+      "Speciation occurred naturally along continental geographical barriers.",
+      "High scarcity index directly accelerated shelter construction priority.",
+    ]
+  );
+  const [isEditingFindings, setIsEditingFindings] = useState<boolean>(false);
+  const [newFindingInput, setNewFindingInput] = useState<string>("");
+
+  // Editable Chronicle Events State
+  const [chronicleEvents, setChronicleEvents] = useState<any[]>(
+    summary.events || record.summary_json?.events || []
+  );
+  const [isAddingEvent, setIsAddingEvent] = useState<boolean>(false);
+  const [newEventTick, setNewEventTick] = useState<number>(1000);
+  const [newEventType, setNewEventType] = useState<string>("Environmental Anomaly");
+  const [newEventDesc, setNewEventDesc] = useState<string>("");
+
+  // Editable Research Questions State
+  const [questionsList, setQuestionsList] = useState<any[]>([]);
+  const [isAddingQuestion, setIsAddingQuestion] = useState<boolean>(false);
+  const [newQuestionTitle, setNewQuestionTitle] = useState<string>("");
+  const [newQuestionText, setNewQuestionText] = useState<string>("");
+
+  // Comments / Open Questions State
+  const [comments, setComments] = useState<any[]>([]);
+  const [newCommentText, setNewCommentText] = useState<string>("");
+  const [newCommentCategory, setNewCommentCategory] = useState<string>("Question");
+  const [isSyncing, setIsSyncing] = useState<boolean>(false);
+
+  // Load user identity, saved edits, and comments on mount
+  useEffect(() => {
+    let uId = localStorage.getItem("genesis_user_id");
+    if (!uId) {
+      uId = `User #${Math.floor(1000 + Math.random() * 9000)}`;
+      localStorage.setItem("genesis_user_id", uId);
+    }
+    setUserId(uId);
+
+    // Initial questions setup
+    const defaultQs = getResearchQuestions();
+
+    // Load saved edits from localStorage if available
+    const savedEdits = localStorage.getItem(`genesis_edits_${record.id}`);
+    if (savedEdits) {
+      try {
+        const parsed = JSON.parse(savedEdits);
+        if (parsed.abstract !== undefined) setAbstractText(parsed.abstract);
+        if (parsed.findings) setFindingsList(parsed.findings);
+        if (parsed.questions) setQuestionsList(parsed.questions);
+        else setQuestionsList(defaultQs);
+        if (parsed.chronicleEvents) setChronicleEvents(parsed.chronicleEvents);
+      } catch (e) {
+        setQuestionsList(defaultQs);
+      }
+    } else {
+      setQuestionsList(defaultQs);
+    }
+
+    // Load saved comments
+    const savedComments = localStorage.getItem(`genesis_comments_${record.id}`);
+    if (savedComments) {
+      try {
+        setComments(JSON.parse(savedComments));
+      } catch (e) {}
+    } else if (summary.user_comments) {
+      setComments(summary.user_comments);
+    }
+  }, [record.id]);
+
+  // Persist edits to localStorage & Supabase
+  const persistEdits = async (newEdits: any) => {
+    setIsSyncing(true);
+    const existingEdits = JSON.parse(localStorage.getItem(`genesis_edits_${record.id}`) || "{}");
+    const merged = { ...existingEdits, ...newEdits };
+    localStorage.setItem(`genesis_edits_${record.id}`, JSON.stringify(merged));
+
+    try {
+      await updateExperimentData({
+        data: {
+          id: record.id,
+          abstract: merged.abstract !== undefined ? merged.abstract : abstractText,
+          summary_json: {
+            ...summary,
+            custom_findings: merged.findings || findingsList,
+            custom_questions: merged.questions || questionsList,
+            custom_events: merged.chronicleEvents || chronicleEvents,
+          },
+        },
+      });
+    } catch (err) {
+      console.warn("Server persist warning:", err);
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
+  const handleSaveAbstract = () => {
+    setIsEditingAbstract(false);
+    persistEdits({ abstract: abstractText });
+  };
+
+  const handleAddFinding = () => {
+    if (!newFindingInput.trim()) return;
+    const updated = [...findingsList, newFindingInput.trim()];
+    setFindingsList(updated);
+    setNewFindingInput("");
+    setIsEditingFindings(false);
+    persistEdits({ findings: updated });
+  };
+
+  const handleDeleteFinding = (index: number) => {
+    const updated = findingsList.filter((_, i) => i !== index);
+    setFindingsList(updated);
+    persistEdits({ findings: updated });
+  };
+
+  const handleAddQuestion = () => {
+    if (!newQuestionTitle.trim() || !newQuestionText.trim()) return;
+    const newQ = {
+      id: `RQ-${Math.floor(100 + Math.random() * 900)}`,
+      title: newQuestionTitle.trim(),
+      question: newQuestionText.trim(),
+    };
+    const updated = [...questionsList, newQ];
+    setQuestionsList(updated);
+    setNewQuestionTitle("");
+    setNewQuestionText("");
+    setIsAddingQuestion(false);
+    persistEdits({ questions: updated });
+  };
+
+  const handleAddChronicleEvent = () => {
+    if (!newEventDesc.trim()) return;
+    const newEv = {
+      tick: newEventTick,
+      type: newEventType,
+      description: newEventDesc.trim(),
+    };
+    const updated = [newEv, ...chronicleEvents];
+    setChronicleEvents(updated);
+    setNewEventDesc("");
+    setIsAddingEvent(false);
+    persistEdits({ chronicleEvents: updated });
+  };
+
+  const handlePostComment = async () => {
+    if (!newCommentText.trim()) return;
+    const newComment = {
+      id: Date.now().toString(),
+      author: isAuthorMode ? "Lead Researcher (Author)" : userId,
+      isAuthor: isAuthorMode,
+      category: newCommentCategory,
+      text: newCommentText.trim(),
+      timestamp: new Date().toLocaleString(),
+    };
+
+    const updated = [newComment, ...comments];
+    setComments(updated);
+    setNewCommentText("");
+    localStorage.setItem(`genesis_comments_${record.id}`, JSON.stringify(updated));
+
+    setIsSyncing(true);
+    try {
+      await updateExperimentData({
+        data: {
+          id: record.id,
+          summary_json: {
+            ...summary,
+            user_comments: updated,
+          },
+        },
+      });
+    } catch (e) {
+      console.warn("Comments server persist error:", e);
+    } finally {
+      setIsSyncing(false);
+    }
+  };
 
   const relatedCards: ExperimentCardProps[] = related.map((row: any) => ({
     id: row.id,
@@ -1798,78 +1987,187 @@ function CivilizationRecordPage() {
                       </div>
                     )}
 
-                    {/* Key Findings */}
-                    {meta && meta.findings && meta.findings.length > 0 && (
-                      <div
-                        style={{
-                          padding: "1.25rem 1.5rem",
-                          background: "rgba(255,255,255,0.01)",
-                          border: "1px solid var(--border-default)",
-                          borderRadius: "var(--radius-lg)",
-                          marginBottom: "1rem",
-                        }}
-                      >
+                    {/* Key Findings (Editable) */}
+                    <div
+                      style={{
+                        padding: "1.25rem 1.5rem",
+                        background: "rgba(255,255,255,0.01)",
+                        border: "1px solid var(--border-default)",
+                        borderRadius: "var(--radius-lg)",
+                        marginBottom: "1rem",
+                      }}
+                    >
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" }}>
                         <h3
                           style={{
                             fontFamily: "var(--font-display)",
                             fontSize: "var(--text-xs)",
                             fontWeight: 700,
-                            marginBottom: "0.75rem",
                             color: "var(--text-primary)",
                             textTransform: "uppercase",
                             letterSpacing: "0.05em",
+                            margin: 0,
                           }}
                         >
                           Key Findings
                         </h3>
-                        <ul
+                        <button
+                          onClick={() => setIsEditingFindings(!isEditingFindings)}
                           style={{
-                            paddingLeft: "1.2rem",
-                            margin: 0,
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "0.4rem",
+                            background: "rgba(99, 102, 241, 0.15)",
+                            border: "1px solid rgba(99, 102, 241, 0.3)",
+                            color: "#a5b4fc",
+                            padding: "0.2rem 0.6rem",
+                            borderRadius: "4px",
+                            fontSize: "11px",
+                            fontWeight: 600,
+                            cursor: "pointer",
                           }}
                         >
-                          {meta.findings.map((finding, idx) => (
-                            <li
-                              key={idx}
-                              style={{
-                                fontSize: "var(--text-xs)",
-                                color: "var(--text-secondary)",
-                                lineHeight: 1.4,
-                              }}
-                            >
-                              {finding}
-                            </li>
-                          ))}
-                        </ul>
+                          {isEditingFindings ? "Done" : "+ Add / Edit Findings"}
+                        </button>
                       </div>
-                    )}
 
-                    {/* Abstract Monograph */}
+                      {isEditingFindings && (
+                        <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1rem" }}>
+                          <input
+                            type="text"
+                            placeholder="Type a new key finding..."
+                            value={newFindingInput}
+                            onChange={(e) => setNewFindingInput(e.target.value)}
+                            style={{
+                              flex: 1,
+                              background: "#080b11",
+                              border: "1px solid var(--border-default)",
+                              borderRadius: "4px",
+                              padding: "0.4rem 0.8rem",
+                              color: "#fff",
+                              fontSize: "12px",
+                            }}
+                          />
+                          <button
+                            onClick={handleAddFinding}
+                            style={{
+                              background: "#10b981",
+                              border: "none",
+                              color: "#fff",
+                              borderRadius: "4px",
+                              padding: "0.4rem 1rem",
+                              fontSize: "12px",
+                              fontWeight: 600,
+                              cursor: "pointer",
+                            }}
+                          >
+                            Add
+                          </button>
+                        </div>
+                      )}
+
+                      <ul
+                        style={{
+                          paddingLeft: "1.2rem",
+                          margin: 0,
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "0.4rem",
+                        }}
+                      >
+                        {findingsList.map((finding, idx) => (
+                          <li
+                            key={idx}
+                            style={{
+                              fontSize: "var(--text-xs)",
+                              color: "var(--text-secondary)",
+                              lineHeight: 1.4,
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                            }}
+                          >
+                            <span>{finding}</span>
+                            {isEditingFindings && (
+                              <button
+                                onClick={() => handleDeleteFinding(idx)}
+                                style={{
+                                  background: "transparent",
+                                  border: "none",
+                                  color: "#ef4444",
+                                  cursor: "pointer",
+                                  fontSize: "11px",
+                                  marginLeft: "0.5rem",
+                                }}
+                              >
+                                ✕
+                              </button>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* Abstract Monograph (Editable) */}
                     <div>
-                      <h3
-                        style={{
-                          fontFamily: "var(--font-display)",
-                          fontSize: "var(--text-lg)",
-                          fontWeight: 700,
-                          marginBottom: "0.75rem",
-                          color: "#00f2fe",
-                        }}
-                      >
-                        Research Abstract
-                      </h3>
-                      <p
-                        style={{
-                          lineHeight: 1.6,
-                          color: "var(--text-secondary)",
-                          fontSize: "var(--text-sm)",
-                        }}
-                      >
-                        {record.abstract ||
-                          "Scientific summary abstract has not been documented for this dynamic experiment record."}
-                      </p>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" }}>
+                        <h3
+                          style={{
+                            fontFamily: "var(--font-display)",
+                            fontSize: "var(--text-lg)",
+                            fontWeight: 700,
+                            color: "#00f2fe",
+                            margin: 0,
+                          }}
+                        >
+                          Research Abstract
+                        </h3>
+                        <button
+                          onClick={() => {
+                            if (isEditingAbstract) handleSaveAbstract();
+                            else setIsEditingAbstract(true);
+                          }}
+                          style={{
+                            background: isEditingAbstract ? "#10b981" : "rgba(0, 242, 254, 0.15)",
+                            border: `1px solid ${isEditingAbstract ? "#10b981" : "rgba(0, 242, 254, 0.3)"}`,
+                            color: isEditingAbstract ? "#fff" : "#6ee7b7",
+                            padding: "0.3rem 0.8rem",
+                            borderRadius: "6px",
+                            fontSize: "12px",
+                            fontWeight: 600,
+                            cursor: "pointer",
+                          }}
+                        >
+                          {isEditingAbstract ? "Save & Persist" : "✏️ Edit Abstract"}
+                        </button>
+                      </div>
+
+                      {isEditingAbstract ? (
+                        <textarea
+                          rows={5}
+                          value={abstractText}
+                          onChange={(e) => setAbstractText(e.target.value)}
+                          style={{
+                            width: "100%",
+                            background: "#080b11",
+                            border: "1px solid var(--border-default)",
+                            borderRadius: "8px",
+                            padding: "1rem",
+                            color: "#fff",
+                            fontSize: "14px",
+                            lineHeight: 1.6,
+                            fontFamily: "inherit",
+                          }}
+                        />
+                      ) : (
+                        <p
+                          style={{
+                            lineHeight: 1.6,
+                            color: "var(--text-secondary)",
+                            fontSize: "var(--text-sm)",
+                          }}
+                        >
+                          {abstractText ||
+                            "Scientific summary abstract has not been documented for this dynamic experiment record."}
+                        </p>
+                      )}
                     </div>
 
                     {/* Snapshot Grid Cards */}
@@ -2010,22 +2308,100 @@ function CivilizationRecordPage() {
                       </div>
                     </div>
 
-                    {/* Research Questions Section */}
+                    {/* Research Questions Section (Editable) */}
                     <div
                       style={{ borderTop: "1px solid var(--border-default)", paddingTop: "1.5rem" }}
                     >
-                      <h3
-                        style={{
-                          fontFamily: "var(--font-display)",
-                          fontSize: "var(--text-lg)",
-                          fontWeight: 700,
-                          marginBottom: "1rem",
-                        }}
-                      >
-                        Hypothesis Inquiry (Research Questions)
-                      </h3>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
+                        <h3
+                          style={{
+                            fontFamily: "var(--font-display)",
+                            fontSize: "var(--text-lg)",
+                            fontWeight: 700,
+                            margin: 0,
+                          }}
+                        >
+                          Hypothesis Inquiry (Research Questions)
+                        </h3>
+                        <button
+                          onClick={() => setIsAddingQuestion(!isAddingQuestion)}
+                          style={{
+                            background: "rgba(0, 242, 254, 0.15)",
+                            border: "1px solid rgba(0, 242, 254, 0.3)",
+                            color: "#00f2fe",
+                            padding: "0.3rem 0.8rem",
+                            borderRadius: "6px",
+                            fontSize: "12px",
+                            fontWeight: 600,
+                            cursor: "pointer",
+                          }}
+                        >
+                          {isAddingQuestion ? "Cancel" : "+ Add Research Question"}
+                        </button>
+                      </div>
+
+                      {isAddingQuestion && (
+                        <div
+                          style={{
+                            background: "#080b11",
+                            border: "1px solid var(--border-default)",
+                            borderRadius: "8px",
+                            padding: "1rem",
+                            marginBottom: "1rem",
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "0.8rem",
+                          }}
+                        >
+                          <input
+                            type="text"
+                            placeholder="Question Title (e.g. Speciation on Island Archipelagos)"
+                            value={newQuestionTitle}
+                            onChange={(e) => setNewQuestionTitle(e.target.value)}
+                            style={{
+                              background: "rgba(255,255,255,0.03)",
+                              border: "1px solid var(--border-default)",
+                              borderRadius: "4px",
+                              padding: "0.5rem 0.8rem",
+                              color: "#fff",
+                              fontSize: "13px",
+                            }}
+                          />
+                          <textarea
+                            rows={2}
+                            placeholder="Full Research Question Description..."
+                            value={newQuestionText}
+                            onChange={(e) => setNewQuestionText(e.target.value)}
+                            style={{
+                              background: "rgba(255,255,255,0.03)",
+                              border: "1px solid var(--border-default)",
+                              borderRadius: "4px",
+                              padding: "0.5rem 0.8rem",
+                              color: "#fff",
+                              fontSize: "13px",
+                            }}
+                          />
+                          <button
+                            onClick={handleAddQuestion}
+                            style={{
+                              alignSelf: "flex-start",
+                              background: "#10b981",
+                              border: "none",
+                              color: "#fff",
+                              padding: "0.4rem 1.2rem",
+                              borderRadius: "6px",
+                              fontSize: "12px",
+                              fontWeight: 700,
+                              cursor: "pointer",
+                            }}
+                          >
+                            Save Question
+                          </button>
+                        </div>
+                      )}
+
                       <div style={{ display: "grid", gap: "1rem" }}>
-                        {getResearchQuestions().map((rq) => (
+                        {questionsList.map((rq) => (
                           <div
                             key={rq.id}
                             style={{
@@ -2127,31 +2503,127 @@ function CivilizationRecordPage() {
                   </div>
                 )}
 
-                {/* TAB 2: CHRONICLE (climate milestones) */}
+                {/* TAB 2: CHRONICLE (climate milestones & observations - Editable) */}
                 {activeTab === "chronicle" && (
                   <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-                    <h3
-                      style={{
-                        fontFamily: "var(--font-display)",
-                        fontSize: "var(--text-lg)",
-                        fontWeight: 700,
-                        color: "var(--text-primary)",
-                      }}
-                    >
-                      Global Environmental Chronicle
-                    </h3>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <h3
+                        style={{
+                          fontFamily: "var(--font-display)",
+                          fontSize: "var(--text-lg)",
+                          fontWeight: 700,
+                          color: "var(--text-primary)",
+                          margin: 0,
+                        }}
+                      >
+                        Global Environmental Chronicle & Observations
+                      </h3>
+                      <button
+                        onClick={() => setIsAddingEvent(!isAddingEvent)}
+                        style={{
+                          background: "rgba(0, 242, 254, 0.15)",
+                          border: "1px solid rgba(0, 242, 254, 0.3)",
+                          color: "#00f2fe",
+                          padding: "0.3rem 0.8rem",
+                          borderRadius: "6px",
+                          fontSize: "12px",
+                          fontWeight: 600,
+                          cursor: "pointer",
+                        }}
+                      >
+                        {isAddingEvent ? "Cancel" : "+ Add Observation / Milestone"}
+                      </button>
+                    </div>
+
+                    {isAddingEvent && (
+                      <div
+                        style={{
+                          background: "#080b11",
+                          border: "1px solid var(--border-default)",
+                          borderRadius: "8px",
+                          padding: "1rem",
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "0.8rem",
+                        }}
+                      >
+                        <div style={{ display: "flex", gap: "1rem" }}>
+                          <input
+                            type="number"
+                            placeholder="Tick (e.g. 5000)"
+                            value={newEventTick}
+                            onChange={(e) => setNewEventTick(parseInt(e.target.value) || 0)}
+                            style={{
+                              width: "120px",
+                              background: "rgba(255,255,255,0.03)",
+                              border: "1px solid var(--border-default)",
+                              borderRadius: "4px",
+                              padding: "0.4rem 0.8rem",
+                              color: "#fff",
+                              fontSize: "12px",
+                            }}
+                          />
+                          <input
+                            type="text"
+                            placeholder="Event Type (e.g. Famine Epoch, Shelter Boom)"
+                            value={newEventType}
+                            onChange={(e) => setNewEventType(e.target.value)}
+                            style={{
+                              flex: 1,
+                              background: "rgba(255,255,255,0.03)",
+                              border: "1px solid var(--border-default)",
+                              borderRadius: "4px",
+                              padding: "0.4rem 0.8rem",
+                              color: "#fff",
+                              fontSize: "12px",
+                            }}
+                          />
+                        </div>
+                        <textarea
+                          rows={2}
+                          placeholder="Event description and observational note..."
+                          value={newEventDesc}
+                          onChange={(e) => setNewEventDesc(e.target.value)}
+                          style={{
+                            background: "rgba(255,255,255,0.03)",
+                            border: "1px solid var(--border-default)",
+                            borderRadius: "4px",
+                            padding: "0.4rem 0.8rem",
+                            color: "#fff",
+                            fontSize: "12px",
+                          }}
+                        />
+                        <button
+                          onClick={handleAddChronicleEvent}
+                          style={{
+                            alignSelf: "flex-start",
+                            background: "#10b981",
+                            border: "none",
+                            color: "#fff",
+                            padding: "0.4rem 1.2rem",
+                            borderRadius: "6px",
+                            fontSize: "12px",
+                            fontWeight: 700,
+                            cursor: "pointer",
+                          }}
+                        >
+                          Save Observation
+                        </button>
+                      </div>
+                    )}
+
                     <div
                       style={{
                         display: "flex",
                         flexDirection: "column",
                         gap: "1rem",
-                        maxHeight: "400px",
+                        maxHeight: "450px",
                         overflowY: "auto",
                         paddingRight: "0.5rem",
                       }}
                     >
-                      {events.length > 0 ? (
-                        events.map((ev: any, idx: number) => (
+                      {chronicleEvents.length > 0 ? (
+                        chronicleEvents.map((ev: any, idx: number) => (
                           <div
                             key={idx}
                             style={{
@@ -2416,6 +2888,226 @@ function CivilizationRecordPage() {
             </article>
           </section>
         </div>
+
+        {/* ═══ Open Questions, Suggestions & Peer Discussion ═════════════════════════════ */}
+        <section
+          style={{
+            marginTop: "3rem",
+            borderTop: "1px solid rgba(255,255,255,0.08)",
+            paddingTop: "2rem",
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
+            <div>
+              <h2 style={{ fontSize: "1.4rem", fontWeight: 800, color: "#fff", margin: 0, display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                💬 Open Questions, Suggestions & Peer Discussion
+              </h2>
+              <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.4)", marginTop: "0.2rem" }}>
+                Direct open feedback platform. Post comments, hypothesis suggestions, or questions as a peer reviewer or author without login.
+              </p>
+            </div>
+            {isSyncing && (
+              <span style={{ fontSize: "12px", color: "#6ee7b7", fontFamily: "var(--font-mono)" }}>
+                ⚡ Syncing to DB...
+              </span>
+            )}
+          </div>
+
+          <div
+            style={{
+              background: "#0d131f",
+              border: "1px solid var(--border-default)",
+              borderRadius: "var(--radius-lg)",
+              padding: "1.5rem",
+              marginBottom: "2rem",
+              display: "flex",
+              flexDirection: "column",
+              gap: "1.2rem",
+            }}
+          >
+            {/* Identity & Category Selector */}
+            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: "1rem" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                <span style={{ fontSize: "12px", color: "var(--text-secondary)", fontWeight: 600 }}>Post As:</span>
+                <button
+                  type="button"
+                  onClick={() => setIsAuthorMode(false)}
+                  style={{
+                    background: !isAuthorMode ? "rgba(99, 102, 241, 0.2)" : "rgba(255,255,255,0.03)",
+                    border: `1px solid ${!isAuthorMode ? "#6366f1" : "var(--border-default)"}`,
+                    color: !isAuthorMode ? "#a5b4fc" : "var(--text-muted)",
+                    padding: "0.3rem 0.8rem",
+                    borderRadius: "20px",
+                    fontSize: "12px",
+                    fontWeight: 600,
+                    cursor: "pointer",
+                  }}
+                >
+                  🌐 {userId} (Peer Reviewer)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsAuthorMode(true)}
+                  style={{
+                    background: isAuthorMode ? "rgba(0, 242, 254, 0.2)" : "rgba(255,255,255,0.03)",
+                    border: `1px solid ${isAuthorMode ? "#00f2fe" : "var(--border-default)"}`,
+                    color: isAuthorMode ? "#00f2fe" : "var(--text-muted)",
+                    padding: "0.3rem 0.8rem",
+                    borderRadius: "20px",
+                    fontSize: "12px",
+                    fontWeight: 600,
+                    cursor: "pointer",
+                  }}
+                >
+                  ⚡ Lead Researcher (Author)
+                </button>
+              </div>
+
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <span style={{ fontSize: "12px", color: "var(--text-secondary)", fontWeight: 600 }}>Category:</span>
+                <select
+                  value={newCommentCategory}
+                  onChange={(e) => setNewCommentCategory(e.target.value)}
+                  style={{
+                    background: "#080b11",
+                    border: "1px solid var(--border-default)",
+                    borderRadius: "6px",
+                    padding: "0.3rem 0.8rem",
+                    color: "#fff",
+                    fontSize: "12px",
+                  }}
+                >
+                  <option value="Question">❓ Open Question</option>
+                  <option value="Suggestion">💡 Suggestion</option>
+                  <option value="Hypothesis">🔬 Hypothesis</option>
+                  <option value="Observation">👁️ Observation</option>
+                  <option value="Bug Report">🐛 Bug Report</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Comment Textarea */}
+            <textarea
+              rows={3}
+              placeholder="Write a suggestion, question, or hypothesis note for this experiment..."
+              value={newCommentText}
+              onChange={(e) => setNewCommentText(e.target.value)}
+              style={{
+                width: "100%",
+                background: "#080b11",
+                border: "1px solid var(--border-default)",
+                borderRadius: "8px",
+                padding: "0.8rem 1rem",
+                color: "#fff",
+                fontSize: "13px",
+                lineHeight: 1.5,
+                fontFamily: "inherit",
+              }}
+            />
+
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              <button
+                type="button"
+                onClick={handlePostComment}
+                style={{
+                  background: "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)",
+                  border: "none",
+                  color: "#fff",
+                  padding: "0.5rem 1.4rem",
+                  borderRadius: "6px",
+                  fontSize: "13px",
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  boxShadow: "0 4px 12px rgba(99, 102, 241, 0.3)",
+                }}
+              >
+                Post Comment & Suggestion
+              </button>
+            </div>
+          </div>
+
+          {/* Comments List */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            {comments.length > 0 ? (
+              comments.map((comment) => (
+                <div
+                  key={comment.id}
+                  style={{
+                    background: comment.isAuthor ? "rgba(0, 242, 254, 0.02)" : "rgba(255,255,255,0.01)",
+                    border: `1px solid ${comment.isAuthor ? "rgba(0, 242, 254, 0.2)" : "var(--border-default)"}`,
+                    borderRadius: "var(--radius-lg)",
+                    padding: "1.2rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.6rem",
+                  }}
+                >
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+                      <span
+                        style={{
+                          fontWeight: 700,
+                          fontSize: "13px",
+                          color: comment.isAuthor ? "#00f2fe" : "#a5b4fc",
+                        }}
+                      >
+                        {comment.author}
+                      </span>
+                      {comment.isAuthor && (
+                        <span
+                          style={{
+                            fontSize: "10px",
+                            fontFamily: "var(--font-mono)",
+                            background: "rgba(0,242,254,0.15)",
+                            border: "1px solid rgba(0,242,254,0.3)",
+                            color: "#00f2fe",
+                            padding: "0.1rem 0.4rem",
+                            borderRadius: "4px",
+                            fontWeight: 700,
+                          }}
+                        >
+                          AUTHOR
+                        </span>
+                      )}
+                      <span
+                        style={{
+                          fontSize: "11px",
+                          fontFamily: "var(--font-mono)",
+                          background: "rgba(255,255,255,0.05)",
+                          border: "1px solid var(--border-default)",
+                          color: "var(--text-tertiary)",
+                          padding: "0.1rem 0.4rem",
+                          borderRadius: "4px",
+                        }}
+                      >
+                        [{comment.category || "Comment"}]
+                      </span>
+                    </div>
+                    <span style={{ fontSize: "11px", color: "var(--text-tertiary)", fontFamily: "var(--font-mono)" }}>
+                      {comment.timestamp}
+                    </span>
+                  </div>
+                  <p style={{ fontSize: "13px", color: "var(--text-secondary)", lineHeight: 1.5, margin: 0 }}>
+                    {comment.text}
+                  </p>
+                </div>
+              ))
+            ) : (
+              <div
+                style={{
+                  textAlign: "center",
+                  padding: "2.5rem 1rem",
+                  border: "1px dashed var(--border-default)",
+                  borderRadius: "var(--radius-lg)",
+                  color: "var(--text-tertiary)",
+                  fontSize: "13px",
+                }}
+              >
+                No open questions or peer suggestions submitted yet. Be the first to share feedback!
+              </div>
+            )}
+          </div>
+        </section>
 
         {/* ═══ Interactive Simulation Explorer ═════════════════════════════ */}
         <section

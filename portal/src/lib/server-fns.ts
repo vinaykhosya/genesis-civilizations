@@ -139,3 +139,25 @@ export const fetchExperimentReplay = createServerFn({ method: "GET" })
     }
   });
 
+// 6. Update experiment metadata (abstract, summary_json, findings, questions, comments)
+export const updateExperimentData = createServerFn({ method: "POST" })
+  .validator((data: { id: string; abstract?: string; summary_json?: any }) => data)
+  .handler(async ({ data }) => {
+    const { id, abstract, summary_json } = data;
+    const updatePayload: any = {};
+    if (abstract !== undefined) updatePayload.abstract = abstract;
+    if (summary_json !== undefined) updatePayload.summary_json = summary_json;
+
+    const { error } = await supabaseServer
+      .from("experiments")
+      .update(updatePayload)
+      .eq("id", id);
+
+    if (error) {
+      console.warn("[updateExperimentData] Supabase update error:", error.message);
+      return { success: false, error: error.message };
+    }
+    return { success: true };
+  });
+
+
