@@ -1,9 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { fetchCivilizationData, fetchExperimentReplay } from "@/lib/server-fns";
+import { fetchCivilizationData } from "@/lib/server-fns";
 import CivilizationCard, { ExperimentCardProps } from "@/components/civilization/CivilizationCard";
 import { BIOME_COLORS } from "@/lib/biome-palette";
-import ExperimentExplorer, { ReplayData } from "@/components/civilization/ExperimentExplorer";
+import type { ReplayData } from "@/components/civilization/ExperimentExplorer";
+
+// Lazy-load so it never SSRs (uses canvas / browser APIs)
+const ExperimentExplorer = lazy(() => import("@/components/civilization/ExperimentExplorer"));
+
+const SUPABASE_STORAGE_BASE =
+  "https://tyajlotsxwocxxawcwta.supabase.co/storage/v1/object/public/experiments";
 
 export const Route = createFileRoute("/archive/civilizations/$id")({
   loader: async ({ params }) => {
@@ -273,16 +279,21 @@ function CivilizationRecordPage() {
   >("research");
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [replayData, setReplayData] = useState<ReplayData | null>(null);
-  const [replayLoading, setReplayLoading] = useState(false);
+  const [replayLoading, setReplayLoading] = useState(true);
 
-  // Load replay.json from Supabase Storage on mount
+  // Fetch replay.json DIRECTLY from public Supabase Storage (bypasses server function size limits)
   useEffect(() => {
-    setReplayLoading(true);
-    fetchExperimentReplay({ data: record.id })
-      .then((data: ReplayData | null) => {
-        setReplayData(data);
+    const url = `${SUPABASE_STORAGE_BASE}/${record.id}/replay/replay.json`;
+    fetch(url)
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
       })
-      .catch(() => setReplayData(null))
+      .then((data: ReplayData) => setReplayData(data))
+      .catch((err) => {
+        console.warn("[ExperimentExplorer] replay.json not found:", err.message);
+        setReplayData(null);
+      })
       .finally(() => setReplayLoading(false));
   }, [record.id]);
 
@@ -2451,12 +2462,21 @@ function CivilizationRecordPage() {
             </div>
           )}
           {!replayLoading && replayData && (
-            <ExperimentExplorer
-              replay={replayData}
-              coverUrl={record.cover_url || record.previewUrl || ""}
-              experimentId={record.id}
-              experimentTitle={record.title}
-            />
+            <Suspense fallback={
+              <div style={{ display:"flex", alignItems:"center", justifyContent:"center", padding:"4rem", color:"rgba(255,255,255,0.3)", fontSize:14 }}>
+                <div style={{ textAlign:"center" }}>
+                  <div style={{ fontSize:32, marginBottom:12 }}>⚙️</div>
+                  <div>Loading Experiment Explorer…</div>
+                </div>
+              </div>
+            }>
+              <ExperimentExplorer
+                replay={replayData}
+                coverUrl={record.cover_url || record.previewUrl || ""}
+                experimentId={record.id}
+                experimentTitle={record.title}
+              />
+            </Suspense>
           )}
           {!replayLoading && !replayData && (
             <div style={{
