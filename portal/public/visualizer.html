@@ -2159,8 +2159,8 @@
         }
 
         // Set fallback data in case scripts fail to load
-        const urlParams = new URLSearchParams(window.location.search);
-        const experimentId = urlParams.get('id');
+        const __urlParams = new URLSearchParams(window.location.search);
+        const experimentId = __urlParams.get('id');
         const storageBase = "https://tyajlotsxwocxxawcwta.supabase.co/storage/v1/object/public/experiments";
 
         if (experimentId) {
