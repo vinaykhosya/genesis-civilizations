@@ -244,12 +244,10 @@ class Agent:
 
         # Memory & Knowledge
         self.knowledge      = Knowledge()
-        self.episodic_memory = []
+        self._episodic_memory = []
+        self._memory_index_dirty = True
         # O(1) duplicate-detection index: (type, location, associated_id) -> Memory object.
-        # _memory_index_snapshot caches (id(list), len) so we can detect external mutations
-        # (e.g. decay or checkpoint restore) and rebuild the index automatically.
         self._memory_index: dict = {}
-        self._memory_index_snapshot: tuple = (id(self.episodic_memory), 0)
         self.visited_chunks = set()   # set of (chunk_y, chunk_x) where chunk_size = 32
 
         # Cognitive Fields
@@ -504,18 +502,27 @@ class Agent:
         """Rebuild _memory_index from scratch. Called when external code mutates episodic_memory."""
         self._memory_index = {
             (m.type, m.location, m.associated_id): m
-            for m in self.episodic_memory
+            for m in self._episodic_memory
         }
-        self._memory_index_snapshot = (id(self.episodic_memory), len(self.episodic_memory))
+        self._memory_index_dirty = False
 
     def _ensure_memory_index(self):
-        """Ensure _memory_index is valid, rebuilding if external mutation is detected."""
-        snap = getattr(self, "_memory_index_snapshot", None)
-        if snap is None or snap != (id(self.episodic_memory), len(self.episodic_memory)):
+        """Ensure _memory_index is valid, rebuilding if dirty."""
+        if getattr(self, "_memory_index_dirty", True):
             self._rebuild_memory_index()
 
     def add_memory(self, mem_type: str, location: tuple, tick: int, importance: float, associated_id: int = -1, outcome: str = "neutral"):
         """Appends an episodic memory and upserts the generalised knowledge pools."""
+        # Ensure the index is consistent with the current list (handles decay / restore).
+        self._ensure_memory_index()
+
+        key = (mem_type, location, associated_id)
+        existing_mem = self._memory_index.get(key)
+
+        # 3A-3: Same-tick early exit
+        if existing_mem is not None and existing_mem.timestamp == tick:
+            return
+
         # Phase 8.15 Dynamic Memory Importance Scoring
         if getattr(self, "ablation", {}).get("memory_importance", True):
             try:
@@ -543,13 +550,6 @@ class Agent:
                 # Fallback to passed value if anything fails
                 pass
 
-        # --- O(1) duplicate detection via _memory_index ---
-        # Ensure the index is consistent with the current list (handles decay / restore).
-        self._ensure_memory_index()
-
-        key = (mem_type, location, associated_id)
-        existing_mem = self._memory_index.get(key)
-
         if existing_mem is not None:
             # Update in-place; keep Memory object at its current list position
             # (perception callers don't rely on chronological ordering for correctness).
@@ -564,21 +564,19 @@ class Agent:
                 timestamp=tick, importance=importance, confidence=1.0,
                 associated_id=associated_id, outcome=outcome,
             )
-            self.episodic_memory.append(mem)
+            self._episodic_memory.append(mem)
             self._memory_index[key] = mem
 
             # Cap episodic memory at 200 entries based primarily on importance (lowest evicted first).
             # We use (importance, timestamp) to sort: absolute lowest importance is evicted first,
             # and age (timestamp) breaks ties. This prevents absolute tick growth from overwhelming
             # importance in the prune score.
-            if len(self.episodic_memory) > 200:
-                self.episodic_memory.sort(key=lambda m: (m.importance, m.timestamp))
-                evicted = self.episodic_memory.pop(0)
+            if len(self._episodic_memory) > 200:
+                self._episodic_memory.sort(key=lambda m: (m.importance, m.timestamp))
+                evicted = self._episodic_memory.pop(0)
                 evicted_key = (evicted.type, evicted.location, evicted.associated_id)
                 self._memory_index.pop(evicted_key, None)
 
-        # Update snapshot length after any append/pop
-        self._memory_index_snapshot = (id(self.episodic_memory), len(self.episodic_memory))
 
         season_id = (tick % 360) // 90
 
@@ -807,3 +805,13 @@ class Agent:
         """Marks a coordinate's parent chunk as visited."""
         cy, cx = location[0] // chunk_size, location[1] // chunk_size
         self.visited_chunks.add((cy, cx))
+
+    @property
+    def episodic_memory(self):
+        return self._episodic_memory
+
+    @episodic_memory.setter
+    def episodic_memory(self, value):
+        self._episodic_memory = value
+        self._memory_index_dirty = True
+

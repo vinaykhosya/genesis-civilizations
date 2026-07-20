@@ -1,0 +1,135 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{top=1in, bottom=1in, left=1in, right=1in}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{longtable}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=purple,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle=Genesis Observatory Specification (GOS),
+    pdfpagemode=FullScreen,
+}
+
+\definecolor{codegray}{rgb}{0.96,0.96,0.96}
+\definecolor{codeborder}{rgb}{0.85,0.85,0.85}
+\definecolor{commentgreen}{rgb}{0.12,0.55,0.22}
+\definecolor{keywordblue}{rgb}{0.1,0.2,0.8}
+
+\lstset{
+    backgroundcolor=\color{codegray},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    commentstyle=\color{commentgreen},
+    frame=single,
+    rulecolor=\color{codeborder},
+    keepspaces=true,
+    keywordstyle=\color{keywordblue},
+    language=Python,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\small Genesis Observatory Specification (GOS)}
+\lhead{\small Project Genesis}
+\cfoot{\thepage}
+
+\title{\textbf{Genesis Observatory Specification (GOS)}}
+\author{Project Genesis Research Repository}
+\date{\small Generated: July 2026}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+\newpage
+\section*{Genesis Observatory Specification (GOS)}
+\subsection*{Version 1.0  July 2026}
+
+The Observatory (Evidence Explorer) is the scientific instrument deck of the Genesis Portal. Its role is to explain the narrative: if the Civilization Record answers \textbackslash{}textit{what} happened, the Observatory answers \textbackslash{}textit{why} it happened using quantitative evidence.
+
+\noindent\rule{\textwidth}{0.4pt}
+
+\subsection*{1. Core Philosophy}
+
+In accordance with \textbackslash{}href{file:///c:/Users/vinay/Desktop/project\%20genesis/docs/architecture/ADR/ADR-006-narrative-first.md}{ADR-006} and \textbackslash{}href{file:///c:/Users/vinay/Desktop/project\%20genesis/docs/architecture/ADR/ADR-007-goal-oriented-visualizations.md}{ADR-007}, the Observatory operates under two absolute constraints:
+\begin{enumerate}
+  \item \textbackslash{}textbf{Evidence supports narrative}: The Observatory is entered \textbackslash{}textit{from} the Civilization Record. It is a secondary explorer, not a standalone home page.
+  \item \textbackslash{}textbf{Visualizations are Laboratory Instruments}: Every chart must answer a specific research question. Generic data plots without intent are prohibited.
+\end{enumerate}
+
+\noindent\rule{\textwidth}{0.4pt}
+
+\subsection*{2. Instrument Catalog \& Registry}
+
+We document and register all approved scientific instruments. Every instrument must map to a research question, inputs, and limitations.
+
+\subsubsection*{OBS-001: Population Dynamics (Oscilloscope)}
+\begin{itemize}
+  \item \textbackslash{}textbf{Research Question}: \textbackslash{}textit{Did resource scarcity reduce survival and growth rates?}
+  \item \textbackslash{}textbf{Inputs}: \textbackslash{}texttt{population.csv} (ticks, total count, and colony breakdowns).
+  \item \textbackslash{}textbf{Outputs}: Line graph mapping total population and individual colony lineages over time.
+  \item \textbackslash{}textbf{Limitations}: Does not show spatial distribution or local water pressures.
+\end{itemize}
+
+\subsubsection*{OBS-002: Resource Consumption Explorer (Flow Meter)}
+\begin{itemize}
+  \item \textbackslash{}textbf{Research Question}: \textbackslash{}textit{Where were critical resource shortages created?}
+  \item \textbackslash{}textbf{Inputs}: \textbackslash{}texttt{summary.json} (derived metrics for food and water efficiency).
+  \item \textbackslash{}textbf{Outputs}: Stacked area chart showing resource supply vs. total agent consumption.
+  \item \textbackslash{}textbf{Limitations}: Aggregated globally; does not show individual agent hunger levels.
+\end{itemize}
+
+\subsubsection*{OBS-003: Territorial Friction Map (Microscope)}
+\begin{itemize}
+  \item \textbackslash{}textbf{Research Question}: \textbackslash{}textit{Did territorial pressure lead to clustered disputes?}
+  \item \textbackslash{}textbf{Inputs}: \textbackslash{}texttt{events.json} (Dispute events metadata mapping coordinates).
+  \item \textbackslash{}textbf{Outputs}: Static 2D spatial heatmap overlay showing conflict coordinates on the map.
+  \item \textbackslash{}textbf{Limitations}: Ticks are collapsed; does not show the sequence of dispute progression.
+\end{itemize}
+
+\subsubsection*{OBS-004: Social Kinship Grid (Oscilloscope)}
+\begin{itemize}
+  \item \textbackslash{}textbf{Research Question}: \textbackslash{}textit{Did stable cooperative attachment bonds emerge?}
+  \item \textbackslash{}textbf{Inputs}: \textbackslash{}texttt{agent\textbackslash{}\_census.csv} (parents, colonies, and children lineages).
+  \item \textbackslash{}textbf{Outputs}: Dynamic directed network graph showing colony splits and child-parent attachments.
+  \item \textbackslash{}textbf{Limitations}: Becomes visually complex when agent count exceeds 500.
+\end{itemize}
+
+\subsubsection*{OBS-005: Genetic Entropy Browser (Sequencer)}
+\begin{itemize}
+  \item \textbackslash{}textbf{Research Question}: \textbackslash{}textit{Did genetic traits stabilize or drift over generations?}
+  \item \textbackslash{}textbf{Inputs}: \textbackslash{}texttt{agent\textbackslash{}\_census.csv} (chromosome strings and generation indices).
+  \item \textbackslash{}textbf{Outputs}: Histogram showing distribution of mutation deviations from the founder seed.
+  \item \textbackslash{}textbf{Limitations}: Captures survivors only; deceased lineages are excluded.
+\end{itemize}
+
+\noindent\rule{\textwidth}{0.4pt}
+
+\subsection*{3. Interaction \& Linking Rules}
+
+\begin{itemize}
+  \item \textbackslash{}textbf{Tick Linking (Phase 3.5 Bridge)}: Clicking on any event in the Chronicle seeks all active instruments to that specific tick (e.g. updating the pointer on the Population Dynamics graph).
+  \item \textbackslash{}textbf{Decoupled Tabs}: The Observatory loads in a split-screen or separate tab context, keeping the narrative chronicle layout readable.
+\end{itemize}
+
+\end{document}

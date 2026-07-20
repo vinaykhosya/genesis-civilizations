@@ -1,0 +1,79 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{top=1in, bottom=1in, left=1in, right=1in}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{longtable}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=purple,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle=ADR-002: Require world.png in Experiment Exports,
+    pdfpagemode=FullScreen,
+}
+
+\definecolor{codegray}{rgb}{0.96,0.96,0.96}
+\definecolor{codeborder}{rgb}{0.85,0.85,0.85}
+\definecolor{commentgreen}{rgb}{0.12,0.55,0.22}
+\definecolor{keywordblue}{rgb}{0.1,0.2,0.8}
+
+\lstset{
+    backgroundcolor=\color{codegray},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    commentstyle=\color{commentgreen},
+    frame=single,
+    rulecolor=\color{codeborder},
+    keepspaces=true,
+    keywordstyle=\color{keywordblue},
+    language=Python,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\small ADR-002: Require world.png in Experiment Exports}
+\lhead{\small Project Genesis}
+\cfoot{\thepage}
+
+\title{\textbf{ADR-002: Require world.png in Experiment Exports}}
+\author{Project Genesis Research Repository}
+\date{\small Generated: July 2026}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+\newpage
+\section*{ADR-002: Require \textbackslash{}texttt{world.png} in Experiment Exports}
+
+\subsection*{Status}
+Approved
+
+\subsection*{Context}
+Visualizing world maps requires rendering 2D elevation, biome, and river layers.
+
+\subsection*{Decision}
+Require the simulation to save and export \textbackslash{}texttt{world.png} directly into the ZIP archive. We will not run serverless Python instances to re-render the world on the fly.
+
+\subsection*{Consequences}
+Minimizes backend cold starts, simplifies upload validation, and guarantees instant image load times on client devices.
+
+\end{document}

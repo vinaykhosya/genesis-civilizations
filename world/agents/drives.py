@@ -196,17 +196,16 @@ class DriveState:
         High when any drive is strongly elevated.
         Range [0.0, 1.0].
         """
-        return float(np.clip(
-            max(
-                self.fear,
-                self.frustration * 0.8,
-                self.hunger_tension * 0.9,
-                self.thirst_tension * 0.9,
-                self.boredom * 0.5,
-                self.longing * 0.4,
-            ),
-            0.0, 1.0
-        ))
+        raw = max(
+            self.fear,
+            self.frustration * 0.8,
+            self.hunger_tension * 0.9,
+            self.thirst_tension * 0.9,
+            self.boredom * 0.5,
+            self.longing * 0.4,
+        )
+        return 1.0 if raw > 1.0 else (0.0 if raw < 0.0 else float(raw))
+
 
     # ------------------------------------------------------------------ #
     # Rolling stats (properties — read from histories)                    #

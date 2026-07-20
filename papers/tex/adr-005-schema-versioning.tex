@@ -1,0 +1,79 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{top=1in, bottom=1in, left=1in, right=1in}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{longtable}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=purple,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle=ADR-005: Version-Controlled Experiment Schema,
+    pdfpagemode=FullScreen,
+}
+
+\definecolor{codegray}{rgb}{0.96,0.96,0.96}
+\definecolor{codeborder}{rgb}{0.85,0.85,0.85}
+\definecolor{commentgreen}{rgb}{0.12,0.55,0.22}
+\definecolor{keywordblue}{rgb}{0.1,0.2,0.8}
+
+\lstset{
+    backgroundcolor=\color{codegray},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    commentstyle=\color{commentgreen},
+    frame=single,
+    rulecolor=\color{codeborder},
+    keepspaces=true,
+    keywordstyle=\color{keywordblue},
+    language=Python,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\small ADR-005: Version-Controlled Experiment Schema}
+\lhead{\small Project Genesis}
+\cfoot{\thepage}
+
+\title{\textbf{ADR-005: Version-Controlled Experiment Schema}}
+\author{Project Genesis Research Repository}
+\date{\small Generated: July 2026}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+\newpage
+\section*{ADR-005: Version-Controlled Experiment Schema}
+
+\subsection*{Status}
+Approved
+
+\subsection*{Context}
+The simulator schema will evolve as new genes, drives, or environmental layers are introduced.
+
+\subsection*{Decision}
+Enforce schema version metadata fields (\textbackslash{}texttt{schema\textbackslash{}\_version}, \textbackslash{}texttt{engine\textbackslash{}\_version}, \textbackslash{}texttt{export\textbackslash{}\_version}) in the root of \textbackslash{}texttt{config.json} and \textbackslash{}texttt{summary.json}.
+
+\subsection*{Consequences}
+The portal can dynamically inspect the \textbackslash{}texttt{schema\textbackslash{}\_version} of uploaded ZIPs and render legacy runs correctly using conditional data parsers.
+
+\end{document}

@@ -355,6 +355,7 @@ def save_full_checkpoint(world, config: dict, path: str) -> None:
     checkpoint = {
         "checkpoint_version": CHECKPOINT_VERSION,
         "genesis_phase":      GENESIS_PHASE,
+        "folder_name":        os.path.basename(world.exp_folder) if hasattr(world, "exp_folder") and world.exp_folder else None,
         # world identity
         "seed":   int(world.seed),
         "width":  int(world.width),

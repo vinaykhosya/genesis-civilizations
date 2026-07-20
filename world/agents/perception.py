@@ -85,18 +85,25 @@ def perceive(agent: Agent, world: WorldState, vision_radius: int = 20, chunk_siz
         agent.add_memory(FOOD, closest_food_coord, world.tick, importance=0.7)
         
     # 5. Detect Other Agents & Skeletons/Corpses
-    # 5. Detect Other Agents & Skeletons/Corpses
     candidates = world.query_agents((cy, cx), vision_radius, alive_only=False)
+    candidates = [other for other in candidates if other.id != agent.id]
+    limit = getattr(world, "perception_agent_limit", None)
+    if limit is not None and len(candidates) > limit:
+        candidates = sorted(
+            candidates,
+            key=lambda other: (other.location[0] - cy)**2 + (other.location[1] - cx)**2
+        )[:limit]
+
     for other in candidates:
-        if other.id != agent.id:
-            oy, ox = other.location
-            if not other.dead:
-                if other.id not in agent.known_agents:
-                    agent.known_agents.add(other.id)
-                    agent.discoveries_count += 1
-                agent.add_memory(PERSON, (int(oy), int(ox)), world.tick, importance=0.5)
-            else:
-                agent.add_memory(DANGER, (int(oy), int(ox)), world.tick, importance=0.90)
+        oy, ox = other.location
+        if not other.dead:
+            if other.id not in agent.known_agents:
+                agent.known_agents.add(other.id)
+                agent.discoveries_count += 1
+            agent.add_memory(PERSON, (int(oy), int(ox)), world.tick, importance=0.5)
+        else:
+            agent.add_memory(DANGER, (int(oy), int(ox)), world.tick, importance=0.90)
+
 
                 
     # 6. Detect Landmarks (High elevation peak peaks > 0.8)

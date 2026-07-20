@@ -385,8 +385,14 @@ dec_mod.compute_drive_modulation = profiled_compute_drive_modulation
 def profiled_add_memory(self, mem_type: str, location: tuple, tick: int, importance: float, associated_id: int = -1, outcome: str = "neutral"):
     # Sub-timer 1: Dynamic importance computation
     t0 = time.perf_counter()
-    if getattr(self, "ablation", {}).get("memory_importance", True):
+    
+    t_abl_start = time.perf_counter()
+    abl_enabled = getattr(self, "ablation", {}).get("memory_importance", True)
+    record_sub("imp_sub_ablation_lookup", (time.perf_counter() - t_abl_start) * 1000.0)
+    
+    if abl_enabled:
         try:
+            t_kl_start = time.perf_counter()
             from world.agents.drives import compute_memory_importance
             is_first = True
             if mem_type == WATER:
@@ -395,10 +401,14 @@ def profiled_add_memory(self, mem_type: str, location: tuple, tick: int, importa
                 is_first = (location not in self.knowledge.food_sources)
             elif mem_type == PERSON:
                 is_first = (associated_id >= 0 and associated_id not in self.known_agents)
+            record_sub("imp_sub_knowledge_lookup", (time.perf_counter() - t_kl_start) * 1000.0)
             
+            t_attr_start = time.perf_counter()
             near_death = (self.health < 30.0)
             arousal = self.drives.arousal if hasattr(self, "drives") else 0.0
+            record_sub("imp_sub_attr_lookup", (time.perf_counter() - t_attr_start) * 1000.0)
             
+            t_math_start = time.perf_counter()
             dynamic_importance = compute_memory_importance(
                 agent=self,
                 mem_type=mem_type,
@@ -408,20 +418,18 @@ def profiled_add_memory(self, mem_type: str, location: tuple, tick: int, importa
                 emotional_intensity=arousal
             )
             importance = dynamic_importance
+            record_sub("imp_sub_math_and_call", (time.perf_counter() - t_math_start) * 1000.0)
         except Exception:
             pass
     t_importance = time.perf_counter() - t0
     if in_perceive_flag:
         record_sub("add_mem_dynamic_importance", t_importance * 1000.0)
 
-    # Sub-timer 2: Duplicate linear scan loop
+    # Sub-timer 2: Duplicate scan via _memory_index
     t0 = time.perf_counter()
-    existing_mem = None
-    for idx_m, m in enumerate(self.episodic_memory):
-        if m.type == mem_type and m.location == location and m.associated_id == associated_id:
-            existing_mem = m
-            self.episodic_memory.pop(idx_m)
-            break
+    self._ensure_memory_index()
+    key = (mem_type, location, associated_id)
+    existing_mem = self._memory_index.get(key)
     t_dup_scan = time.perf_counter() - t0
     if in_perceive_flag:
         record_sub("add_mem_duplicate_scan", t_dup_scan * 1000.0)
@@ -434,7 +442,6 @@ def profiled_add_memory(self, mem_type: str, location: tuple, tick: int, importa
         existing_mem.importance = max(existing_mem.importance, importance)
         existing_mem.confidence = 1.0
         existing_mem.outcome = outcome
-        self.episodic_memory.append(existing_mem)
     else:
         mem = Memory(
             type=mem_type, location=location,
@@ -442,13 +449,19 @@ def profiled_add_memory(self, mem_type: str, location: tuple, tick: int, importa
             associated_id=associated_id, outcome=outcome,
         )
         self.episodic_memory.append(mem)
+        self._memory_index[key] = mem
 
         if len(self.episodic_memory) > 200:
             self.episodic_memory.sort(key=lambda m: (m.importance, m.timestamp))
-            self.episodic_memory.pop(0)
+            evicted = self.episodic_memory.pop(0)
+            evicted_key = (evicted.type, evicted.location, evicted.associated_id)
+            self._memory_index.pop(evicted_key, None)
+
+    self._memory_index_snapshot = (id(self.episodic_memory), len(self.episodic_memory))
     t_insert_prune = time.perf_counter() - t0
     if in_perceive_flag:
         record_sub("add_mem_insert_prune", t_insert_prune * 1000.0)
+
 
     # Sub-timer 4: Generalized knowledge upserts
     t0 = time.perf_counter()
@@ -1047,6 +1060,16 @@ for k in sub_perc_keys:
             sub_pct = (sub_v["total_ms"] / max(v["total_ms"], 1.0) * 100)
             print(f"    ├─ {sub_k:<26}  {sub_calls:>8}  {sub_avg:>13.4f}  "
                   f"{sub_v['max_ms']:>9.4f}  {sub_pct:>13.1f}% (of add_mem)")
+            
+            if sub_k == "add_mem_dynamic_importance":
+                for imp_sub_k in ["imp_sub_ablation_lookup", "imp_sub_knowledge_lookup", "imp_sub_attr_lookup", "imp_sub_math_and_call"]:
+                    imp_v = sub_prof[imp_sub_k]
+                    imp_calls = imp_v["calls"]
+                    imp_avg = imp_v["total_ms"] / max(imp_calls, 1)
+                    imp_pct = (imp_v["total_ms"] / max(sub_v["total_ms"], 1.0) * 100)
+                    print(f"    │  ├─ {imp_sub_k:<24}  {imp_calls:>8}  {imp_avg:>13.4f}  "
+                          f"{imp_v['max_ms']:>9.4f}  {imp_pct:>13.1f}% (of dynamic_importance)")
+
     else:
         calls = v["calls"]
         avg = v["total_ms"] / max(calls, 1)
@@ -1099,6 +1122,26 @@ print(f"  {'eval_deliberation_other (residual)':<34}  {'':>8}  {eval_unaccounted
 print(f"  {'TOTAL evaluate_utility()':<34}  {'':>8}  {eval_total_ms/max(eval_calls, 1):>13.4f}  "
       f"{'':>9}  {'100.0':>13}%")
 print()
+
+# ── Part 2cc: Real evaluate_utility() Internal Block Timers (Step 1) ──
+print("  ── Part 2cc: evaluate_utility() — Real Internal Block Timers (Step 1) ──")
+print(f"  {'Internal Block':<34}  {'Calls':>8}  {'Avg/call (ms)':>13}  {'% of eval_util':>14}")
+print("  " + "-" * 85)
+real_probes = dec_mod.EVAL_PROBES
+for block_name, v in real_probes.items():
+    calls = v["calls"]
+    avg = v["total_ms"] / max(calls, 1)
+    pct = (v["total_ms"] / max(eval_total_ms, 1.0) * 100)
+    print(f"  {block_name:<34}  {calls:>8}  {avg:>13.4f}  {pct:>13.1f}%")
+print("  " + "-" * 85)
+real_sum_ms = sum(real_probes[b]["total_ms"] for b in [
+    "scarcity_prediction", "decision_context", "drink_utility", "eat_utility",
+    "explore_utility", "build_utility", "shelter_utility", "reproduce_utility",
+    "store_utility", "share_utility", "chest_pouch_utility", "action_scoring_loop"
+])
+print(f"  {'SUM OF BLOCKS':<34}  {'':>8}  {real_sum_ms/max(eval_calls, 1):>13.4f}  {(real_sum_ms/max(eval_total_ms, 1.0)*100):>13.1f}%")
+print()
+
 
 print("  ── Part 2d: evaluate_utility() — Shadow Block Timers (Batch 2) ──")
 print(f"  {'Block':<34}  {'Calls':>8}  {'Avg/call (ms)':>13}  "

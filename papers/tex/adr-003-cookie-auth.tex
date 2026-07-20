@@ -1,0 +1,79 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{top=1in, bottom=1in, left=1in, right=1in}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{longtable}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=purple,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle=ADR-003: Simple JWT-Cookie Command Authentication,
+    pdfpagemode=FullScreen,
+}
+
+\definecolor{codegray}{rgb}{0.96,0.96,0.96}
+\definecolor{codeborder}{rgb}{0.85,0.85,0.85}
+\definecolor{commentgreen}{rgb}{0.12,0.55,0.22}
+\definecolor{keywordblue}{rgb}{0.1,0.2,0.8}
+
+\lstset{
+    backgroundcolor=\color{codegray},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    commentstyle=\color{commentgreen},
+    frame=single,
+    rulecolor=\color{codeborder},
+    keepspaces=true,
+    keywordstyle=\color{keywordblue},
+    language=Python,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\small ADR-003: Simple JWT-Cookie Command Authentication}
+\lhead{\small Project Genesis}
+\cfoot{\thepage}
+
+\title{\textbf{ADR-003: Simple JWT-Cookie Command Authentication}}
+\author{Project Genesis Research Repository}
+\date{\small Generated: July 2026}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+\newpage
+\section*{ADR-003: Simple JWT-Cookie Command Authentication}
+
+\subsection*{Status}
+Approved
+
+\subsection*{Context}
+The admin dashboard \textbackslash{}texttt{/command} requires authorization for Vinay Khosya.
+
+\subsection*{Decision}
+Implement a custom JWT cookie login system using an environment-configured username and password. We will defer Supabase Auth integration.
+
+\subsection*{Consequences}
+Zero third-party identity provider dependency, instant setup, and zero local DB overhead.
+
+\end{document}

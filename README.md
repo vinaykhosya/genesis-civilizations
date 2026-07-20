@@ -1,161 +1,128 @@
-# Project Genesis
+# Project Genesis: Agentic Artificial Life & Evolutionary Biology Simulator
 
-## 1. What is Project Genesis?
-Project Genesis is a high-resolution agent-based simulator designed to model the emergence of complex adaptive behaviors, ecology, natural selection, and artificial life. By simulating populations of autonomous agents with individual genomes, physiological models, and cognitive architectures in a dynamic, space-constrained environment, the project enables researchers to observe how local genetic mutations scale up to influence macro-level evolutionary trajectories and social dynamics over thousands of generations.
-
----
-
-## 2. Research Questions
-Project Genesis is designed to explore the following scientific and computational questions:
-* **Evolution of Sociality & Altruism**: Under what resource constraints and genetic configurations does cooperative resource-sharing behavior emerge versus territorial aggression?
-* **Cognitive Mastery & Adaptation**: How do prediction networks within agents help optimize spatial navigation, resource harvesting, and survival during environmental disasters or seasonal cycles?
-* **Genomic Trait Propagation**: What selection pressures steer the evolution of the 14-gene genotype over long epochs, and how do physical adaptations (e.g., speed, home range size) correlate with cognitive survival?
-* **Ecological Resiliency**: How do feedback loops between agent consumption and natural resource regeneration influence environmental stability and population caps?
+Project Genesis is a high-resolution simulation of artificial life, ecology, natural selection, and cognitive emergence. It is designed to model the survival, decision-making, genetic trait expression, resource competition, and social dynamics of autonomous agents in a dynamically evolving world.
 
 ---
 
-## 3. Architecture
-The simulation architecture models agents through layered biological, cognitive, and social systems:
+## 🔬 Core System Architecture & Research Goals
 
-* **Genetics**: A 14-gene genotype determines core physical traits and behavioral biases. It expresses active traits at birth, defining attributes like aggression, speed, metabolic rates, and baseline motivational drives.
-* **Drives**: Biological needs (hunger, thirst, energy, injury) dynamically produce motivational drives. Emotional drives (fear, comfort, dominance) integrate slower-moving states to scale utility values.
-* **Perception**: Agents scan their environment within a defined vision radius, mapping locations of food, water, landmarks, danger zones, and other agents.
-* **Memory**: An episodic memory database records spatial resources, territory nests, and social relationship indexes (trust levels and dispute outcomes).
-* **Planning**: A cognitive neural predictor predicts future resource scarcity and utility outcomes based on historical environmental inputs and target options.
-* **Decision Making**: A soft-threshold sigmoid utility selector evaluates 17 candidate actions (e.g., eating, drinking, exploring, reproducing, storing food) to build a priority queue.
-* **Social Behaviour**: Attachment rates, mate selection, and territorial warning displays form the basis of cooperative and competitive interactions.
-
----
-
-## 4. Simulation Pipeline
-Every simulation tick updates the world and processes each agent through the following sequential loop:
+The primary goal of Project Genesis is to observe and study **evolutionary adaptations and emergent cooperative/competitive behaviors** in agent populations. The simulation architecture maps a 14-gene genotype to complex motor actions and episodic memories through a layered biological pipeline:
 
 ```
-                  ┌───────────────────────────────┐
-                  │      Environmental Tick       │
-                  │   (Climate, resource growth)  │
-                  └───────────────┬───────────────┘
-                                  │
-                                  ▼
-                  ┌───────────────────────────────┐
-                  │         Perception            │
-                  │ (Spatial scan & memory update)│
-                  └───────────────┬───────────────┘
-                                  │
-                                  ▼
-                  ┌───────────────────────────────┐
-                  │      Drives & Motivations     │
-                  │(Biological & emotional update)│
-                  └───────────────┬───────────────┘
-                                  │
-                                  ▼
-                  ┌───────────────────────────────┐
-                  │       Decision Making         │
-                  │(Sigmoid utility selector &    │
-                  │ neural predictor context)     │
-                  └───────────────┬───────────────┘
-                                  │
-                                  ▼
-                  ┌───────────────────────────────┐
-                  │            Action             │
-                  │(Pathfinding, resource harvest,│
-                  │     or colony sharing)        │
-                  └───────────────────────────────┘
+Genetics (14-gene genotype to brain parameters)
+   ↓
+Physiology (Fat reserves, muscle mass, health)
+   ↓
+Innate Reflexes (Combat safe-zones, threat display, pain responses)
+   ↓
+Emotion & Hormones (Fear levels, stress cooldowns)
+   ↓
+Motivational Drives (Hunger, thirst, comfort, safety)
+   ↓
+Cognitive Planner (Sigmoid utility selector & neural prediction)
+   ↓
+Motor Actions (Pathfinding, resource extraction, sheltering)
+   ↓
+Episodic Memory (Spatial mapping, relationship trust, win/loss history)
 ```
+
+By leveraging this multi-layered framework, research tasks focus on:
+* **Territoriality & Colony Boundaries**: How home nesting coordinates and genetic aggression parameters affect territorial friction.
+* **Cooperation & Resource Sharing**: Under what food/water scarcity conditions sharing behavior emerges among colony members.
+* **Cognitive Decision Modeling**: How prediction models improve food/water collection and settlement planning over thousands of generations.
+* **Evolutionary Resiliency**: How populations adapt to environmental disasters, seasonal shifts, and resource depletion.
 
 ---
 
-## 5. Repository Structure
-* `world/` — Core simulation physics and mechanics.
-  * `state.py` — Centralized state container holding spatial grids as 2D NumPy arrays.
-  * `generator.py` — Noise-based world generator.
-  * `biomes.py` — Whittaker biome mapper.
-  * `agents/` — Agent behavioral engines.
-    * `agent.py` — Agent attributes, property definitions, and memory indices.
-    * `decision.py` — Action selections, contexts, and danger functions.
-    * `drives.py` — Metabolic calculations and drive updates.
-    * `simulation.py` — Main agent loop orchestration.
+## 🌍 Directory Structure
+
+* `world/` — Core simulation engine.
+  * `state.py` — Centralized `WorldState` container holding spatial grids as 2D NumPy arrays.
+  * `generator.py` — World map generation pipeline using FBM noise.
+  * `biomes.py` — Whittaker biome matrix mapper (9 distinct biomes).
+  * `agents/` — Agent logic modules.
+    * `agent.py` — Agent class, memory caches, and physiological properties.
+    * `decision.py` — Utility functions, context vector generation, and motor actions.
+    * `drives.py` — Biological and emotional drive regulators.
+    * `genetics.py` — Genome definitions and neural expressions.
+    * `reproduction.py` — Mate-finding and breeding gates.
+    * `simulation.py` — Main agent loop processor.
 * `portal/` — Supabase-backed React ingestion dashboard for running large-scale experiment telemetry.
-* `tests/` — Automated test suite verifying physical and biological invariants.
-* `run_test.py` — Local validation script.
-* `run_resume.py` — Checkpoint restoration utility.
-* `run_profiler_benchmark.py` — Deep performance profiling harness.
+* `tests/` — Automated Pytest suite.
+* `run_test.py` — Local validation run script.
+* `run_resume.py` — Tool to resume experiments from saved JSON checkpoints.
+* `run_profiler_benchmark.py` — Deep performance observatory profiling script.
 * `batch3a_micro_profile.py` — Focused micro-profiler for mathematical sub-systems.
-* `visualizer.html` — Browser visualizer.
+* `visualizer.html` — Interactive client-side real-time rendering frontend.
 
 ---
 
-## 6. Installation
-The core simulation requires **Python 3.10 or 3.11** and standard scientific libraries.
+## ⚙️ Installation & Setup
 
-Install the Python dependencies:
+### 1. Python Simulation Engine
+The simulation runs on **Python 3.10 or 3.11**. 
+
+Install the required Python packages:
 ```bash
 pip install numpy pytest
 ```
 
-The web dashboard is built on Node.js. Navigate to the `portal/` directory to set up dependencies:
+### 2. Dashboard Portal (Optional)
+The optional web ingestion dashboard runs on Node.js.
+Navigate to the `portal/` directory and install dependencies:
 ```bash
 cd portal
 pnpm install
 # or npm install / bun install
 ```
 
+Configure local environment variables by copying `portal/.env.local` and entering your Supabase URL and credentials if connecting to an online database.
+
 ---
 
-## 7. Running Experiments
+## 🚀 Running the Simulator
 
-### Local Validation Runs
-Launch a control run of the simulation (2,000 ticks, 200-agent cap) with real-time logging:
+### 1. Local Validation Suite
+Run the control test script to verify that the local physics engines are initialized correctly:
 ```bash
 python run_test.py
 ```
-To visualize the run, open `visualizer.html` in your web browser. It reads the local file `live_state.js` generated during execution.
+This runs a 2,000-tick run with a 200-agent cap and outputs status updates to the console. You can tweak parameters such as seed, scarcity, and climate epoch modes at the top configuration panel inside `run_test.py`.
 
-### Resuming Checkpoints
-Resume from a previously saved JSON state:
+### 2. Real-Time Visualization
+To view the agent population heatmaps, lineage trees, and genetic distributions in real time:
+1. Start the simulation via `run_test.py` or `run_resume.py`.
+2. Open `visualizer.html` directly in your browser. The visualizer will dynamically read `live_state.js` as it is generated by the simulation.
+
+### 3. Resuming From Checkpoints
+To resume a previous experiment from a saved checkpoint JSON file:
 ```bash
 python run_resume.py
 ```
+By default, this will scan for checkpoints in `experiments/` and load the specified state.
 
----
-
-## 8. Profiling
-The project includes a deep profiling harness to measure engine performance:
+### 4. Running Web Ingestion Portal Dashboard
+To run the developer visualization portal:
 ```bash
-python run_profiler_benchmark.py
+cd portal
+pnpm dev
 ```
-This script runs a standardized 2,000-tick benchmark and outputs:
-* **Part 1 (Subsystems)**: Timing breakdown of grid rebuilds, climate processes, and agent loops.
-* **Part 2 (Agent Loop)**: Granular analysis of the `simulate_agent_tick` internals.
-* **Part 2b & 2c (Perception & Utility)**: Detailed sub-operation timings showing where computations are spent.
-* **Part 3 (Scaling Curve)**: Wall-clock scaling in relation to active population size.
+Open `http://localhost:5173` to explore telemetry dashboards, lineage tracking, and live statistics.
 
 ---
 
-## 9. Testing
-Automated regression tests verify the physics and biology models:
-```bash
-python -m pytest tests/test_world.py
-```
-All tests must pass to verify physical invariants (e.g., conservation of mass, genetic expression properties).
+## 📊 Performance Profiling & Benchmarking
 
----
+Genesis features granular profiling infrastructure to avoid optimization blind spots:
 
-## 10. Performance Engineering
+* **Subsystem Benchmarking**: Run the 2,000-tick deep benchmark to profile execution hotspots:
+  ```bash
+  python run_profiler_benchmark.py
+  ```
+  This outputs a detailed subsystem breakdown (Perception, Evaluate Utility, Drives, etc.) and exports metrics to `experiments/_profiler_benchmark/summary.json`.
 
-The primary measured bottlenecks identified during this optimization cycle have been addressed. Remaining performance work will continue using profiler-guided analysis.
-
-### End-to-End Benchmark Gains
-* **Average Tick Speed**: Decreased from 270.21 ms/tick to 230.71 ms/tick (**15.0% faster overall**).
-* **2,000-Tick Execution Time**: Saved 79.0 seconds over a standardized run.
-* **Evaluate Utility Subsystem**: Reduced execution latency by **11.1%** average per call.
-* **Environmental Modulation**: Achieved a **35.2% latency reduction** inside tile modulation scoring.
-
-### Preservation of Simulation Semantics
-The optimizations in this repository intentionally preserve simulation semantics. Changes focus purely on:
-* **Data Structures**: Replaced linear duplicate memory scans with $O(1)$ dictionary index lookups.
-* **Caching**: Cached derived properties (`life_stage` and `senescence_factor`) on the agent instance to avoid redundant property evaluations within a single tick.
-* **Scalar Math**: Replaced slow NumPy array-oriented methods (`np.clip`/`np.exp`) on scalar data with pure-Python alternatives.
-* **Algorithmic Complexity**: Replaced linear list indexing inside the main action selection loop with constant-time lookup maps.
-
-Simulation rules, evolutionary dynamics, and behavioral models remain completely unchanged.
+* **Micro-Profiling**: To isolate mathematical bottlenecks, run the micro-profiler:
+  ```bash
+  python batch3a_micro_profile.py
+  ```
+  This profiles individual function internals (array conversions, list indexes, properties, coordinate index operations) to identify microsecond-level overhead.

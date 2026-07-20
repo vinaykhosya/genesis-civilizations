@@ -20,13 +20,13 @@ SCARCITY = 3.0           # Scarcity of resources:
                            #   1.0 = Normal (Default)
                            #   0.2 = Harsh Desert (Very difficult to survive!)
                            #   2.0 = Rich (Abundant food & water)
-EXPERIMENT_NAME = "emergence_social_bonds_accelerated" # Name of this run (shown in history table and experiment folder)
+EXPERIMENT_NAME = "emergence_social_bonds_accelerated with very slow healing " # Name of this run (shown in history table and experiment folder)
 
 # 📈 LONG-RUN TREND DATA SETTINGS
 # Adjust these for long experiments (e.g. 20,000+ ticks):
-LONG_RUN = False            # Enable long-run mode (optimized memory and epoch snapshot tracking)
+LONG_RUN = True            # Enable long-run mode (optimized memory and epoch snapshot tracking)
 SAMPLE_INTERVAL = 50000     # Ticks per epoch snapshot
-SAVE_PATHS = True        # Set to False to stop saving full path coordinates (prevents memory crash for long runs)
+SAVE_PATHS = False        # Set to False to stop saving full path coordinates (prevents memory crash for long runs)
 SAVE_EPOCHS = True         # Set to True to save epoch trends stats for visualizer charts
 
 
@@ -74,10 +74,12 @@ MAX_POPULATION =200        # Carrying capacity limit of the world (soft pressure
 REPRODUCTION_ENABLED = True      # Enable sexual reproduction and agent birth (True/False)
 DISPUTES_ENABLED = False        # Enable territorial disputes / friction when agents meet on same tile (True/False)
 DISASTERS_ENABLED = True         # Enable global weather/famine events (Drought, Cold Wave, Famine, Heatwave) (True/False)
-HEALING_SPEED_MULT = 2000000.0  # Multiplier for rest-based healing and health restoration rate (float)
+HEALING_SPEED_MULT = 200.0  # Multiplier for rest-based healing and health restoration rate (float)
                                   # NOTE: Set to 1.0 for realistic survival pressure. Values >> 1 suppress injury mortality.
 SHELTER_BUILD_SPEED_MULT = 1.0   # Multiplier for shelter construction/durability repair speed (float)
 SHELTER_SEARCH_DIST = 100.0      # Maximum grid distance to scan and claim an abandoned shelter (float)
+PERCEPTION_AGENT_LIMIT = None    # Attentional bandwidth limit: None (unlimited), 8, 16, 32 (Phase 3B-2)
+
 
 # 💧 ECOLOGY ABLATION STUDY CONTROLS (Water Bottleneck Isolation)
 # Set these independently to study which intervention has the highest evolutionary impact.
@@ -353,6 +355,9 @@ def archive_experiment(world, summary_record, exp_folder, epoch_stats=None):
             include_traces=True
         )
         print("  Successfully generated and archived all 8 maps and manifest.json.")
+        # Copy the current biomes map to the project root so the visualizer loads it by default
+        shutil.copy(os.path.join(exp_folder, "biomes.png"), os.path.join(PROJECT_ROOT, "biomes.png"))
+        print("  Copied current biomes map to project root (biomes.png) for visualizer loading.")
     except Exception as e:
         print(f"  Warning: Failed to generate experiment maps/assets: {e}")
 
@@ -595,11 +600,12 @@ def main():
     # Change CWD to project root to resolve relative paths in unit tests & visualizer
     os.chdir(PROJECT_ROOT)
     
-    # Set up experiment folder
+    # Set up experiment folder (sanitize to strip trailing spaces/replace spaces with underscores for Windows compatibility)
+    sanitized_exp_name = EXPERIMENT_NAME.strip().replace(" ", "_")
     exp_dir = os.path.join(PROJECT_ROOT, "experiments")
     os.makedirs(exp_dir, exist_ok=True)
     timestamp_str = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    exp_folder = os.path.join(exp_dir, f"{timestamp_str}_{EXPERIMENT_NAME}")
+    exp_folder = os.path.join(exp_dir, f"{timestamp_str}_{sanitized_exp_name}")
     os.makedirs(exp_folder, exist_ok=True)
     
     log_file = open(os.path.join(exp_folder, "simulation.log"), "w", encoding="utf-8")
@@ -637,6 +643,22 @@ def main():
     world = generate_world(width=1024, height=1024, seed=SEED, world_preset=WORLD_PRESET)
     world.exp_folder = exp_folder
     
+    # Generate and archive all 8 startup map PNGs and manifest.json inside the experiment folder immediately
+    try:
+        from main import export_experiment_assets
+        export_experiment_assets(
+            world=world,
+            output_dir=exp_folder,
+            settlements=None,
+            include_traces=False
+        )
+        print("  Successfully generated all 8 startup map PNGs and manifest.json inside the experiment folder.")
+        # Copy the current biomes map to the project root so the visualizer loads it by default
+        shutil.copy(os.path.join(exp_folder, "biomes.png"), os.path.join(PROJECT_ROOT, "biomes.png"))
+        print("  Copied current biomes map to project root (biomes.png) for live visualizer loading.")
+    except Exception as e:
+        print(f"  Warning: Failed to generate startup maps/assets: {e}")
+    
     # Set Phase 5 global simulation parameters on world state
     world.max_population = MAX_POPULATION
     world.mutation_rate = MUTATION_RATE
@@ -646,7 +668,9 @@ def main():
     world.healing_speed_mult = HEALING_SPEED_MULT
     world.shelter_build_speed_mult = SHELTER_BUILD_SPEED_MULT
     world.shelter_search_dist = SHELTER_SEARCH_DIST
+    world.perception_agent_limit = PERCEPTION_AGENT_LIMIT
     world.climate_epoch_mode = CLIMATE_EPOCH_MODE
+
     world.ecology_ablation = {
         "dehydration_ramp":   DEHYDRATION_RAMP_ENABLED,
         "memory_fidelity":    MEMORY_FIDELITY_BOOST,
@@ -684,6 +708,7 @@ def main():
         "healing_speed_mult":      HEALING_SPEED_MULT,
         "shelter_build_speed_mult":SHELTER_BUILD_SPEED_MULT,
         "shelter_search_dist":     SHELTER_SEARCH_DIST,
+        "perception_agent_limit":  PERCEPTION_AGENT_LIMIT,
         "spawn_mode":              SPAWN_MODE,
         "colony_spawn_locations":  COLONY_SPAWN_LOCATIONS,
         "targeted_biomes":         TARGETED_BIOMES,
@@ -850,6 +875,13 @@ def main():
                 "agents": agents_coords,
                 "colonies": colonies_data,
                 "epoch_stats": epoch_stats,
+                "metadata": {
+                    "experiment": EXPERIMENT_NAME,
+                    "scarcity": SCARCITY,
+                    "seed": SEED,
+                    "folder_name": os.path.basename(exp_folder),
+                    "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                },
                 # Phase 5 world-level evolution history
                 "population_history": getattr(world, "population_history", []),
                 "genetic_history":    getattr(world, "genetic_history",    []),

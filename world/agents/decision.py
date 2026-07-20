@@ -1,5 +1,6 @@
 import numpy as np
 import math
+import time
 from .agent import Agent, WATER, FOOD, DANGER, PERSON, LANDMARK
 from .genetics import express_genome
 from .drives import compute_drive_modulation
@@ -10,6 +11,24 @@ _ACTION_IDX = {
     "Share Water": 10, "Drink Stored Water": 11, "Eat Stored Food": 12, "Deposit Food": 13, 
     "Deposit Water": 14, "Withdraw Food": 15, "Withdraw Water": 16
 }
+
+EVAL_PROBES = {
+    "scarcity_prediction": {"calls": 0, "total_ms": 0.0},
+    "decision_context": {"calls": 0, "total_ms": 0.0},
+    "drink_utility": {"calls": 0, "total_ms": 0.0},
+    "eat_utility": {"calls": 0, "total_ms": 0.0},
+    "explore_utility": {"calls": 0, "total_ms": 0.0},
+    "build_utility": {"calls": 0, "total_ms": 0.0},
+    "shelter_utility": {"calls": 0, "total_ms": 0.0},
+    "reproduce_utility": {"calls": 0, "total_ms": 0.0},
+    "store_utility": {"calls": 0, "total_ms": 0.0},
+    "share_utility": {"calls": 0, "total_ms": 0.0},
+    "chest_pouch_utility": {"calls": 0, "total_ms": 0.0},
+    "action_scoring_loop": {"calls": 0, "total_ms": 0.0},
+    "action_loop_predictor_context": {"calls": 0, "total_ms": 0.0},
+    "action_loop_predict": {"calls": 0, "total_ms": 0.0},
+}
+
 
 def sigmoid_utility(need: float, threshold: float, scale: float) -> float:
     """Computes a biological sigmoid curve for utility values to simulate soft thresholds."""
@@ -961,6 +980,7 @@ def evaluate_utility(agent: Agent, world, chunk_size: int = 32, context=None) ->
     cache = agent.memory_cache
 
     # Calculate scarcity prediction based on seasonal wet/dry forecasts in memory
+    t_start_scarcity = time.perf_counter()
     total_active = 0
     total_obs = 0
     agent.memories_searched += len(agent.knowledge.water_sources) + len(agent.knowledge.food_sources)
@@ -978,6 +998,8 @@ def evaluate_utility(agent: Agent, world, chunk_size: int = 32, context=None) ->
     scarcity_prediction = 1.0 - abundance_ratio
     # Modulate forecast trust by prediction confidence (skepticism)
     scarcity_prediction = 0.2 + (scarcity_prediction - 0.2) * agent.prediction_confidence
+    EVAL_PROBES["scarcity_prediction"]["total_ms"] += (time.perf_counter() - t_start_scarcity) * 1000.0
+    EVAL_PROBES["scarcity_prediction"]["calls"] += 1
     
     # Retrieve colony info
     c_id = getattr(agent, "colony_id", -1)
@@ -991,6 +1013,7 @@ def evaluate_utility(agent: Agent, world, chunk_size: int = 32, context=None) ->
     shelter_target = agent.shelter_location if agent.shelter_location is not None else agent.home_location
 
     # Pre-calculate DecisionContext sigmoids & variables
+    t_start_ctx = time.perf_counter()
     from .cognitive import DecisionContext
     d_ctx = DecisionContext(
         risk_mult=risk_mult,
@@ -1006,7 +1029,10 @@ def evaluate_utility(agent: Agent, world, chunk_size: int = 32, context=None) ->
         withdraw_food_sig=sigmoid_utility(agent.hunger, 45.0, 10.0),
         withdraw_water_sig=sigmoid_utility(agent.thirst, 45.0, 10.0)
     )
+    EVAL_PROBES["decision_context"]["total_ms"] += (time.perf_counter() - t_start_ctx) * 1000.0
+    EVAL_PROBES["decision_context"]["calls"] += 1
 
+    t_start_drink = time.perf_counter()
     # --- 1. Rest Utility ---
     # High fatigue creates a strong urge to return home to sleep
     rest_utility = d_ctx.rest_sig * 1.3
@@ -1098,8 +1124,12 @@ def evaluate_utility(agent: Agent, world, chunk_size: int = 32, context=None) ->
                 best_drink_util = node_util
                 drink_target = loc
         drink_utility = best_drink_util
+    EVAL_PROBES["drink_utility"]["total_ms"] += (time.perf_counter() - t_start_drink) * 1000.0
+    EVAL_PROBES["drink_utility"]["calls"] += 1
+
                 
     # --- 3. Eat Utility (Predictive Selection & Danger Avoidance) ---
+    t_start_eat = time.perf_counter()
     eat_utility = 0.0
     eat_target = None
     reactive_eat_target = None
@@ -1182,8 +1212,11 @@ def evaluate_utility(agent: Agent, world, chunk_size: int = 32, context=None) ->
                 best_eat_util = node_util
                 eat_target = loc
         eat_utility = best_eat_util
+    EVAL_PROBES["eat_utility"]["total_ms"] += (time.perf_counter() - t_start_eat) * 1000.0
+    EVAL_PROBES["eat_utility"]["calls"] += 1
 
     # --- 4. Explore Utility (Danger Avoided) ---
+    t_start_explore = time.perf_counter()
     chunk_y, chunk_x = cy // chunk_size, cx // chunk_size
     unexplored_chunks = []
     for dy_c in (-1, 0, 1):
@@ -1207,11 +1240,15 @@ def evaluate_utility(agent: Agent, world, chunk_size: int = 32, context=None) ->
         chunk_y_start = target_chunk[0] * chunk_size
         chunk_x_start = target_chunk[1] * chunk_size
         chosen_target = None
-        for _ in range(10):
-            ry = int(np.random.randint(0, chunk_size))
-            rx = int(np.random.randint(0, chunk_size))
-            cand_y = int(np.clip(chunk_y_start + ry, 0, world.height - 1))
-            cand_x = int(np.clip(chunk_x_start + rx, 0, world.width - 1))
+        rys = np.random.randint(0, chunk_size, size=10)
+        rxs = np.random.randint(0, chunk_size, size=10)
+        max_y = world.height - 1
+        max_x = world.width - 1
+        for i in range(10):
+            ry = int(rys[i])
+            rx = int(rxs[i])
+            cand_y = min(max_y, max(0, chunk_y_start + ry))
+            cand_x = min(max_x, max(0, chunk_x_start + rx))
             if hasattr(agent, "matches_concept") and agent.matches_concept(pref_type, cand_y, cand_x, world):
                 chosen_target = (cand_y, cand_x)
                 break
@@ -1225,27 +1262,34 @@ def evaluate_utility(agent: Agent, world, chunk_size: int = 32, context=None) ->
     else:
         pref_type = WATER if agent.thirst > agent.hunger else FOOD
         chosen_target = None
-        for _ in range(15):
-            ry = int(np.random.randint(-30, 31))
-            rx = int(np.random.randint(-30, 31))
-            cand_y = int(np.clip(cy + ry, 0, world.height - 1))
-            cand_x = int(np.clip(cx + rx, 0, world.width - 1))
+        rys = np.random.randint(-30, 31, size=16)
+        rxs = np.random.randint(-30, 31, size=16)
+        max_y = world.height - 1
+        max_x = world.width - 1
+        for i in range(15):
+            ry = int(rys[i])
+            rx = int(rxs[i])
+            cand_y = min(max_y, max(0, cy + ry))
+            cand_x = min(max_x, max(0, cx + rx))
             if hasattr(agent, "matches_concept") and agent.matches_concept(pref_type, cand_y, cand_x, world):
                 chosen_target = (cand_y, cand_x)
                 break
         if chosen_target is not None:
             explore_target = chosen_target
         else:
-            ry = int(np.random.randint(-30, 31))
-            rx = int(np.random.randint(-30, 31))
+            ry = int(rys[15])
+            rx = int(rxs[15])
             explore_target = (
-                int(np.clip(cy + ry, 0, world.height - 1)),
-                int(np.clip(cx + rx, 0, world.width - 1)),
+                min(max_y, max(0, cy + ry)),
+                min(max_x, max(0, cx + rx)),
             )
     explore_utility *= calculate_danger_penalty(agent, explore_target, risk_mult)
     explore_utility *= get_environmental_modulation(agent, explore_target[0], explore_target[1], world)
+    EVAL_PROBES["explore_utility"]["total_ms"] += (time.perf_counter() - t_start_explore) * 1000.0
+    EVAL_PROBES["explore_utility"]["calls"] += 1
     
     # --- 5. Build Shelter Utility (Optimization & Urgency) ---
+    t_start_build = time.perf_counter()
     build_utility = 0.0
     build_target = None
     if agent.shelter_location is None:
@@ -1289,8 +1333,12 @@ def evaluate_utility(agent: Agent, world, chunk_size: int = 32, context=None) ->
     if agent.shelter_durability < 30.0:
         build_utility += 15.0
     build_utility = np.clip(build_utility, 0.0, 90.0)
+    EVAL_PROBES["build_utility"]["total_ms"] += (time.perf_counter() - t_start_build) * 1000.0
+    EVAL_PROBES["build_utility"]["calls"] += 1
+
     
     # --- 6. Sheltering Utility (Extreme Weather Safety) ---
+    t_start_shelter = time.perf_counter()
     shelter_utility = 0.0
     if agent.shelter_location is not None:
         if local_temp < 8.0 or local_temp > 32.0:
@@ -1300,11 +1348,14 @@ def evaluate_utility(agent: Agent, world, chunk_size: int = 32, context=None) ->
         else:
             shelter_utility = 0.0
         shelter_utility *= get_environmental_modulation(agent, shelter_target[0], shelter_target[1], world)
+    EVAL_PROBES["shelter_utility"]["total_ms"] += (time.perf_counter() - t_start_shelter) * 1000.0
+    EVAL_PROBES["shelter_utility"]["calls"] += 1
             
     # --- 7. Phase 5 Capability Actions ---
     life_stage = agent.life_stage
 
     # --- 7a. Reproduce (biological gating only — no genome weight emergence check) ---
+    t_start_repro = time.perf_counter()
     reproduce_utility = 0.0
     reproduce_target  = None
     
@@ -1422,8 +1473,11 @@ def evaluate_utility(agent: Agent, world, chunk_size: int = 32, context=None) ->
                     if life_stage == "Adult" and getattr(world, "reproduction_enabled", True):
                         reproduce_utility = 30.0 * social_mod
                         reproduce_target = best_mate.location
+    EVAL_PROBES["reproduce_utility"]["total_ms"] += (time.perf_counter() - t_start_repro) * 1000.0
+    EVAL_PROBES["reproduce_utility"]["calls"] += 1
 
     # --- 7b. Store Food (g_planning drives food-caching behaviour) ---
+    t_start_store = time.perf_counter()
     store_food_utility = 0.0
     store_food_target  = None
     if life_stage not in ("Infant", "Juvenile") and agent.hunger < 30.0 and agent.stored_food < 100.0:
@@ -1443,8 +1497,11 @@ def evaluate_utility(agent: Agent, world, chunk_size: int = 32, context=None) ->
             caching_mult = 0.45 if getattr(world, "ecology_ablation", {}).get("water_caching", True) else 0.3
             store_water_utility = brain["planning_horizon"] * (100.0 - agent.stored_water) * caching_mult
             store_water_target  = best_ws
+    EVAL_PROBES["store_utility"]["total_ms"] += (time.perf_counter() - t_start_store) * 1000.0
+    EVAL_PROBES["store_utility"]["calls"] += 1
 
     # Pre-query candidates for sharing (to avoid redundant filtering/querying if both share loops execute)
+    t_start_share = time.perf_counter()
     share_candidates = None
     if agent.stored_food > 20.0 or agent.stored_water > 20.0:
         if brain["sharing_weight"] > 0.05:
@@ -1484,8 +1541,11 @@ def evaluate_utility(agent: Agent, world, chunk_size: int = 32, context=None) ->
                     if util > share_water_utility:
                         share_water_utility = util
                         share_water_target  = other.location
+    EVAL_PROBES["share_utility"]["total_ms"] += (time.perf_counter() - t_start_share) * 1000.0
+    EVAL_PROBES["share_utility"]["calls"] += 1
 
     # --- 8. Decision-Driven Pouch & Chest Actions ---
+    t_start_chest = time.perf_counter()
     # 8a. Drink Stored Water
     drink_stored_utility = d_ctx.drink_stored_sig * (1.5 if agent.stored_water > 0.0 else 0.0)
     drink_stored_target = (cy, cx)
@@ -1521,6 +1581,8 @@ def evaluate_utility(agent: Agent, world, chunk_size: int = 32, context=None) ->
         dist = np.sqrt((withdraw_water_target[0] - cy)**2 + (withdraw_water_target[1] - cx)**2)
         dist_mult = 1.0 / (1.0 + dist / 200.0)
         withdraw_water_utility = d_ctx.withdraw_water_sig * 1.8 * dist_mult
+    EVAL_PROBES["chest_pouch_utility"]["total_ms"] += (time.perf_counter() - t_start_chest) * 1000.0
+    EVAL_PROBES["chest_pouch_utility"]["calls"] += 1
 
     # --- 9. Final Action Selection ---
     # Phase 8.1: Compute drive-based utility multipliers.  These are pure
@@ -1574,6 +1636,7 @@ def evaluate_utility(agent: Agent, world, chunk_size: int = 32, context=None) ->
     # Phase 8.1: Each base utility is multiplied by its biological drive
     # coefficient FIRST.  This shifts priorities without overriding them.
     # Then procedural and predictor biases are added additively on top.
+    t_start_loop = time.perf_counter()
     biased_actions = []
     for action_name, base_util, target_coord in actions:
         p_bias = proc_biases.get(action_name, 0.0)
@@ -1587,13 +1650,23 @@ def evaluate_utility(agent: Agent, world, chunk_size: int = 32, context=None) ->
         if target_coord is not None and hasattr(agent, "predictor"):
             agent.predictor_calls += 1
             eff_temp = local_temp if target_coord == (cy, cx) else None
+            
+            t_start_pctx = time.perf_counter()
             context_vec = get_predictor_context(agent, action_name, target_coord, world, local_temp=eff_temp, scarcity_prediction=scarcity_prediction)
+            EVAL_PROBES["action_loop_predictor_context"]["total_ms"] += (time.perf_counter() - t_start_pctx) * 1000.0
+            EVAL_PROBES["action_loop_predictor_context"]["calls"] += 1
+            
+            t_start_pred = time.perf_counter()
             pred_val = float(np.clip(agent.predictor.predict(context_vec), -3.0, 3.0))
+            EVAL_PROBES["action_loop_predict"]["total_ms"] += (time.perf_counter() - t_start_pred) * 1000.0
+            EVAL_PROBES["action_loop_predict"]["calls"] += 1
             
         # Metacognitive self-trust modulation: scale predictor bias by historical accuracy
         pred_trust = agent.prediction_successes / agent.prediction_attempts if agent.prediction_attempts > 0 else 1.0
         final_util = driven_util + p_bias + pred_val * pred_trust
         biased_actions.append((action_name, final_util, target_coord, base_util))
+    EVAL_PROBES["action_scoring_loop"]["total_ms"] += (time.perf_counter() - t_start_loop) * 1000.0
+    EVAL_PROBES["action_scoring_loop"]["calls"] += 1
 
     biased_actions.sort(key=lambda a: a[1], reverse=True)
 

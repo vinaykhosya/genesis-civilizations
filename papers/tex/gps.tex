@@ -1,0 +1,778 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{top=1in, bottom=1in, left=1in, right=1in}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{longtable}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=purple,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle=Genesis Product Specification (GPS),
+    pdfpagemode=FullScreen,
+}
+
+\definecolor{codegray}{rgb}{0.96,0.96,0.96}
+\definecolor{codeborder}{rgb}{0.85,0.85,0.85}
+\definecolor{commentgreen}{rgb}{0.12,0.55,0.22}
+\definecolor{keywordblue}{rgb}{0.1,0.2,0.8}
+
+\lstset{
+    backgroundcolor=\color{codegray},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    commentstyle=\color{commentgreen},
+    frame=single,
+    rulecolor=\color{codeborder},
+    keepspaces=true,
+    keywordstyle=\color{keywordblue},
+    language=Python,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\small Genesis Product Specification (GPS)}
+\lhead{\small Project Genesis}
+\cfoot{\thepage}
+
+\title{\textbf{Genesis Product Specification (GPS)}}
+\author{Project Genesis Research Repository}
+\date{\small Generated: July 2026}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+\newpage
+\section*{Genesis Product Specification (GPS)}
+\subsection*{Version 1.0  Identity, Philosophy \& Experience}
+
+\textbackslash{}textbf{Project:} Project Genesis  Agentic Artificial Life \& Evolutionary Biology Simulator
+\textbackslash{}textbf{Researcher:} Vinay Khosya
+\textbackslash{}textbf{Document Role:} Vision, identity, user experience, and storytelling layer
+\textbackslash{}textbf{Companion Documents:} GDS (Design System)  GES (Engineering)  GCR (Content \& Research)
+\textbackslash{}textbf{Status:} Living document  update as Genesis evolves
+
+\noindent\rule{\textwidth}{0.4pt}
+
+\textgreater{} \textbackslash{}textit{"I thought I was building a simulation. I was building a world."}
+\textgreater{}  Genesis Lab Notebook, Phase 4
+
+\noindent\rule{\textwidth}{0.4pt}
+
+\subsection*{Part I  What Genesis Actually Is}
+
+\subsubsection*{1.1 The Wrong Answer}
+
+Genesis is not a dashboard.
+
+It is not a scientific visualization tool.
+
+It is not a portfolio project.
+
+It is not a game.
+
+These are all things it resembles. None of them is what it is.
+
+\subsubsection*{1.2 The Right Answer}
+
+Genesis is a \textbackslash{}textbf{scientific instrument for studying how life shapes itself under pressure}.
+
+It generates physically realistic worlds  with mountains that cast rain shadows, rivers that carve valleys, biomes that emerge from temperature and rainfall  and places small minds inside them. Those minds have hunger, fear, grief, and memory. They form families. They build shelter. They fight over territory. They die.
+
+None of this is scripted.
+
+The world doesn't know it's a simulation. The agents don't know they're being watched. The outcomes are \textbackslash{}textbf{real} in the only sense that matters: they were not designed in advance.
+
+Every experiment Genesis runs is a question asked of physics, biology, and cognition simultaneously.
+
+The website is where those answers are published.
+
+\subsubsection*{1.3 Why This Matters}
+
+Every artificial life simulator before Genesis made the same mistake.
+
+They gave agents a uniform world and watched them evolve.
+
+But geography is not noise. A mountain range creates a rain shadow. A rain shadow creates a desert. A desert means no fresh water. No fresh water means agents die of thirst, not old age.
+
+The landscape is not a setting. It is an \textbackslash{}textbf{independent variable}.
+
+Genesis is the first artificial life system built around this insight from the first line of code. The physical world does most of the selection work. Cognition determines \textbackslash{}textit{who} survives, \textbackslash{}textit{where} they settle, and \textbackslash{}textit{how} they die  not whether they die.
+
+\noindent\rule{\textwidth}{0.4pt}
+
+\subsection*{Part II  Mission, Vision, and Principles}
+
+\subsubsection*{2.1 Mission}
+
+\textgreater{} To make emergent artificial life research transparent, reproducible, and human.
+
+Not just publishable.
+Not just rigorous.
+\textbackslash{}textbf{Human.}
+
+Because behind every population collapse is a geography that made survival impossible. Behind every unexpected cooperation is a drive system that created trust under pressure. Behind every extinction is a chain of decisions made by creatures with real needs.
+
+The website makes those chains visible.
+
+\subsubsection*{2.2 Vision}
+
+Five years from now:
+
+Genesis is a recognized research platform cited in academic papers on artificial life, evolutionary biology, and cognitive science.
+
+Every experiment run locally becomes a published scientific result  with a permanent URL, a searchable archive, and a replay anyone can watch.
+
+The Portal hosts hundreds of experiments, dozens of discoveries, and a growing community of researchers who run Genesis on their own machines and submit results.
+
+The Living Timeline documents every scientific milestone from the first random walker to the first emergent civilization.
+
+\subsubsection*{2.3 Six Design Principles}
+
+These govern every design decision, visual or structural.
+
+\begin{longtable}{ll}
+\toprule
+Principle & What It Means \\
+\midrule
+\endhead
+\textbackslash{}textbf{Experience before dashboard} & The first emotion a visitor feels is wonder, not orientation. \\
+\textbackslash{}textbf{Evidence before narrative} & Every claim is grounded in telemetry. No anthropomorphism without data. \\
+\textbackslash{}textbf{Story before charts} & Charts are evidence for a story. Never the story itself. \\
+\textbackslash{}textbf{Identity before interface} & Words, labels, and names create a world. Use them intentionally. \\
+\textbackslash{}textbf{Accumulation over recency} & The site grows richer as more experiments are published. Old experiments do not expire. \\
+\textbackslash{}textbf{Long-term over convenient} & Every architectural choice assumes Genesis exists for ten years. \\
+\bottomrule
+\end{longtable}
+
+\noindent\rule{\textwidth}{0.4pt}
+
+\subsection*{Part III  Genesis Visual Vocabulary}
+
+This is the most important section in this document.
+
+Every word matters. Every label is a choice. The wrong word makes a research portal. The right word makes a world.
+
+\subsubsection*{3.1 The Genesis Lexicon}
+
+\begin{longtable}{lll}
+\toprule
+Generic Word & Genesis Word & Why \\
+\midrule
+\endhead
+Dashboard & \textbackslash{}textbf{Laboratory} & A place where experiments happen, not where metrics live \\
+Analytics & \textbackslash{}textbf{Observatory} & You observe phenomena, you don't analyze dashboards \\
+Experiments & \textbackslash{}textbf{Civilizations} (archive view) & Each experiment is a civilization that lived and ended \\
+Blog & \textbackslash{}textbf{Field Notes} & Informal, personal, in-the-moment \\
+Posts & \textbackslash{}textbf{Research Logs} & Structured, evidence-based entries \\
+About & \textbackslash{}textbf{Origin} & The story of how Genesis came to exist \\
+Contact & \textbackslash{}textbf{Collaborate} & Forward-looking, not transactional \\
+Upload & \textbackslash{}textbf{Publish} & Elevates the act of sharing an experiment \\
+Tags & \textbackslash{}textbf{Conditions} & Because experiment conditions are scientific variables, not tags \\
+Admin & \textbackslash{}textbf{Command} & Internal-facing only. Never shown to public. \\
+Search & \textbackslash{}textbf{Query} & Matches the scientific register \\
+\bottomrule
+\end{longtable}
+
+\subsubsection*{3.2 Naming Conventions for Pages}
+
+\begin{longtable}{ll}
+\toprule
+URL & Page Title Shown to User \\
+\midrule
+\endhead
+\textbackslash{}texttt{/} & Genesis \\
+\textbackslash{}texttt{/civilizations} & Archive of Civilizations \\
+\textbackslash{}texttt{/civilizations/[id]} & [Experiment Title]  A Genesis Civilization \\
+\textbackslash{}texttt{/civilizations/[id]/observatory} & Observatory \\
+\textbackslash{}texttt{/civilizations/[id]/replay} & Replay \\
+\textbackslash{}texttt{/civilizations/[id]/chronicle} & Chronicle (was: Timeline) \\
+\textbackslash{}texttt{/civilizations/[id]/world} & World \\
+\textbackslash{}texttt{/civilizations/[id]/lineage} & Lineage (was: Agents) \\
+\textbackslash{}texttt{/civilizations/[id]/genome} & Genome Archive (was: Genes) \\
+\textbackslash{}texttt{/civilizations/[id]/config} & Conditions \\
+\textbackslash{}texttt{/research} & Research \\
+\textbackslash{}texttt{/research/field-notes} & Field Notes \\
+\textbackslash{}texttt{/research/monograph} & Monograph \\
+\textbackslash{}texttt{/research/architecture} & Architecture \\
+\textbackslash{}texttt{/research/thesis} & Thesis \\
+\textbackslash{}texttt{/timeline} & Genesis Timeline \\
+\textbackslash{}texttt{/origin} & Origin \\
+\textbackslash{}texttt{/collaborate} & Collaborate \\
+\textbackslash{}texttt{/docs} & Reference \\
+\bottomrule
+\end{longtable}
+
+\textgreater{} [!IMPORTANT]
+\textgreater{} The word "Civilizations" is bold and intentional. It is not hyperbole. Each Genesis experiment creates a population that builds shelter, forms social bonds, produces children, and dies  in a world shaped by real physical laws. Calling them "experiments" on the public archive understates what they are.
+
+\subsubsection*{3.3 Micro-copy Standards}
+
+These small words appear everywhere. They must be consistent.
+
+\textbackslash{}textbf{Ticks:} Always convert to human-readable scale. Show both.
+\begin{itemize}
+  \item  \textbackslash{}texttt{7,970 ticks (22 years)}
+  \item  \textbackslash{}texttt{7970}
+\end{itemize}
+
+\textbackslash{}textbf{Scarcity:} Show both number and label.
+\begin{itemize}
+  \item  \textbackslash{}texttt{Scarcity 5  Extreme}
+  \item  \textbackslash{}texttt{scarcity: 5}
+\end{itemize}
+
+\textbackslash{}textbf{Survivors:} Show fraction, not just number.
+\begin{itemize}
+  \item  \textbackslash{}texttt{0 of 18 survived}
+  \item  \textbackslash{}texttt{0 survivors}
+\end{itemize}
+
+\textbackslash{}textbf{Colony status:} Active / Extinct (not alive/dead)
+\begin{itemize}
+  \item  \textbackslash{}texttt{Colony Alpha  Extinct at Year 22}
+  \item  \textbackslash{}texttt{Alpha dead}
+\end{itemize}
+
+\textbackslash{}textbf{Events:} Use past tense, passive construction where possible.
+\begin{itemize}
+  \item  \textbackslash{}texttt{Child \textbackslash{}\#16 was born to Colony Alpha  Year 0, Day 108}
+  \item  \textbackslash{}texttt{Birth event: agent 16}
+\end{itemize}
+
+\noindent\rule{\textwidth}{0.4pt}
+
+\subsection*{Part IV  The Landing Page Experience}
+
+\subsubsection*{4.1 Philosophy}
+
+The first 8 seconds a visitor spends on genesis.vinaykhosya.com must answer one question before they read a single word:
+
+\textbackslash{}textbf{"What am I looking at?"}
+
+The answer is: a world.
+
+Not a dashboard. Not a chart. A world that formed, was inhabited, and ended.
+
+The landing page animation tells that story in silence. The words that follow explain what Genesis is. The CTA invites the visitor to explore.
+
+\subsubsection*{4.2 The Opening Animation (Full Specification)}
+
+\textbackslash{}textbf{Duration:} 12 seconds. Loops after 3-second pause.
+\textbackslash{}textbf{Rendering:} Canvas2D or Three.js (see GES 5 for technical decision).
+\textbackslash{}textbf{Audio:} None. This must work on muted browsers.
+
+\begin{lstlisting}[language=Python]
+TIME    EVENT
+────────────────────────────────────────────────────────────
+
+0.0s    Black screen. Complete darkness.
+
+0.3s    Stars begin to appear — slow fade, 300 particles,
+        three depth layers (parallax on mouse move).
+        Stars are not uniform — they cluster, like real sky.
+
+1.5s    A faint planetary silhouette emerges from dark.
+        The planet is dark grey — no life yet.
+        Slow rotation begins (1°/sec clockwise).
+
+2.5s    TERRAIN EMERGES.
+        Contour lines trace the land — mountain ridges
+        appear first, then coasts, then valleys.
+        The animation matches the actual Genesis
+        world generation pipeline:
+          Ridge → Erosion → Coast → Rivers.
+        Color: dark charcoal, like compressed stone.
+
+3.5s    RAINFALL BEGINS.
+        Particle rain falls from sky.
+        Where rain hits mountains, it collects.
+        Rivers trace their paths from highlands to sea —
+        animated as growing lines, following actual hydrology.
+
+4.5s    BIOMES BLOOM.
+        Color spreads across terrain from moisture.
+        Desert stays pale. Rainforest becomes deep green.
+        Taiga darkens. Coast turns teal.
+        This is not a color wash — it sweeps naturally
+        from high-rainfall regions outward.
+
+5.5s    DOTS APPEAR.
+        Four small clusters of 4 dots each appear
+        at four colony locations.
+        They are motionless for 0.5 seconds.
+
+6.0s    DOTS MOVE.
+        Agents begin exploring. Clusters spread.
+        Paths radiate outward from home territories.
+        Some dots converge on rivers. Some reach mountains.
+        Some disappear (deaths — blink out with red flash).
+
+7.5s    CONFLICT.
+        Two colony groups converge. Brief flash
+        (red scatter) where they meet.
+        Some dots blink out.
+
+8.5s    CONTRACTION.
+        Most dots gone. A few remain, scattered.
+        The world is mostly empty.
+
+9.5s    SILENCE.
+        Last dot blinks out.
+        The terrain remains — unchanged, indifferent.
+        The rivers still flow.
+
+10.5s   FADE TO DARK.
+        Slow black fade over 1 second.
+        The world disappears.
+
+11.0s   TEXT APPEARS.
+        Fade in, centered:
+
+          "Every civilization began with the same world."
+          "None ended the same."
+
+        Font: Space Grotesk, 24px, weight 300, letter-spacing 0.04em
+        Color: hsl(220, 20%, 78%)
+
+11.8s   CTA APPEARS.
+        Button fades in below text:
+
+          [ Experience Genesis → ]
+
+        Teal, pill-shaped, subtle pulse animation.
+
+12.0s   Pause. Loop restarts.
+\end{lstlisting}
+
+\subsubsection*{4.3 Homepage Scroll Structure}
+
+After the hero animation, scrolling reveals the following sections in order:
+
+\begin{lstlisting}[language=Python]
+─── SECTION 1: WHAT IS GENESIS? ────────────────────────────
+
+Short. Direct. 3 sentences.
+
+"Genesis is an artificial life simulator that builds
+physically realistic worlds — with mountains, rivers,
+and climate — and places autonomous agents inside them.
+
+They survive. They evolve. They build shelter and form bonds.
+None of it is scripted.
+
+The outcomes emerge from the world itself."
+
+[Read the Origin Story →]  [Browse the Archive →]
+
+─── SECTION 2: FEATURED CIVILIZATION ───────────────────────
+
+Full-width card. The single most interesting experiment
+published to date. Manually selected by researcher.
+
+Left: World map thumbnail (animated on hover — layers cycle)
+Right: Title, abstract excerpt, key findings as metric chips
+
+[ View This Civilization → ]
+
+─── SECTION 3: LATEST DISCOVERY ─────────────────────────────
+
+The most recent notable finding from any experiment.
+Written as a research insight, not a metric.
+
+Example:
+  "In a world with extreme scarcity (×5), Colony Alpha
+  outlasted three competing colonies by a margin of
+  nearly 4,000 ticks — despite the same starting genome.
+  Geography, not genetics, determined the survivor."
+
+[ Read the Full Analysis → ]
+
+─── SECTION 4: THE LIVING TIMELINE ─────────────────────────
+
+Horizontal scrollable strip (mobile: vertical).
+Shows Genesis development milestones.
+See §V for full specification.
+
+─── SECTION 5: ARCHIVE OF CIVILIZATIONS ────────────────────
+
+Grid of experiment cards, latest first.
+Filters: World Preset | Scarcity | Date | Duration
+[View Full Archive →]
+
+─── SECTION 6: RESEARCH AREAS ──────────────────────────────
+
+3-column grid of research themes:
+
+Evolutionary Biology     |  Cognitive Architecture  |  Landscape Ecology
+"How do genes drift      |  "Do agents who plan     |  "Does geography
+under resource scarcity? |   survive longer than    |   determine which
+Do landscape features    |   those who react?"      |   genes win?"
+drive selection?"        |
+
+─── SECTION 7: DOCUMENTATION ───────────────────────────────
+
+Links to: Reference, Architecture, Schema, Config Guide
+
+─── SECTION 8: ABOUT & ORIGIN ───────────────────────────────
+
+Brief. A photo or avatar, 2 paragraphs, link to full Origin page.
+
+─── FOOTER ──────────────────────────────────────────────────
+
+Genesis · Phase 9A · Built by Vinay Khosya
+GitHub  ·  Collaborate  ·  Reference  ·  Archive
+
+\end{lstlisting}
+
+\noindent\rule{\textwidth}{0.4pt}
+
+\subsection*{Part V  The Living Timeline}
+
+\subsubsection*{5.1 Purpose}
+
+The Genesis Timeline is a single chronological page that documents every significant milestone in Genesis's development  not the website's development, but the \textbackslash{}textbf{science} itself.
+
+It is to Genesis what a changelog is to software  except it records discoveries, not features.
+
+\subsubsection*{5.2 Structure}
+
+Each entry contains:
+
+\begin{lstlisting}[language=Python]
+[Phase badge]  [Date]
+
+[Milestone Title]
+
+[2–3 sentence description — evidence-first]
+
+[Optional: link to experiment that produced this milestone]
+\end{lstlisting}
+
+\subsubsection*{5.3 Current Timeline Entries (Seed Content)}
+
+The following entries come directly from the lab notebook and monograph. They are the \textbackslash{}textbf{real history of Genesis}.
+
+\begin{longtable}{llll}
+\toprule
+Phase & Date & Milestone & Description \\
+\midrule
+\endhead
+0 & 2026 Jan & \textbackslash{}textbf{First World Generated} & A 6464 grid with fBm noise and random food. Agents walked into the ocean. \\
+1 & 2026 Feb & \textbackslash{}textbf{Rain Shadow Discovered} & Wind moisture advection clamped to sea level, producing the first realistic rain shadow effect. Deserts appeared on the leeward side of mountains. \\
+1 & 2026 Feb & \textbackslash{}textbf{Priority-Flood Hydrology} & Rivers connected. For the first time, the world felt real  water found the sea. \\
+2 & 2026 Feb & \textbackslash{}textbf{First Utility Engine} & Agents evaluated multiple needs simultaneously. The over-optimizer was replaced. \\
+3 & 2026 Mar & \textbackslash{}textbf{14-Gene Genome Introduced} & Genotype separated from phenotype. Genes express into brain parameters, not behaviors. \\
+3 & 2026 Mar & \textbackslash{}textbf{Genetic Drift Bottleneck} & Within 200 ticks, all agents became genetically identical. Geography had eliminated diversity faster than mutation could restore it. \\
+4 & 2026 Mar & \textbackslash{}textbf{Spatial Memory} & Agents remembered where water and food were. Re-exploration dropped. Survival improved. \\
+4 & 2026 Apr & \textbackslash{}textbf{Episodic Memory Cap} & Memory clutter caused 14 slowdown. Rolling FIFO cap and confidence decay introduced. \\
+5 & 2026 Apr & \textbackslash{}textbf{Emotional Dynamics (Phase 8.2)} & Drives produce emotional pressure. Emotions modulate utility. Behavior emerges. \\
+5 & 2026 Apr & \textbackslash{}textbf{The Oscillation Bug} & Agents without emotional inertia spun in circles at 180 every tick. EMA smoothing introduced. \\
+5 & 2026 Apr & \textbackslash{}textbf{Grief  Emergent, Unscripted} & After mates died, agents stood still for 2030 ticks due to longing drive elevation. This was never programmed. \\
+6 & 2026 Apr & \textbackslash{}textbf{Colony System (Phase 5)} & Four geographically distinct colonies. Each with its own founder lineage, territory, and color. \\
+6 & 2026 Apr & \textbackslash{}textbf{Lateral Inhibition} & Motivational deadlock (fight vs. flee) resolved by biological winner-take-all suppression. \\
+7 & 2026 May & \textbackslash{}textbf{Neural Predictor Introduced} & Agents predict expected utility before acting. Sleep-based consolidation prevents gradient explosion. \\
+7 & 2026 May & \textbackslash{}textbf{The Cognitive Ablation Paradox} & Full cognition vs. ablated cognition showed no survival count difference  but completely different spatial distribution. The question "does cognition help?" was the wrong question. \\
+8 & 2026 Jun & \textbackslash{}textbf{Reflex Layer} & Emergency responses bypass the planner entirely. Dehydration deaths beside rivers dropped significantly. \\
+8 & 2026 Jun & \textbackslash{}textbf{Shelter System} & Four shelter tiers: None, Tent, Cabin, Stone. Agents construct and claim shelter. \\
+8 & 2026 Jun & \textbackslash{}textbf{Territorial Combat (v5)} & Threat display  confidence comparison  fear cooldown. Dispute frequency reduced by 78\%. \\
+9A & 2026 Jul & \textbackslash{}textbf{Full Checkpoint I/O} & Simulations can be paused, saved (\textasciitilde{}15MB), and resumed with full state restored. \\
+9D & 2026 Jul & \textbackslash{}textbf{Evolution Journal} & Auto-generated scientific journal records genetic drift, cognitive adaptation, and population dynamics every 100 years. \\
+\bottomrule
+\end{longtable}
+
+\subsubsection*{5.4 Timeline Page Visual Design}
+
+\begin{itemize}
+  \item Vertical scrolling timeline with a central spine line
+  \item Phase badge on the left (pill: "Phase 1", "Phase 8.2", etc.) colored by phase era
+  \item Milestone title, description, and optional experiment link on the right
+  \item Subtle scroll animation: entries fade in from below as you scroll
+  \item At the bottom: "Next milestone: [current active research question]"
+\end{itemize}
+
+\noindent\rule{\textwidth}{0.4pt}
+
+\subsection*{Part VI  The Civilization Page (Storytelling Structure)}
+
+\subsubsection*{6.1 The Wrong Structure}
+
+Most dashboards organize experiment pages as:
+
+\begin{lstlisting}[language=Python]
+Overview → Charts → Data → Download
+\end{lstlisting}
+
+This is a metrics-first structure. It tells you what happened but not what it means.
+
+\subsubsection*{6.2 The Genesis Structure}
+
+Genesis experiment pages are organized as a \textbackslash{}textbf{research narrative}:
+
+\begin{lstlisting}[language=Python]
+1. THE QUESTION
+   What was this experiment designed to investigate?
+   "Can territorial conflicts, in a world with extreme scarcity,
+   sustain a population long enough to reach genetic selection?"
+
+2. THE HYPOTHESIS
+   What did we expect?
+   "We expected aggression-high colonies to dominate early but
+   collapse due to injury-driven mortality."
+
+3. THE CONDITIONS
+   What parameters were set?
+   [Config viewer — all key settings shown as human-readable chips]
+   Seed 65654 · Island Chains · Scarcity ×5 · Disputes Enabled ·
+   Instant Healing · Colony Spawning
+
+4. THE WORLD
+   [Interactive world map — biome, elevation, rivers, resource layers]
+   Causal explainer available on hover.
+
+5. THE REPLAY
+   [Canvas replay with controls]
+   Default: starts at tick 0. Timeline seekable.
+
+6. THE CHRONICLE
+   [Scrollable events timeline]
+   Birth · Death · Milestone · Disaster · Dispute · Extinction
+
+7. KEY OBSERVATIONS
+   Researcher-written. 3–7 bullet points.
+   Evidence-first. Hedged where uncertain.
+   "Colony Alpha survived longest (7,970 ticks) despite
+   identical starting conditions to Beta, Gamma, and Delta.
+   Geographic analysis suggests Alpha's spawn location near
+   a temperate river delta provided superior water access."
+
+8. UNEXPECTED EVENTS
+   Auto-extracted from events.json — events tagged "Unexpected"
+   or manually highlighted by researcher during publish.
+   "Agent #16, born Gen 1, was the only second-generation agent
+   to reach adulthood — and died within 300 ticks of birth."
+
+9. RESEARCHER'S NOTES
+   Optional. Free-form markdown. Personal voice allowed here.
+   This is the Field Notes section.
+
+10. TELEMETRY (OBSERVATORY)
+    All charts. Population, genetics, drives, telemetry funnels.
+    Expandable sections. Not shown by default — click to expand.
+
+11. DOWNLOADS
+    config.json · summary.json · replay.json · report.md
+    Full zip archive
+    Citation format
+
+12. SIMILAR CIVILIZATIONS
+    3 experiment cards with similar conditions for comparison.
+\end{lstlisting}
+
+\noindent\rule{\textwidth}{0.4pt}
+
+\subsection*{Part VII  Long-Term Vision}
+
+\subsubsection*{7.1 This is a Flagship, Not a Side Project}
+
+Genesis is not a semester project. It is not a demo. It is a system that will grow for years.
+
+Every architectural decision must assume:
+\begin{itemize}
+  \item 500+ experiments in the archive
+  \item Multiple researchers running Genesis independently
+  \item Academic citations from external papers
+  \item A public API consumed by third-party tools
+  \item Community-submitted experiments from external researchers
+\end{itemize}
+
+The portal must be built to accommodate all of this, even if most pages remain empty for months.
+
+\subsubsection*{7.2 Reserved Pages (Build Shell Now, Fill Later)}
+
+These pages should exist as shells from day one  beautiful empty states, not 404s:
+
+\begin{longtable}{lll}
+\toprule
+Page & Purpose & Empty State \\
+\midrule
+\endhead
+\textbackslash{}texttt{/publications} & Academic papers that cite or use Genesis & "No publications yet. Genesis is actively being prepared for submission." \\
+\textbackslash{}texttt{/datasets} & Downloadable experiment datasets in standard formats & "Datasets will be published as experiments are completed." \\
+\textbackslash{}texttt{/benchmark} & Genesis as an AI benchmark suite & "Genesis Benchmark is in early design. Follow for updates." \\
+\textbackslash{}texttt{/collaborate} & Contact for research collaboration & Simple form. Always live. \\
+\textbackslash{}texttt{/api} & Public API documentation & "Public API coming in 2026. Subscribe to be notified." \\
+\textbackslash{}texttt{/community} & Community experiment submissions & "Community submissions open when Genesis reaches Phase 10." \\
+\textbackslash{}texttt{/version-history} & Genesis engine version changelog & Always populated  links to lab notebook entries. \\
+\textbackslash{}texttt{/citations} & How to cite Genesis in academic work & BibTeX block, DOI (if archived), citation guidance. \\
+\bottomrule
+\end{longtable}
+
+\subsubsection*{7.3 The Long-Term Product Map}
+
+\begin{lstlisting}[language=Python]
+Phase 1 — Foundation (Build Now)
+  ✓ Admin upload pipeline
+  ✓ Civilization detail pages
+  ✓ Archive
+  ✓ Research documents
+  ✓ Living Timeline
+
+Phase 2 — Experience (Next Quarter)
+  ○ Landing animation (full implementation)
+  ○ Replay canvas (full implementation)
+  ○ World map (layered canvas)
+  ○ Lineage tree
+
+Phase 3 — Science (Following Quarter)
+  ○ Civilization comparison
+  ○ Gene drift visualizer
+  ○ Telemetry funnel viewer
+  ○ Causal explainer integration
+
+Phase 4 — Community (When Stable)
+  ○ Community experiment submissions
+  ○ Benchmark dataset downloads
+  ○ Public API v1
+  ○ Citation infrastructure
+
+Phase 5 — Academic (Long-term)
+  ○ Publications section
+  ○ DOI integration
+  ○ Peer review workflow
+  ○ External researcher accounts
+\end{lstlisting}
+
+\noindent\rule{\textwidth}{0.4pt}
+
+\subsection*{Part VIII  User Journeys}
+
+\subsubsection*{8.1 The Curious Newcomer}
+
+Maria is a biology PhD student who found Genesis through a Twitter thread about emergent behavior.
+
+She arrives at the landing page.
+
+The animation plays. She watches the world form, the dots appear, spread, conflict, and disappear. She doesn't know what she's watching  but she feels something.
+
+She clicks "Experience Genesis."
+
+She lands on the Archive. She sees 14 experiment cards. One is featured: \textbackslash{}textbf{"Territorial Conflict Under Extreme Scarcity  Colony Alpha Survived 22 Years."}
+
+She clicks it.
+
+She reads the Question. She reads the Hypothesis. She watches the Replay for 2 minutes.
+
+She clicks to the Chronicle and reads the birth and death events in order.
+
+She finds the Unexpected Events section:
+\textbackslash{}textit{"Agent \#16, the only Gen-1 agent to reach adulthood, was the last non-Alpha to die."}
+
+She opens the Observatory. She looks at the reproduction funnel  14 stages, 0 births in the last 4,000 ticks.
+
+She understands what happened without reading a single scientific paper.
+
+She bookmarks the page.
+
+\textbackslash{}textbf{Journey time:} 12 minutes. Zero confusion. No documentation read.
+
+\subsubsection*{8.2 The AI Engineer}
+
+Alex is building his own agent system and searching for references on emergent cognition. He finds the Genesis architecture paper through Google Scholar.
+
+He arrives at \textbackslash{}texttt{/research/architecture}.
+
+He reads the architecture. He follows links to the engineering spec.
+
+He finds the experiment schema reference at \textbackslash{}texttt{/docs/schema}. He downloads \textbackslash{}texttt{experiment\textbackslash{}\_schema.json}.
+
+He wants to understand how the neural predictor works. He navigates to \textbackslash{}texttt{/civilizations/EXP-20260627-3N39/observatory} and looks at the prediction error chart.
+
+He reads the lab notebook entry on the cognitive ablation paradox.
+
+He cites Genesis in his paper.
+
+\subsubsection*{8.3 Vinay (The Admin)}
+
+Vinay finishes a 2-hour experiment run. The files are in \textbackslash{}texttt{/experiments/2026-07-14\textbackslash{}\_10-20-00\textbackslash{}\_climate\textbackslash{}\_volatility\textbackslash{}\_test/}.
+
+He goes to \textbackslash{}texttt{/admin/upload}.
+
+He drags the experiment folder (or zip) onto the drop zone.
+
+Validation passes in 3 seconds.
+
+A preview renders: the system auto-extracted the title, suggested three tags, and populated all metric cards from \textbackslash{}texttt{summary.json}.
+
+Vinay writes a 150-word abstract describing the question and key finding.
+
+He clicks "Publish."
+
+The civilization appears immediately at its permanent URL.
+
+\textbackslash{}textbf{Total time from finished experiment to published result:} Under 90 seconds.
+
+\noindent\rule{\textwidth}{0.4pt}
+
+\subsection*{Part IX  Tone of Voice}
+
+\subsubsection*{9.1 The Genesis Voice}
+
+Genesis speaks like a field researcher who has spent months alone in a simulation and come back with something real to report.
+
+\textbackslash{}textbf{Precise.} Not vague. Not hedged to the point of meaninglessness.
+\textbackslash{}textbf{Curious.} Not conclusive. Not overconfident.
+\textbackslash{}textbf{Personal.} Not corporate. Not institutional.
+\textbackslash{}textbf{Understated.} Let the data be dramatic. The prose does not need to be.
+
+\subsubsection*{9.2 Voice Examples}
+
+\begin{longtable}{ll}
+\toprule
+Bad (Dashboard Voice) & Good (Genesis Voice) \\
+\midrule
+\endhead
+"Experiment results show high mortality rates." & "All 18 agents died within 7,970 ticks. None survived." \\
+"Colony performance metrics indicate Alpha dominance." & "Colony Alpha outlasted the others by 4,000 ticks. Geography, not genetics, likely explains this." \\
+"Simulation parameters were configured for hostile conditions." & "Scarcity was set to 5  five times the normal resource density. Most agents died of thirst." \\
+"Users can explore agent behavior data." & "Watch Agent \#3 walk into a river cell and die of dehydration. The planner was committed to a 14-tick path. It never interrupted." \\
+\bottomrule
+\end{longtable}
+
+\subsubsection*{9.3 What to Avoid}
+
+\begin{itemize}
+  \item \textbackslash{}textbf{Anthropomorphism without data:} Never say agents "decided" or "felt" without telemetry evidence.
+  \item \textbackslash{}textbf{Hype language:} "Revolutionary," "unprecedented," "game-changing." Genesis doesn't need these words.
+  \item \textbackslash{}textbf{Passive hedging:} "Results may suggest..."  Be direct. If the data is ambiguous, say it's ambiguous and say why.
+  \item \textbackslash{}textbf{Corporate plural:} "We believe..."  Genesis is Vinay's project. "I" is allowed and appropriate in Field Notes.
+\end{itemize}
+
+\noindent\rule{\textwidth}{0.4pt}
+
+\textbackslash{}textit{End of GPS v1.0}
+
+\noindent\rule{\textwidth}{0.4pt}
+\textbackslash{}textbf{Document produced by Antigravity AI, July 2026}
+\textbackslash{}textbf{Companion: GDS  GES  GCR}
+
+\end{document}

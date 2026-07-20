@@ -1,0 +1,85 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{top=1in, bottom=1in, left=1in, right=1in}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{longtable}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=purple,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle=ADR-006: Narrative First (Narrative Before Analytics),
+    pdfpagemode=FullScreen,
+}
+
+\definecolor{codegray}{rgb}{0.96,0.96,0.96}
+\definecolor{codeborder}{rgb}{0.85,0.85,0.85}
+\definecolor{commentgreen}{rgb}{0.12,0.55,0.22}
+\definecolor{keywordblue}{rgb}{0.1,0.2,0.8}
+
+\lstset{
+    backgroundcolor=\color{codegray},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    commentstyle=\color{commentgreen},
+    frame=single,
+    rulecolor=\color{codeborder},
+    keepspaces=true,
+    keywordstyle=\color{keywordblue},
+    language=Python,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\small ADR-006: Narrative First (Narrative Before Analytics)}
+\lhead{\small Project Genesis}
+\cfoot{\thepage}
+
+\title{\textbf{ADR-006: Narrative First (Narrative Before Analytics)}}
+\author{Project Genesis Research Repository}
+\date{\small Generated: July 2026}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+\newpage
+\section*{ADR-006: Narrative First (Narrative Before Analytics)}
+
+\subsection*{Context}
+When designing research portals, it is common to prioritize complex dashboards and visual data plots first. However, Genesis is a storytelling simulation of emergent behaviors. A pure dashboard risks obscuring the human-readable chronicle of events under tables and charts, making experiments feel like simple database entries rather than history.
+
+\subsection*{Decision}
+We establish a rule: \textbackslash{}textbf{Evidence must support the narrative, not replace it.}
+\begin{itemize}
+  \item All Civilization Records must present the narrative (Question, Hypothesis, Outcome, and Chronicle) prior to showing analytical graphs.
+  \item Analytical visualizations are decoupled into the Observatory mode.
+  \item Users must understand \textbackslash{}textit{what} happened through narrative before exploring \textbackslash{}textit{why} it happened through charts.
+\end{itemize}
+
+\subsection*{Consequences}
+\begin{itemize}
+  \item Preserves the distinct storytelling-first identity of Genesis.
+  \item Simplifies the initial layout of Civilization Records.
+  \item Prevents the interface from becoming cluttered like a corporate business intelligence tool.
+\end{itemize}
+
+\end{document}

@@ -57,6 +57,8 @@ OVERRIDE_DISASTERS_ENABLED   = None   # True / False / None
 OVERRIDE_DISPUTES_ENABLED    = None   # True / False / None
 OVERRIDE_HEALING_SPEED_MULT  = None   # float or None
 OVERRIDE_MUTATION_RATE       = None   # float or None
+OVERRIDE_PERCEPTION_AGENT_LIMIT = None # int or None (8, 16, 32 etc.)
+
 
 # Full checkpoint save settings for this resume session
 FULL_CHECKPOINT_INTERVAL = 36000    # Save every N ticks (36000 = every 100 years)
@@ -142,6 +144,11 @@ def main():
         saved_config["mutation_rate"] = world.mutation_rate
         print(f"  Override: mutation_rate → {world.mutation_rate}")
 
+    if OVERRIDE_PERCEPTION_AGENT_LIMIT is not None:
+        world.perception_agent_limit = int(OVERRIDE_PERCEPTION_AGENT_LIMIT)
+        saved_config["perception_agent_limit"] = world.perception_agent_limit
+        print(f"  Override: perception_agent_limit → {world.perception_agent_limit}")
+
     # Restore world config attributes (in case they're missing from older checkpoints)
     world.max_population         = int(saved_config.get("max_population",         200))
     world.mutation_rate          = float(saved_config.get("mutation_rate",         0.05))
@@ -151,9 +158,11 @@ def main():
     world.healing_speed_mult     = float(saved_config.get("healing_speed_mult",    1.0))
     world.shelter_build_speed_mult = float(saved_config.get("shelter_build_speed_mult", 1.0))
     world.shelter_search_dist    = float(saved_config.get("shelter_search_dist",   100.0))
+    world.perception_agent_limit = saved_config.get("perception_agent_limit",       None)
     world.spawn_mode             = str(saved_config.get("spawn_mode",              "fixed"))
     world.colony_spawn_locations = saved_config.get("colony_spawn_locations",      {})
     world.targeted_biomes        = saved_config.get("targeted_biomes",             [])
+
 
     # Phase 8 ablation flags
     world.ablation = saved_config.get("ablation", {

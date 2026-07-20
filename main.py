@@ -505,7 +505,8 @@ def save_simulation_data(world, experiment_name, scarcity_val, filepath="simulat
         "survivors": f"{alive_count}/{total_agents}",
         "avg_discoveries": round(avg_discoveries, 1),
         "avg_radius": round(avg_radius, 1),
-        "tests_passed": True
+        "tests_passed": True,
+        "folder_name": os.path.basename(world.exp_folder) if hasattr(world, "exp_folder") and world.exp_folder else None
     }
     
     if run_metadata is not None:

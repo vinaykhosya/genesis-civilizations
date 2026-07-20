@@ -1,0 +1,853 @@
+# Genesis Design System (GDS)
+## Version 1.0 — Visual Language, Tokens & Components
+
+**Project:** Project Genesis — Agentic Artificial Life & Evolutionary Biology Simulator
+**Document Role:** Visual design system — colors, typography, animations, components
+**Companion Documents:** GPS (Product) · GES (Engineering) · GCR (Content & Research)
+**Status:** Living document — extend as new components are built
+
+---
+
+> "Design is not decoration. It is the architecture of experience."
+
+---
+
+## Part I — Design Philosophy
+
+### 1.1 The Visual Identity of Genesis
+
+Genesis exists at the intersection of **science and wilderness**.
+
+It is a research tool — precise, structured, evidence-based.
+It is also a window into a world — dramatic, alive, unknowable.
+
+The design must hold both truths simultaneously.
+
+The result is a visual language built from three sources:
+
+1. **Space and deep time.** Dark backgrounds. Sparse light. Long durations. The feeling of watching something enormous from a distance.
+
+2. **Bioluminescence.** Teal accents. Green-to-teal gradients. The visual register of life in dark environments — organisms that glow because they have to.
+
+3. **Scientific instruments.** Monospace data. Grid-aligned layouts. Precise labeling. The aesthetic of a spectrometer readout or a seismograph.
+
+These three sources produce a visual language that is simultaneously beautiful and rigorous.
+
+### 1.2 One Mode Only
+
+Genesis is **dark mode only**.
+
+Not because dark mode is fashionable.
+
+Because you do not look at stars in daylight. Because laboratory instruments are dark. Because the world in Genesis is rendered on a dark canvas. The light elements — the teal rivers, the amber colony, the red death events — only sing against darkness.
+
+There is no light mode. There is no toggle.
+
+---
+
+## Part II — Color System
+
+### 2.1 Background Stack
+
+```css
+/* These four layers create the depth hierarchy of the interface */
+
+--bg-void:      hsl(222, 30%, 4%);    /* #070A10 — absolute dark, page background */
+--bg-primary:   hsl(222, 28%, 7%);    /* #0C1019 — primary surface */
+--bg-secondary: hsl(222, 24%, 10%);   /* #141824 — slightly elevated cards */
+--bg-surface:   hsl(222, 20%, 14%);   /* #1C2130 — elevated elements (inputs, etc.) */
+--bg-elevated:  hsl(222, 18%, 18%);   /* #242C3D — highest elevation (modals) */
+```
+
+**Rule:** Each surface level is exactly one stop above the previous. Never skip levels.
+
+### 2.2 Accent — Bioluminescent Teal
+
+```css
+--accent-50:   hsl(172, 80%, 95%);   /* Near white teal — for text on teal bg */
+--accent-100:  hsl(172, 75%, 88%);
+--accent-200:  hsl(172, 75%, 75%);
+--accent-300:  hsl(172, 75%, 62%);
+--accent-400:  hsl(172, 80%, 52%);   /* Main accent — use for CTAs, active states */
+--accent-500:  hsl(172, 80%, 45%);   /* Hover state */
+--accent-600:  hsl(172, 70%, 36%);   /* Pressed state */
+--accent-700:  hsl(172, 60%, 28%);   /* Borders, dim accents */
+--accent-800:  hsl(172, 50%, 18%);   /* Subtle accent backgrounds */
+--accent-900:  hsl(172, 40%, 10%);   /* Very subtle accent tint */
+
+--accent-glow-sm:  0 0 12px hsl(172, 80%, 48%, 0.20);
+--accent-glow-md:  0 0 24px hsl(172, 80%, 48%, 0.25);
+--accent-glow-lg:  0 0 48px hsl(172, 80%, 48%, 0.30);
+```
+
+### 2.3 Colony Colors
+
+These match the simulation's colony color system exactly. Never change them — they must be consistent between the visualizer and the website.
+
+```css
+--colony-alpha:       hsl(210, 85%, 58%);    /* Cobalt Blue */
+--colony-alpha-dim:   hsl(210, 60%, 30%);
+--colony-alpha-glow:  hsl(210, 85%, 58%, 0.20);
+
+--colony-beta:        hsl(35,  88%, 58%);    /* Warm Amber */
+--colony-beta-dim:    hsl(35,  60%, 30%);
+--colony-beta-glow:   hsl(35,  88%, 58%, 0.20);
+
+--colony-gamma:       hsl(280, 78%, 63%);    /* Violet */
+--colony-gamma-dim:   hsl(280, 55%, 30%);
+--colony-gamma-glow:  hsl(280, 78%, 63%, 0.20);
+
+--colony-delta:       hsl(140, 68%, 52%);    /* Emerald Green */
+--colony-delta-dim:   hsl(140, 50%, 26%);
+--colony-delta-glow:  hsl(140, 68%, 52%, 0.20);
+```
+
+### 2.4 Semantic Event Colors
+
+```css
+--event-birth:          hsl(120, 58%, 52%);    /* Verdant green */
+--event-death:          hsl(0,   68%, 52%);    /* Blood red */
+--event-milestone:      hsl(45,  88%, 58%);    /* Gold */
+--event-disaster:       hsl(18,  88%, 52%);    /* Volcanic orange */
+--event-dispute:        hsl(300, 58%, 58%);    /* Electric violet */
+--event-climate:        hsl(195, 75%, 52%);    /* Ice blue */
+--event-extinction:     hsl(0,   50%, 38%);    /* Dark rust — muted for gravity */
+
+/* Dot shadows for event markers in timeline */
+--event-birth-shadow:   0 0 6px hsl(120, 58%, 52%, 0.5);
+--event-death-shadow:   0 0 6px hsl(0,   68%, 52%, 0.5);
+--event-milestone-shadow: 0 0 6px hsl(45, 88%, 58%, 0.5);
+```
+
+### 2.5 Biome Colors
+
+```css
+/* Match visualizer.html palette exactly */
+--biome-ocean:          hsl(207, 75%, 28%);
+--biome-glacier:        hsl(200, 35%, 82%);
+--biome-tundra:         hsl(200, 22%, 60%);
+--biome-taiga:          hsl(142, 38%, 30%);
+--biome-temperate:      hsl(118, 48%, 36%);
+--biome-grassland:      hsl(78,  58%, 42%);
+--biome-desert:         hsl(36,  65%, 50%);
+--biome-rainforest:     hsl(152, 68%, 26%);
+--biome-lake:           hsl(202, 72%, 48%);
+```
+
+### 2.6 Text Colors
+
+```css
+--text-primary:    hsl(220, 18%, 92%);    /* Near white — main body */
+--text-secondary:  hsl(220, 14%, 68%);    /* Muted — secondary info */
+--text-tertiary:   hsl(220, 10%, 48%);    /* Very muted — labels, placeholders */
+--text-accent:     hsl(172, 80%, 52%);    /* Teal — links, highlights */
+--text-inverse:    hsl(222, 28%, 7%);     /* Dark — text on teal buttons */
+--text-danger:     hsl(0,   70%, 60%);    /* Red — errors */
+--text-warning:    hsl(38,  85%, 58%);    /* Amber — warnings */
+--text-success:    hsl(142, 65%, 52%);    /* Green — success states */
+```
+
+### 2.7 Border Colors
+
+```css
+--border-subtle:   hsl(222, 20%, 18%);    /* Barely visible — structural dividers */
+--border-default:  hsl(222, 20%, 24%);    /* Default card/input borders */
+--border-hover:    hsl(222, 20%, 32%);    /* Hover state borders */
+--border-accent:   hsl(172, 60%, 32%);    /* Teal borders (active states, focus) */
+--border-danger:   hsl(0,   60%, 40%);    /* Error state borders */
+```
+
+### 2.8 Gradients
+
+```css
+/* Primary CTA gradient */
+--gradient-cta: linear-gradient(135deg,
+  hsl(172, 80%, 42%) 0%,
+  hsl(192, 80%, 38%) 100%);
+
+/* Card accent top border gradient (applied as border-top) */
+--gradient-card-top: linear-gradient(90deg,
+  hsl(172, 80%, 48%) 0%,
+  hsl(192, 70%, 45%) 50%,
+  transparent 100%);
+
+/* World map temperature gradient */
+--gradient-temperature: linear-gradient(90deg,
+  hsl(230, 80%, 35%) 0%,    /* Cold — arctic blue */
+  hsl(195, 70%, 50%) 25%,   /* Cool — cerulean */
+  hsl(55,  70%, 52%) 60%,   /* Warm — amber */
+  hsl(15,  80%, 50%) 100%); /* Hot — red-orange */
+
+/* World map elevation gradient */
+--gradient-elevation: linear-gradient(90deg,
+  hsl(207, 75%, 20%) 0%,    /* Deep ocean */
+  hsl(207, 60%, 35%) 28%,   /* Shallow water */
+  hsl(118, 40%, 32%) 32%,   /* Lowland green */
+  hsl(78,  40%, 40%) 50%,   /* Mid-elevation */
+  hsl(35,  30%, 50%) 70%,   /* Highland */
+  hsl(0,   0%,  75%) 100%); /* Snow cap */
+```
+
+---
+
+## Part III — Typography
+
+### 3.1 Font Stack
+
+```css
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+--font-display:  'Space Grotesk', system-ui, -apple-system, sans-serif;
+--font-body:     'Inter', system-ui, -apple-system, sans-serif;
+--font-mono:     'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+```
+
+**Space Grotesk** — All headings, UI labels, navigation, CTA buttons. Its slightly geometric, wide letterform reads as scientific without being cold.
+
+**Inter** — All body copy, descriptions, abstracts. Maximally readable at small sizes.
+
+**JetBrains Mono** — All data values, IDs, tick counts, gene values, config params, code blocks. Never use a proportional font for numbers that align vertically.
+
+### 3.2 Type Scale
+
+```css
+--text-2xs:  0.625rem;   /* 10px — data labels, legend text */
+--text-xs:   0.75rem;    /* 12px — captions, secondary metadata */
+--text-sm:   0.875rem;   /* 14px — secondary body, UI labels */
+--text-base: 1rem;       /* 16px — primary body copy */
+--text-lg:   1.125rem;   /* 18px — lead text, card descriptions */
+--text-xl:   1.25rem;    /* 20px — card titles, section labels */
+--text-2xl:  1.5rem;     /* 24px — page section headers */
+--text-3xl:  1.875rem;   /* 30px — page titles */
+--text-4xl:  2.25rem;    /* 36px — major section heroes */
+--text-5xl:  3rem;       /* 48px — landing hero text */
+--text-6xl:  3.75rem;    /* 60px — ultra-large display (sparingly) */
+```
+
+### 3.3 Font Weight Usage
+
+| Use Case | Font | Weight |
+|---|---|---|
+| Page title | Space Grotesk | 700 |
+| Section heading (h2) | Space Grotesk | 600 |
+| Card title | Space Grotesk | 600 |
+| Navigation links | Space Grotesk | 500 |
+| Body copy | Inter | 400 |
+| Secondary body | Inter | 400 |
+| Lead paragraph | Inter | 400 (but text-lg) |
+| Button label | Space Grotesk | 600 |
+| Metric value | JetBrains Mono | 500 |
+| Data label | Inter | 500 |
+| Code/config | JetBrains Mono | 400 |
+| Phase badge | Space Grotesk | 700 |
+
+### 3.4 Line Heights
+
+```css
+--leading-none:     1;
+--leading-tight:    1.2;   /* Headlines */
+--leading-snug:     1.35;  /* Card titles */
+--leading-normal:   1.5;   /* UI elements */
+--leading-relaxed:  1.7;   /* Body copy */
+--leading-loose:    2.0;   /* Spacious reading (monograph) */
+```
+
+### 3.5 Letter Spacing
+
+```css
+--tracking-tighter: -0.03em;   /* Large display headings */
+--tracking-tight:   -0.01em;   /* Regular headings */
+--tracking-normal:  0;
+--tracking-wide:    0.04em;    /* UI labels, phase badges */
+--tracking-wider:   0.08em;    /* All-caps micro-labels */
+--tracking-widest:  0.14em;    /* Section category labels (e.g. "EXPERIMENT") */
+```
+
+### 3.6 Prose Styles (Research Documents)
+
+For the monograph, architecture doc, lab notebook, and thesis pages:
+
+```css
+.prose {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading-loose);
+  color: var(--text-primary);
+  max-width: var(--content-width);   /* 800px */
+
+  h1 { font: 700 var(--text-4xl)/var(--leading-tight) var(--font-display); margin-bottom: 2rem; }
+  h2 { font: 600 var(--text-2xl)/var(--leading-tight) var(--font-display); margin-top: 3rem; margin-bottom: 1rem; }
+  h3 { font: 600 var(--text-xl)/var(--leading-snug) var(--font-display); margin-top: 2rem; }
+
+  p    { margin-bottom: 1.5rem; }
+  code { font-family: var(--font-mono); font-size: 0.9em; background: var(--bg-elevated); padding: 0.1em 0.4em; border-radius: var(--radius-sm); }
+  pre  { background: var(--bg-elevated); border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: 1.5rem; overflow-x: auto; }
+
+  blockquote {
+    border-left: 3px solid var(--accent-700);
+    padding-left: 1.5rem;
+    color: var(--text-secondary);
+    font-style: italic;
+  }
+
+  table { width: 100%; border-collapse: collapse; }
+  th, td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border-subtle); text-align: left; }
+  th { color: var(--text-secondary); font: 500 var(--text-sm)/1 var(--font-body); letter-spacing: var(--tracking-wider); text-transform: uppercase; }
+}
+```
+
+---
+
+## Part IV — Spacing & Layout
+
+### 4.1 Spacing Scale (4px base unit)
+
+```css
+--space-0:   0;
+--space-px:  1px;
+--space-0-5: 0.125rem;  /* 2px */
+--space-1:   0.25rem;   /* 4px */
+--space-2:   0.5rem;    /* 8px */
+--space-3:   0.75rem;   /* 12px */
+--space-4:   1rem;      /* 16px */
+--space-5:   1.25rem;   /* 20px */
+--space-6:   1.5rem;    /* 24px */
+--space-7:   1.75rem;   /* 28px */
+--space-8:   2rem;      /* 32px */
+--space-10:  2.5rem;    /* 40px */
+--space-12:  3rem;      /* 48px */
+--space-14:  3.5rem;    /* 56px */
+--space-16:  4rem;      /* 64px */
+--space-20:  5rem;      /* 80px */
+--space-24:  6rem;      /* 96px */
+--space-32:  8rem;      /* 128px */
+```
+
+### 4.2 Border Radius
+
+```css
+--radius-none: 0;
+--radius-sm:   3px;
+--radius-md:   6px;
+--radius-lg:   10px;
+--radius-xl:   14px;
+--radius-2xl:  20px;
+--radius-3xl:  28px;
+--radius-full: 9999px;   /* Pills, fully circular */
+```
+
+### 4.3 Layout Grid
+
+```css
+--max-width:       1280px;   /* Page container */
+--content-width:   800px;    /* Prose content */
+--sidebar-width:   240px;    /* Experiment detail sidebar */
+--grid-gap:        1.5rem;   /* 24px — standard grid gap */
+--grid-gap-sm:     1rem;     /* 16px — tight grids */
+--grid-gap-lg:     2rem;     /* 32px — loose grids */
+```
+
+### 4.4 Responsive Breakpoints
+
+```css
+/* Mobile-first approach */
+--bp-xs:  360px;    /* Small phones */
+--bp-sm:  640px;    /* Large phones, small tablets */
+--bp-md:  768px;    /* Tablets */
+--bp-lg:  1024px;   /* Small laptops */
+--bp-xl:  1280px;   /* Desktops */
+--bp-2xl: 1536px;   /* Large screens */
+```
+
+### 4.5 Mobile Rules
+
+- Sidebar becomes bottom tab bar (horizontal scroll) on < `--bp-lg`
+- Replay canvas fills full viewport width on mobile
+- World map uses touch pan/pinch instead of mouse
+- Timeline events stack full-width
+- Metric cards: 2 columns on mobile, 4 on desktop
+- Archive grid: 1 column on mobile, 2 on tablet, 3 on desktop
+
+---
+
+## Part V — Effects & Surfaces
+
+### 5.1 Glass Morphism
+
+Used on: cards, sidebars, modals, tooltip panels, the agent inspector.
+
+```css
+.glass {
+  background: hsl(222, 24%, 10%, 0.75);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid hsl(222, 20%, 22%);
+  border-top-color: hsl(222, 20%, 28%);   /* Subtle top highlight */
+}
+
+.glass-strong {
+  background: hsl(222, 24%, 8%, 0.88);
+  backdrop-filter: blur(32px) saturate(180%);
+}
+```
+
+### 5.2 Shadows
+
+```css
+--shadow-none: none;
+--shadow-sm:   0 1px 2px hsl(222, 40%, 2%, 0.40),
+               0 1px 4px hsl(222, 40%, 2%, 0.20);
+--shadow-md:   0 4px 8px  hsl(222, 40%, 2%, 0.45),
+               0 2px 16px hsl(222, 40%, 2%, 0.25);
+--shadow-lg:   0 8px 16px hsl(222, 40%, 2%, 0.50),
+               0 4px 32px hsl(222, 40%, 2%, 0.30);
+--shadow-xl:   0 16px 32px hsl(222, 40%, 2%, 0.55),
+               0 8px 64px  hsl(222, 40%, 2%, 0.35);
+
+/* Accent glow shadows */
+--shadow-accent-sm: 0 0 12px hsl(172, 80%, 48%, 0.18);
+--shadow-accent-md: 0 0 24px hsl(172, 80%, 48%, 0.22);
+--shadow-accent-lg: 0 0 48px hsl(172, 80%, 48%, 0.28);
+```
+
+### 5.3 Elevation System
+
+| Elevation | Surface | Shadow | Blur | Use Case |
+|---|---|---|---|---|
+| 0 | `--bg-void` | none | none | Page background |
+| 1 | `--bg-primary` | `shadow-sm` | none | Main content area |
+| 2 | `--bg-secondary` | `shadow-md` | none | Cards, panels |
+| 3 | `--bg-surface` | `shadow-lg` | glass | Dropdowns, tooltips |
+| 4 | `--bg-elevated` | `shadow-xl` | glass-strong | Modals, overlays |
+| 5 | Accent | `shadow-accent-md` | none | Featured, active, selected |
+
+---
+
+## Part VI — Animation System
+
+### 6.1 Easing Functions
+
+```css
+--ease-linear:      linear;
+--ease-in:          cubic-bezier(0.4, 0, 1, 1);
+--ease-out:         cubic-bezier(0, 0, 0.2, 1);
+--ease-in-out:      cubic-bezier(0.4, 0, 0.2, 1);
+
+/* Genesis-specific easings */
+--ease-out-quart:   cubic-bezier(0.25, 1, 0.5, 1);        /* Smooth, confident */
+--ease-spring:      cubic-bezier(0.34, 1.56, 0.64, 1);    /* Springy — microinteractions */
+--ease-overshoot:   cubic-bezier(0.68, -0.55, 0.27, 1.55);/* Playful overshoot */
+--ease-slow-out:    cubic-bezier(0.16, 1, 0.3, 1);        /* Dramatic reveal */
+```
+
+### 6.2 Duration Scale
+
+```css
+--duration-instant:  50ms;    /* State flashes, immediate feedback */
+--duration-fast:     100ms;   /* Hover states */
+--duration-normal:   200ms;   /* Most transitions */
+--duration-moderate: 300ms;   /* Panel slides, dropdown opens */
+--duration-slow:     500ms;   /* Page section reveals */
+--duration-slower:   700ms;   /* Hero elements, major transitions */
+--duration-page:     1000ms;  /* Full-page transitions */
+```
+
+### 6.3 Micro-interaction Specifications
+
+Every interactive element is specified here. No guessing.
+
+**Button — primary (teal)**
+```
+rest:    bg=accent-400, shadow=none, scale=1.0
+hover:   bg=accent-300, shadow=accent-sm, scale=1.02  [150ms ease-out-quart]
+active:  bg=accent-600, shadow=none,     scale=0.97   [100ms ease-in]
+focus:   ring: 2px accent-400 offset 2px
+```
+
+**Button — ghost**
+```
+rest:    bg=transparent, border=border-default, color=text-secondary
+hover:   bg=bg-surface, border=border-hover, color=text-primary  [150ms ease-out]
+active:  bg=bg-elevated  [100ms ease-in]
+```
+
+**Experiment Card**
+```
+rest:    bg=bg-secondary, border=border-subtle, shadow=shadow-sm, translateY=0
+hover:   bg=bg-surface, border=border-hover, shadow=shadow-md, translateY=-3px  [200ms ease-out-quart]
+         thumbnail: scale=1.04 (inner only, parent overflow:hidden)              [400ms ease-out-quart]
+         world preset badge: color transitions to accent                          [150ms ease-out]
+active:  translateY=-1px, shadow=shadow-sm  [100ms ease-in]
+featured: border-top: 2px solid accent-400 (always on)
+```
+
+**Timeline Event Row**
+```
+rest:    opacity=1, pl=var(--space-4)
+hover:   bg=hsl(222,20%,14%,0.5), pl=var(--space-5) (left nudge)  [150ms ease-out]
+         event dot: scale=1.3, glow appears  [200ms ease-spring]
+active:  bg=bg-surface
+```
+
+**Tab (sidebar navigation)**
+```
+rest:    color=text-secondary, bg=transparent
+hover:   color=text-primary, bg=hsl(222,20%,14%)  [100ms ease-out]
+active:  color=accent-400, bg=accent-900
+         left border: 2px solid accent-400
+```
+
+**Layer Toggle Chip (world map)**
+```
+rest:    bg=bg-elevated, color=text-secondary, border=border-default
+hover:   bg=bg-surface, color=text-primary  [150ms ease-out]
+active:  bg=accent-900, color=accent-300, border=accent-700
+toggle:  layer fades in/out on canvas: 200ms ease-out
+```
+
+**World Map Agent Dot**
+```
+render:  radius=3px baseline; filled with colony color
+         opacity = agent.health / 100  (full health = fully opaque)
+move:    lerp between tick positions (linear, per-frame)
+hover:   radius expands to 6px  [150ms ease-spring]
+         inspector panel slides in from right  [300ms ease-out-quart]
+death:   dot flashes white (50ms), then red (200ms), then fades to 0 opacity (300ms)
+birth:   dot appears at parent midpoint, scale 0→1  [300ms ease-spring]
+```
+
+**Metric Counter (on viewport enter)**
+```
+trigger: IntersectionObserver, 0.1 threshold
+effect:  value counts from 0 to final value
+easing:  ease-out-quart applied to the count interpolation
+duration: 800ms
+```
+
+**Search Bar**
+```
+rest:    width=200px, bg=bg-secondary, border=border-default
+focus:   width=320px (animated), border=border-accent, shadow=accent-sm  [250ms ease-out-quart]
+results: slide in from below, opacity 0→1  [200ms ease-out]
+```
+
+**Modal**
+```
+open:    backdrop fades in (bg:hsl(222,40%,2%,0.7)) [250ms ease-out]
+         panel: scale 0.95→1.0, opacity 0→1  [300ms ease-out-quart]
+close:   reverse, both  [200ms ease-in]
+```
+
+**Toast Notification**
+```
+enter:   slide up from bottom-right (translateY: 80px→0), opacity 0→1  [300ms ease-spring]
+auto-exit: after 4000ms, slide down + fade  [200ms ease-in]
+hover:   auto-exit timer pauses
+```
+
+**Replay Controls**
+```
+play/pause: icon morphs with SVG path animation  [200ms ease-in-out]
+speed:  click cycles through 0.5×→1×→2×→4× with badge update  [100ms]
+tick counter: monospace, updates each rendered frame
+scrubber: drag to seek — canvas re-renders at target tick on mouseup
+```
+
+### 6.4 Page-Level Transitions
+
+```
+Route change:
+  outgoing: opacity 1→0, translateY 0→(-8px)  [200ms ease-in]
+  incoming: opacity 0→1, translateY (8px)→0   [300ms ease-out]
+  total: 500ms (overlap at 200ms)
+
+Section reveals (scroll):
+  trigger: IntersectionObserver, threshold 0.15
+  effect: opacity 0→1, translateY 20px→0  [500ms ease-slow-out]
+  stagger: 80ms between sibling elements
+```
+
+### 6.5 Canvas Animation — Replay Renderer
+
+```javascript
+// Per-frame rendering contract
+function renderFrame(tick, agents, worldLayers, config) {
+  // 1. Clear canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // 2. Render base layer (biome map — pre-rendered ImageData, don't recompute)
+  ctx.putImageData(biomeCacheImageData, 0, 0);
+
+  // 3. Render optional overlay layers (rivers, resources, habitability)
+  if (layers.rivers)      renderRiverOverlay(ctx, worldState);
+  if (layers.habitability) renderHeatmap(ctx, worldState.habitability, 0.4);
+
+  // 4. Render death density (persistent death heatmap)
+  if (layers.deaths) renderHeatmap(ctx, worldState.death_density, 0.35);
+
+  // 5. Render agents
+  for (const agent of agents) {
+    const lerped = lerpPosition(agent.prevPos, agent.pos, frameProgress);
+    const alpha  = Math.max(0.2, agent.health / 100);
+    const radius = agent.hovered ? 6 : 3;
+    const color  = COLONY_COLORS[agent.colony_id];
+
+    ctx.beginPath();
+    ctx.arc(lerped.x, lerped.y, radius, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${alpha})`;
+    ctx.fill();
+
+    // Death flash animation
+    if (agent.deathFlash > 0) {
+      ctx.fillStyle = `rgba(255, 255, 255, ${agent.deathFlash})`;
+      ctx.fill();
+      agent.deathFlash = Math.max(0, agent.deathFlash - 0.08);
+    }
+  }
+
+  // 6. Render hovered agent highlight ring
+  if (hoveredAgent) {
+    ctx.strokeStyle = `rgba(255, 255, 255, 0.8)`;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(hoveredAgent.x, hoveredAgent.y, 8, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+}
+```
+
+---
+
+## Part VII — Icon Vocabulary
+
+Genesis uses a minimal, consistent icon set. No icon packs. Custom SVGs where needed.
+
+### 7.1 Event Type Icons
+
+| Event | Icon | Color |
+|---|---|---|
+| Birth | `◎` (expanding ring) | `--event-birth` |
+| Death | `✕` (cross) | `--event-death` |
+| Milestone | `◆` (diamond) | `--event-milestone` |
+| Disaster | `▲` (triangle, storm) | `--event-disaster` |
+| Dispute | `⚔` (crossed swords, custom SVG) | `--event-dispute` |
+| Climate Epoch | `~` (wave) | `--event-climate` |
+| Extinction | `◼` (solid square, black) | `--event-extinction` |
+
+### 7.2 Navigation Icons
+
+| Page | Icon |
+|---|---|
+| Archive | Grid (2×2) |
+| Observatory | Circle with dot (eye symbol) |
+| Replay | Triangle (play) |
+| Chronicle | Vertical line with ticks |
+| World | Globe outline |
+| Lineage | Tree branch |
+| Genome | Helix (simplified) |
+| Conditions | Sliders |
+| Research | Book open |
+| Timeline | Horizontal line with dots |
+| Origin | Sparkle / star |
+
+### 7.3 Icon Rules
+
+- Size: 16px for inline, 20px for navigation, 24px for feature icons
+- Stroke: 1.5px, round linecap, round linejoin
+- Never fill + stroke together (pick one)
+- Never use icon fonts — always SVG
+
+---
+
+## Part VIII — Component Visual Specifications
+
+### 8.1 Navbar
+
+```
+Height: 60px
+Position: fixed top, full width
+Background: hsl(222, 28%, 6%, 0.85) + blur(20px)
+Border-bottom: 1px solid border-subtle (always present, not on-scroll)
+
+Left:
+  Genesis wordmark — Space Grotesk 700, 18px, accent-400
+  Phase badge — pill, bg:accent-900, color:accent-400, font:mono 11px
+
+Center:
+  Nav links — Space Grotesk 500, 14px, text-secondary
+  Hover: color→text-primary + underline (2px accent-700 bottom)
+  Active: color→accent-400 + underline (2px accent-400)
+  Gap between links: 32px
+
+Right:
+  GitHub icon — 20px, text-tertiary → text-primary on hover
+  "Command" button (admin only) — teal pill button, 500 font, 14px
+```
+
+### 8.2 Experiment/Civilization Card
+
+```
+Width: flexible (grid column)
+Border-radius: radius-xl (14px)
+Border: 1px solid border-subtle
+Background: bg-secondary
+
+Thumbnail area:
+  Height: 140px
+  overflow: hidden
+  Object: world.png, cover fit
+  Overlay: linear-gradient(to bottom, transparent 60%, bg-secondary 100%)
+
+Content area:
+  Padding: space-5 (20px)
+
+  ID row:
+    font: mono 11px, text-tertiary, tracking-wide
+    "EXP-20260627-XY81"
+
+  Title:
+    font: Space Grotesk 600, text-xl, text-primary
+    max 2 lines, line-clamp
+
+  Tags row:
+    Pills: bg-elevated, border-subtle, font:Inter 12px, text-secondary
+    Gap: space-2
+
+  Stats row (mono):
+    "18 agents · 7,970 ticks (22 yr)"
+    font: JetBrains Mono 12px, text-tertiary
+
+  Meta row:
+    "Published Jul 13, 2026"
+    font: Inter 12px, text-tertiary
+
+Featured variant:
+  border-top: 2px solid gradient-card-top
+  shadow: shadow-accent-sm
+```
+
+### 8.3 Metric Card
+
+```
+Padding: space-6
+Border-radius: radius-lg
+Background: bg-secondary
+Border: 1px solid border-subtle
+
+Label:
+  font: Inter 500, text-xs, text-tertiary, tracking-wider, uppercase
+
+Value:
+  font: JetBrains Mono 500, text-3xl, text-primary
+  margin-top: space-2
+
+Unit (if any):
+  font: Inter 400, text-sm, text-secondary, inline after value
+
+Delta (optional):
+  font: Inter 500, text-sm
+  color: green if positive, red if negative
+  "↑ +12% vs average"
+  margin-top: space-1
+
+Accent variant:
+  border-left: 3px solid accent-700
+
+Warning variant:
+  border-left: 3px solid event-disaster
+
+Critical variant:
+  border-left: 3px solid event-death
+```
+
+### 8.4 Phase Badge (Timeline)
+
+```
+Display: inline-flex, align-center
+Padding: space-1 space-3
+Border-radius: radius-full
+font: Space Grotesk 700, text-xs, tracking-wider, uppercase
+
+Phase 0-1: bg=hsl(222,20%,20%), color=text-secondary
+Phase 2-4: bg=hsl(195,30%,18%), color=hsl(195,70%,65%)
+Phase 5-7: bg=hsl(172,30%,14%), color=accent-300
+Phase 8-9: bg=accent-900, color=accent-400
+Phase 10+: bg=hsl(280,30%,18%), color=hsl(280,60%,70%)
+```
+
+### 8.5 Code/Config Viewer
+
+```
+Background: bg-elevated
+Border: 1px solid border-default
+Border-radius: radius-md
+Padding: space-6
+
+Header bar:
+  filename (mono, text-sm, text-secondary)
+  Copy button (right-aligned)
+
+Content:
+  font: JetBrains Mono 400, text-sm, leading-relaxed
+  JSON syntax highlighting:
+    keys:    accent-300
+    strings: hsl(45, 80%, 65%)    (amber)
+    numbers: hsl(195, 75%, 65%)   (light blue)
+    booleans: event-birth / event-death
+    null:    text-tertiary
+```
+
+---
+
+## Part IX — World Map Rendering Specification
+
+### 9.1 Canvas Setup
+
+```
+Resolution: 1:1 cell-to-pixel mapping (512×512 for a 512-wide world)
+Scaling: CSS transforms for zoom (not canvas resize — avoid re-render on zoom)
+Pan: transform-origin center, translate on drag
+Cursor: crosshair default, grab on pan
+```
+
+### 9.2 Layer Rendering Order
+
+```
+1. Ocean fill (biome-ocean, flat)
+2. Elevation gradient (if elevation layer active)
+3. Biome colors (if biome layer active) — per-cell fill
+4. River overlay: blue strokes, width=1, opacity proportional to flow
+5. Lake overlay: semi-transparent biome-lake fill
+6. Resource heatmap (if resource layer active) — color mapped per resource
+7. Habitability heatmap (if habitability layer active) — opacity 0.5
+8. Death density heatmap (if deaths layer active) — opacity 0.35
+9. Colony territory outlines (thin dashed, colony color, convex hull)
+10. Agent dots
+11. Hovered cell highlight (1px white border around cell)
+12. Selected agent ring
+```
+
+### 9.3 Hover Tooltip
+
+```
+Position: follows cursor (offset: +12px right, +8px below)
+Overflow: flip to left if near right edge
+
+Content:
+  [Biome name] — hsl(biome_color)
+  Elevation: 0.62
+  Rainfall:  823 mm/yr
+  Temperature: 12.4°C
+  Wood: ████░░ 0.68
+  Stone: ██░░░░ 0.31
+  Iron: ░░░░░░ 0.02
+  [Causal explainer text if available]
+```
+
+---
+
+*End of GDS v1.0*
+
+---
+**Document produced by Antigravity AI, July 2026**
+**Companion: GPS · GES · GCR**
