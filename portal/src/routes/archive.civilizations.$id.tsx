@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { fetchCivilizationData, updateExperimentData } from "@/lib/server-fns";
+import { fetchCivilizationData, updateExperimentData, checkAdminAuthStatus } from "@/lib/server-fns";
 import CivilizationCard, { ExperimentCardProps } from "@/components/civilization/CivilizationCard";
 import { BIOME_COLORS } from "@/lib/biome-palette";
 
@@ -317,8 +317,9 @@ function CivilizationRecordPage() {
   const [showColonies, setShowColonies] = useState<boolean>(true);
   const [activeTab, setActiveTab] = useState<
     "research" | "chronicle" | "observatory" | "technical"
-  >("research");
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+  // Admin status check (only logged-in admin sees research editing controls)
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
   // User identity state for pseudo-anonymous comments / peer reviews
   const [userId, setUserId] = useState<string>("User #1001");
@@ -367,6 +368,16 @@ function CivilizationRecordPage() {
       localStorage.setItem("genesis_user_id", uId);
     }
     setUserId(uId);
+
+    // Check if current user is logged in as Admin via Control page
+    checkAdminAuthStatus()
+      .then((res) => {
+        if (res && res.isAdmin) {
+          setIsAdmin(true);
+          setIsAuthorMode(true);
+        }
+      })
+      .catch(() => {});
 
     // Initial questions setup
     const defaultQs = getResearchQuestions();
@@ -477,18 +488,17 @@ function CivilizationRecordPage() {
 
   const handlePostComment = async () => {
     if (!newCommentText.trim()) return;
+    const postAsAuthor = isAdmin && isAuthorMode;
     const newComment = {
       id: Date.now().toString(),
-      author: isAuthorMode ? "Lead Researcher (Author)" : userId,
-      isAuthor: isAuthorMode,
+      author: postAsAuthor ? "Lead Researcher (Author)" : userId,
+      isAuthor: postAsAuthor,
       category: newCommentCategory,
       text: newCommentText.trim(),
       timestamp: new Date().toLocaleString(),
     };
 
     const updated = [newComment, ...comments];
-    setComments(updated);
-    setNewCommentText("");
     localStorage.setItem(`genesis_comments_${record.id}`, JSON.stringify(updated));
 
     setIsSyncing(true);
@@ -2012,24 +2022,26 @@ function CivilizationRecordPage() {
                         >
                           Key Findings
                         </h3>
-                        <button
-                          onClick={() => setIsEditingFindings(!isEditingFindings)}
-                          style={{
-                            background: "rgba(99, 102, 241, 0.15)",
-                            border: "1px solid rgba(99, 102, 241, 0.3)",
-                            color: "#a5b4fc",
-                            padding: "0.2rem 0.6rem",
-                            borderRadius: "4px",
-                            fontSize: "11px",
-                            fontWeight: 600,
-                            cursor: "pointer",
-                          }}
-                        >
-                          {isEditingFindings ? "Done" : "+ Add / Edit Findings"}
-                        </button>
+                        {isAdmin && (
+                          <button
+                            onClick={() => setIsEditingFindings(!isEditingFindings)}
+                            style={{
+                              background: "rgba(99, 102, 241, 0.15)",
+                              border: "1px solid rgba(99, 102, 241, 0.3)",
+                              color: "#a5b4fc",
+                              padding: "0.2rem 0.6rem",
+                              borderRadius: "4px",
+                              fontSize: "11px",
+                              fontWeight: 600,
+                              cursor: "pointer",
+                            }}
+                          >
+                            {isEditingFindings ? "Done" : "+ Add / Edit Findings"}
+                          </button>
+                        )}
                       </div>
 
-                      {isEditingFindings && (
+                      {isAdmin && isEditingFindings && (
                         <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1rem" }}>
                           <input
                             type="text"
@@ -2086,7 +2098,7 @@ function CivilizationRecordPage() {
                             }}
                           >
                             <span>{finding}</span>
-                            {isEditingFindings && (
+                            {isAdmin && isEditingFindings && (
                               <button
                                 onClick={() => handleDeleteFinding(idx)}
                                 style={{
@@ -2106,7 +2118,7 @@ function CivilizationRecordPage() {
                       </ul>
                     </div>
 
-                    {/* Abstract Monograph (Editable) */}
+                    {/* Abstract Monograph (Editable for Admin) */}
                     <div>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" }}>
                         <h3
@@ -2120,27 +2132,29 @@ function CivilizationRecordPage() {
                         >
                           Research Abstract
                         </h3>
-                        <button
-                          onClick={() => {
-                            if (isEditingAbstract) handleSaveAbstract();
-                            else setIsEditingAbstract(true);
-                          }}
-                          style={{
-                            background: isEditingAbstract ? "#10b981" : "rgba(0, 242, 254, 0.15)",
-                            border: `1px solid ${isEditingAbstract ? "#10b981" : "rgba(0, 242, 254, 0.3)"}`,
-                            color: isEditingAbstract ? "#fff" : "#6ee7b7",
-                            padding: "0.3rem 0.8rem",
-                            borderRadius: "6px",
-                            fontSize: "12px",
-                            fontWeight: 600,
-                            cursor: "pointer",
-                          }}
-                        >
-                          {isEditingAbstract ? "Save & Persist" : "✏️ Edit Abstract"}
-                        </button>
+                        {isAdmin && (
+                          <button
+                            onClick={() => {
+                              if (isEditingAbstract) handleSaveAbstract();
+                              else setIsEditingAbstract(true);
+                            }}
+                            style={{
+                              background: isEditingAbstract ? "#10b981" : "rgba(0, 242, 254, 0.15)",
+                              border: `1px solid ${isEditingAbstract ? "#10b981" : "rgba(0, 242, 254, 0.3)"}`,
+                              color: isEditingAbstract ? "#fff" : "#6ee7b7",
+                              padding: "0.3rem 0.8rem",
+                              borderRadius: "6px",
+                              fontSize: "12px",
+                              fontWeight: 600,
+                              cursor: "pointer",
+                            }}
+                          >
+                            {isEditingAbstract ? "Save & Persist" : "✏️ Edit Abstract"}
+                          </button>
+                        )}
                       </div>
 
-                      {isEditingAbstract ? (
+                      {isAdmin && isEditingAbstract ? (
                         <textarea
                           rows={5}
                           value={abstractText}
@@ -2324,24 +2338,26 @@ function CivilizationRecordPage() {
                         >
                           Hypothesis Inquiry (Research Questions)
                         </h3>
-                        <button
-                          onClick={() => setIsAddingQuestion(!isAddingQuestion)}
-                          style={{
-                            background: "rgba(0, 242, 254, 0.15)",
-                            border: "1px solid rgba(0, 242, 254, 0.3)",
-                            color: "#00f2fe",
-                            padding: "0.3rem 0.8rem",
-                            borderRadius: "6px",
-                            fontSize: "12px",
-                            fontWeight: 600,
-                            cursor: "pointer",
-                          }}
-                        >
-                          {isAddingQuestion ? "Cancel" : "+ Add Research Question"}
-                        </button>
+                        {isAdmin && (
+                          <button
+                            onClick={() => setIsAddingQuestion(!isAddingQuestion)}
+                            style={{
+                              background: "rgba(0, 242, 254, 0.15)",
+                              border: "1px solid rgba(0, 242, 254, 0.3)",
+                              color: "#00f2fe",
+                              padding: "0.3rem 0.8rem",
+                              borderRadius: "6px",
+                              fontSize: "12px",
+                              fontWeight: 600,
+                              cursor: "pointer",
+                            }}
+                          >
+                            {isAddingQuestion ? "Cancel" : "+ Add Research Question"}
+                          </button>
+                        )}
                       </div>
 
-                      {isAddingQuestion && (
+                      {isAdmin && isAddingQuestion && (
                         <div
                           style={{
                             background: "#080b11",
@@ -2504,7 +2520,7 @@ function CivilizationRecordPage() {
                   </div>
                 )}
 
-                {/* TAB 2: CHRONICLE (climate milestones & observations - Editable) */}
+                {/* TAB 2: CHRONICLE (climate milestones & observations - Editable for Admin) */}
                 {activeTab === "chronicle" && (
                   <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -2519,24 +2535,26 @@ function CivilizationRecordPage() {
                       >
                         Global Environmental Chronicle & Observations
                       </h3>
-                      <button
-                        onClick={() => setIsAddingEvent(!isAddingEvent)}
-                        style={{
-                          background: "rgba(0, 242, 254, 0.15)",
-                          border: "1px solid rgba(0, 242, 254, 0.3)",
-                          color: "#00f2fe",
-                          padding: "0.3rem 0.8rem",
-                          borderRadius: "6px",
-                          fontSize: "12px",
-                          fontWeight: 600,
-                          cursor: "pointer",
-                        }}
-                      >
-                        {isAddingEvent ? "Cancel" : "+ Add Observation / Milestone"}
-                      </button>
+                      {isAdmin && (
+                        <button
+                          onClick={() => setIsAddingEvent(!isAddingEvent)}
+                          style={{
+                            background: "rgba(0, 242, 254, 0.15)",
+                            border: "1px solid rgba(0, 242, 254, 0.3)",
+                            color: "#00f2fe",
+                            padding: "0.3rem 0.8rem",
+                            borderRadius: "6px",
+                            fontSize: "12px",
+                            fontWeight: 600,
+                            cursor: "pointer",
+                          }}
+                        >
+                          {isAddingEvent ? "Cancel" : "+ Add Observation / Milestone"}
+                        </button>
+                      )}
                     </div>
 
-                    {isAddingEvent && (
+                    {isAdmin && isAddingEvent && (
                       <div
                         style={{
                           background: "#080b11",
@@ -2930,38 +2948,56 @@ function CivilizationRecordPage() {
             <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: "1rem" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
                 <span style={{ fontSize: "12px", color: "var(--text-secondary)", fontWeight: 600 }}>Post As:</span>
-                <button
-                  type="button"
-                  onClick={() => setIsAuthorMode(false)}
-                  style={{
-                    background: !isAuthorMode ? "rgba(99, 102, 241, 0.2)" : "rgba(255,255,255,0.03)",
-                    border: `1px solid ${!isAuthorMode ? "#6366f1" : "var(--border-default)"}`,
-                    color: !isAuthorMode ? "#a5b4fc" : "var(--text-muted)",
-                    padding: "0.3rem 0.8rem",
-                    borderRadius: "20px",
-                    fontSize: "12px",
-                    fontWeight: 600,
-                    cursor: "pointer",
-                  }}
-                >
-                  🌐 {userId} (Peer Reviewer)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setIsAuthorMode(true)}
-                  style={{
-                    background: isAuthorMode ? "rgba(0, 242, 254, 0.2)" : "rgba(255,255,255,0.03)",
-                    border: `1px solid ${isAuthorMode ? "#00f2fe" : "var(--border-default)"}`,
-                    color: isAuthorMode ? "#00f2fe" : "var(--text-muted)",
-                    padding: "0.3rem 0.8rem",
-                    borderRadius: "20px",
-                    fontSize: "12px",
-                    fontWeight: 600,
-                    cursor: "pointer",
-                  }}
-                >
-                  ⚡ Lead Researcher (Author)
-                </button>
+                {isAdmin ? (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => setIsAuthorMode(false)}
+                      style={{
+                        background: !isAuthorMode ? "rgba(99, 102, 241, 0.2)" : "rgba(255,255,255,0.03)",
+                        border: `1px solid ${!isAuthorMode ? "#6366f1" : "var(--border-default)"}`,
+                        color: !isAuthorMode ? "#a5b4fc" : "var(--text-muted)",
+                        padding: "0.3rem 0.8rem",
+                        borderRadius: "20px",
+                        fontSize: "12px",
+                        fontWeight: 600,
+                        cursor: "pointer",
+                      }}
+                    >
+                      🌐 {userId} (Peer Reviewer)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setIsAuthorMode(true)}
+                      style={{
+                        background: isAuthorMode ? "rgba(0, 242, 254, 0.2)" : "rgba(255,255,255,0.03)",
+                        border: `1px solid ${isAuthorMode ? "#00f2fe" : "var(--border-default)"}`,
+                        color: isAuthorMode ? "#00f2fe" : "var(--text-muted)",
+                        padding: "0.3rem 0.8rem",
+                        borderRadius: "20px",
+                        fontSize: "12px",
+                        fontWeight: 600,
+                        cursor: "pointer",
+                      }}
+                    >
+                      ⚡ Lead Researcher (Author)
+                    </button>
+                  </>
+                ) : (
+                  <span
+                    style={{
+                      background: "rgba(99, 102, 241, 0.15)",
+                      border: "1px solid rgba(99, 102, 241, 0.3)",
+                      color: "#a5b4fc",
+                      padding: "0.3rem 0.8rem",
+                      borderRadius: "20px",
+                      fontSize: "12px",
+                      fontWeight: 600,
+                    }}
+                  >
+                    🌐 {userId} (Peer Reviewer)
+                  </span>
+                )}
               </div>
 
               <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>

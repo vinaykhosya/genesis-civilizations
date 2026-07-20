@@ -56,6 +56,17 @@ export const verifyAdminAuth = createServerFn({ method: "GET" }).handler(async (
   return { authenticated: true };
 });
 
+// 2b. Check admin status boolean (non-redirecting)
+export const checkAdminAuthStatus = createServerFn({ method: "GET" }).handler(async ({ request }) => {
+  const cookies = request.headers.get("cookie") || "";
+  const match = cookies.match(/genesis_admin_session=([^;]+)/);
+  const token = match ? match[1] : "";
+
+  if (!token) return { isAdmin: false };
+  const isValid = await verifySessionToken(token);
+  return { isAdmin: isValid };
+});
+
 // 3. Fetch published experiments from database (includes computed atlas URLs)
 export const fetchCivilizations = createServerFn({ method: "GET" }).handler(async () => {
   const { data: civilizations, error } = await supabaseServer
