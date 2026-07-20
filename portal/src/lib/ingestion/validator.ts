@@ -36,31 +36,33 @@ const configSchema = z.object({
 });
 
 const summarySchema = z.object({
-  timestamp: z.string(),
-  experiment: z.string(),
+  timestamp: z.string().optional(),
+  experiment: z.string().optional(),
   seed: z.number().int(),
   ticks: z.number().int(),
-  scarcity: z.number(),
-  survivors: z.string(),
-  avg_radius: z.number(),
-  avg_discoveries: z.number(),
-  tests_passed: z.boolean(),
-  max_generation: z.number().int(),
-  derived_metrics: z.object({
-    avg_generation_interval: z.number(),
-    population_doubling_time: z.number(),
-    colony_lifespans: z.record(z.string(), z.number()),
-    avg_genetic_diversity: z.number(),
-    food_efficiency: z.number(),
-    water_efficiency: z.number(),
-    energy_efficiency: z.number(),
-    avg_prediction_error: z.number(),
-    concept_formation_rate: z.number(),
-    procedure_creation_rate: z.number(),
-    avg_social_degree: z.number(),
-    avg_cooperation_score: z.number(),
-    avg_conflict_score: z.number(),
-  }),
+  scarcity: z.number().optional(),
+  survivors: z.union([z.string(), z.number()]).transform((val) => String(val)),
+  avg_radius: z.number().optional(),
+  avg_discoveries: z.number().optional(),
+  tests_passed: z.boolean().optional(),
+  max_generation: z.number().int().optional(),
+  derived_metrics: z
+    .object({
+      avg_generation_interval: z.number().optional(),
+      population_doubling_time: z.number().optional(),
+      colony_lifespans: z.record(z.string(), z.number()).optional(),
+      avg_genetic_diversity: z.number().optional(),
+      food_efficiency: z.number().optional(),
+      water_efficiency: z.number().optional(),
+      energy_efficiency: z.number().optional(),
+      avg_prediction_error: z.number().optional(),
+      concept_formation_rate: z.number().optional(),
+      procedure_creation_rate: z.number().optional(),
+      avg_social_degree: z.number().optional(),
+      avg_cooperation_score: z.number().optional(),
+      avg_conflict_score: z.number().optional(),
+    })
+    .optional(),
 });
 
 export function validateExperiment(parsed: ParsedExperiment): ExperimentHealthReport {
@@ -187,7 +189,7 @@ export function validateExperiment(parsed: ParsedExperiment): ExperimentHealthRe
   }
 
   // 2. Generations Match Census Check
-  if (parsed.agentCensusCsv && parsed.summary) {
+  if (parsed.agentCensusCsv && parsed.summary && parsed.summary.max_generation !== undefined) {
     try {
       const censusRows = Papa.parse(parsed.agentCensusCsv, { header: true }).data as any[];
       const maxGenInCensus = Math.max(0, ...censusRows.map((r) => parseInt(r.generation, 10) || 0));
