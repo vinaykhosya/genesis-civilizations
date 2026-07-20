@@ -265,6 +265,54 @@ const STUDY_METADATA: { [key: string]: StudyMetadata } = {
 
 function CivilizationRecordPage() {
   const { record, related } = Route.useLoaderData();
+
+  // Safe JSON Parsing for Summary & Config (Must be initialized at the top before hooks)
+  const summary = record.summary_json || {};
+  const config = record.config_json || {};
+  const events = summary.events || record.summary_json?.events || [];
+  const derivedMetrics = summary.derived_metrics || {};
+  const distributions = summary.distributions || {};
+
+  const meta = STUDY_METADATA[record.id] || null;
+
+  // Dynamic Research Questions mapping helper
+  const getResearchQuestions = () => {
+    const questions = [];
+    if (config.world_preset === "island_chains") {
+      questions.push({
+        id: "RQ-027",
+        title: "Speciation on Island Archipelagos",
+        question:
+          "How does geographical isolation across island chains accelerate genetic drift and colony-specific cognitive adaptations?",
+      });
+    }
+    if (config.scarcity >= 3.0) {
+      questions.push({
+        id: "RQ-004",
+        title: "Reproductive Squelching under Severe Famine",
+        question:
+          "Does extreme scarcity suppress sexual reproduction frequency in favor of individual self-preservation and shelter construction behaviors?",
+      });
+    }
+    if (config.disasters_enabled) {
+      questions.push({
+        id: "RQ-019",
+        title: "Disaster Bottlenecks and Lineage Extinctions",
+        question:
+          "What structural thresholds determine which lineages survive rapid environmental shocks vs. experiencing absolute demographic collapse?",
+      });
+    }
+    if (questions.length === 0) {
+      questions.push({
+        id: "RQ-001",
+        title: "Emergence of Cooperative Spatial Boundaries",
+        question:
+          "How do distinct founder colonies negotiate territorial boundaries under baseline resource availability constraints?",
+      });
+    }
+    return questions;
+  };
+
   const [activeMapId, setActiveMapId] = useState<string>("biomes");
   const [showColonies, setShowColonies] = useState<boolean>(true);
   const [activeTab, setActiveTab] = useState<
@@ -477,15 +525,6 @@ function CivilizationRecordPage() {
     tags: row.tags || [],
   }));
 
-  // Safe JSON Parsing for Summary & Config
-  const summary = record.summary_json || {};
-  const config = record.config_json || {};
-  const events = summary.events || record.summary_json?.events || [];
-  const derivedMetrics = summary.derived_metrics || {};
-  const distributions = summary.distributions || {};
-
-  const meta = STUDY_METADATA[record.id] || null;
-
   // Available maps array check
   const availableMaps: string[] = summary.available_maps || ["biomes"];
 
@@ -500,44 +539,6 @@ function CivilizationRecordPage() {
   };
 
   const currentMap = ATLAS_MAPS.find((m) => m.id === activeMapId) || ATLAS_MAPS[0];
-
-  // Dynamic Research Questions mapping based on parameters
-  const getResearchQuestions = () => {
-    const questions = [];
-    if (config.world_preset === "island_chains") {
-      questions.push({
-        id: "RQ-027",
-        title: "Speciation on Island Archipelagos",
-        question:
-          "How does geographical isolation across island chains accelerate genetic drift and colony-specific cognitive adaptations?",
-      });
-    }
-    if (config.scarcity >= 3.0) {
-      questions.push({
-        id: "RQ-004",
-        title: "Reproductive Squelching under Severe Famine",
-        question:
-          "Does extreme scarcity suppress sexual reproduction frequency in favor of individual self-preservation and shelter construction behaviors?",
-      });
-    }
-    if (config.disasters_enabled) {
-      questions.push({
-        id: "RQ-019",
-        title: "Disaster Bottlenecks and Lineage Extinctions",
-        question:
-          "What structural thresholds determine which lineages survive rapid environmental shocks vs. experiencing absolute demographic collapse?",
-      });
-    }
-    if (questions.length === 0) {
-      questions.push({
-        id: "RQ-001",
-        title: "Emergence of Cooperative Spatial Boundaries",
-        question:
-          "How do distinct founder colonies negotiate territorial boundaries under baseline resource availability constraints?",
-      });
-    }
-    return questions;
-  };
 
   // SVG Population Chart Calculations
   const renderPopulationChart = () => {
