@@ -42,13 +42,37 @@ function ControlPage() {
     setHealth(null);
     setDuplicateWarning(null);
 
-    const formData = new FormData();
-    formData.append("file", file);
-
     try {
+      // 1. Get a signed upload URL to bypass Vercel's 4.5MB request payload limit
+      const getUrlRes = await fetch(
+        `/api/v1/admin/experiments/upload?filename=${encodeURIComponent(file.name)}`,
+      );
+      if (!getUrlRes.ok) {
+        const getUrlError = await getUrlRes.json();
+        throw new Error(getUrlError.error || "Failed to generate signed upload URL");
+      }
+      const { signedUrl, filePath } = await getUrlRes.json();
+
+      // 2. Upload file directly to Supabase storage
+      const uploadRes = await fetch(signedUrl, {
+        method: "PUT",
+        body: file,
+        headers: {
+          "Content-Type": file.type || "application/zip",
+        },
+      });
+
+      if (!uploadRes.ok) {
+        throw new Error("Failed to upload ZIP package directly to storage");
+      }
+
+      // 3. Trigger validation & ingestion on Vercel with the uploaded filePath
       const res = await fetch("/api/v1/admin/experiments/upload", {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ filePath }),
       });
 
       const data = await res.json();
@@ -57,7 +81,7 @@ function ControlPage() {
           const detailedMsg = data.errors.map((e: any) => `• [${e.file}] ${e.message}`).join("\n");
           throw new Error(`Validation failed:\n${detailedMsg}`);
         }
-        throw new Error(data.error || "Upload failed");
+        throw new Error(data.error || "Ingestion processing failed");
       }
 
       setStagingId(data.stagingId);

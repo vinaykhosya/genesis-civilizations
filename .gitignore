@@ -44,7 +44,7 @@ Desktop.ini
 .antigravity/
 
 # Ignore experiment outputs and checkpoints
-experiments/
+/experiments/
 *.csv
 *.png
 
