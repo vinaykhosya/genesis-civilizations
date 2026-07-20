@@ -4790,10 +4790,10 @@
                 }
             });
             
-            mainContainer.style.display = page === 'telemetry' ? 'flex' : 'none';
-            researchContainer.style.display = page === 'research' ? 'flex' : 'none';
-            timelineContainer.style.display = page === 'timeline' ? 'flex' : 'none';
-            compareContainer.style.display = page === 'compare' ? 'flex' : 'none';
+            if (mainContainer) mainContainer.style.display = page === 'telemetry' ? 'flex' : 'none';
+            if (researchContainer) researchContainer.style.display = page === 'research' ? 'flex' : 'none';
+            if (timelineContainer) timelineContainer.style.display = page === 'timeline' ? 'flex' : 'none';
+            if (compareContainer) compareContainer.style.display = page === 'compare' ? 'flex' : 'none';
             
             if (page === 'research') {
                 renderResearchDashboard();
