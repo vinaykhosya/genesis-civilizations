@@ -1,5 +1,4 @@
 {
-  "outputDirectory": "portal/.vercel/output",
   "headers": [
     {
       "source": "/(.*)",

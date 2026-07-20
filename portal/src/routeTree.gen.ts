@@ -9,21 +9,21 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ControlRouteImport } from './routes/control'
-import { Route as ArchiveRouteImport } from './routes/archive'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ControlIndexRouteImport } from './routes/control.index'
+import { Route as ArchiveRouteImport } from './routes/archive'
+import { Route as ControlRouteImport } from './routes/control'
 import { Route as ArchiveIndexRouteImport } from './routes/archive.index'
+import { Route as ControlIndexRouteImport } from './routes/control.index'
 import { Route as ControlLoginRouteImport } from './routes/control.login'
-import { Route as DocsArchitectureFilenameRouteImport } from './routes/docs.architecture.$filename'
 import { Route as ArchiveCivilizationsIdRouteImport } from './routes/archive.civilizations.$id'
+import { Route as DocsArchitectureFilenameRouteImport } from './routes/docs.architecture.$filename'
 import { Route as ApiV1AdminAuthRouteImport } from './routes/api/v1/admin/auth'
 import { Route as ApiV1AdminExperimentsUploadRouteImport } from './routes/api/v1/admin/experiments/upload'
 import { Route as ApiV1AdminExperimentsStagingIdPublishRouteImport } from './routes/api/v1/admin/experiments/$stagingId/publish'
 
-const ControlRoute = ControlRouteImport.update({
-  id: '/control',
-  path: '/control',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ArchiveRoute = ArchiveRouteImport.update({
@@ -31,25 +31,30 @@ const ArchiveRoute = ArchiveRouteImport.update({
   path: '/archive',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const ControlRoute = ControlRouteImport.update({
+  id: '/control',
+  path: '/control',
   getParentRoute: () => rootRouteImport,
-} as any)
-const ControlIndexRoute = ControlIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => ControlRoute,
 } as any)
 const ArchiveIndexRoute = ArchiveIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => ArchiveRoute,
 } as any)
+const ControlIndexRoute = ControlIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ControlRoute,
+} as any)
 const ControlLoginRoute = ControlLoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => ControlRoute,
+} as any)
+const ArchiveCivilizationsIdRoute = ArchiveCivilizationsIdRouteImport.update({
+  id: '/civilizations/$id',
+  path: '/civilizations/$id',
+  getParentRoute: () => ArchiveRoute,
 } as any)
 const DocsArchitectureFilenameRoute =
   DocsArchitectureFilenameRouteImport.update({
@@ -57,11 +62,6 @@ const DocsArchitectureFilenameRoute =
     path: '/docs/architecture/$filename',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ArchiveCivilizationsIdRoute = ArchiveCivilizationsIdRouteImport.update({
-  id: '/civilizations/$id',
-  path: '/civilizations/$id',
-  getParentRoute: () => ArchiveRoute,
-} as any)
 const ApiV1AdminAuthRoute = ApiV1AdminAuthRouteImport.update({
   id: '/api/v1/admin/auth',
   path: '/api/v1/admin/auth',
@@ -170,11 +170,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/control': {
-      id: '/control'
-      path: '/control'
-      fullPath: '/control'
-      preLoaderRoute: typeof ControlRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/archive': {
@@ -184,19 +184,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArchiveRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/control': {
+      id: '/control'
+      path: '/control'
+      fullPath: '/control'
+      preLoaderRoute: typeof ControlRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/control/': {
-      id: '/control/'
-      path: '/'
-      fullPath: '/control/'
-      preLoaderRoute: typeof ControlIndexRouteImport
-      parentRoute: typeof ControlRoute
     }
     '/archive/': {
       id: '/archive/'
@@ -205,6 +198,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArchiveIndexRouteImport
       parentRoute: typeof ArchiveRoute
     }
+    '/control/': {
+      id: '/control/'
+      path: '/'
+      fullPath: '/control/'
+      preLoaderRoute: typeof ControlIndexRouteImport
+      parentRoute: typeof ControlRoute
+    }
     '/control/login': {
       id: '/control/login'
       path: '/login'
@@ -212,19 +212,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ControlLoginRouteImport
       parentRoute: typeof ControlRoute
     }
-    '/docs/architecture/$filename': {
-      id: '/docs/architecture/$filename'
-      path: '/docs/architecture/$filename'
-      fullPath: '/docs/architecture/$filename'
-      preLoaderRoute: typeof DocsArchitectureFilenameRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/archive/civilizations/$id': {
       id: '/archive/civilizations/$id'
       path: '/civilizations/$id'
       fullPath: '/archive/civilizations/$id'
       preLoaderRoute: typeof ArchiveCivilizationsIdRouteImport
       parentRoute: typeof ArchiveRoute
+    }
+    '/docs/architecture/$filename': {
+      id: '/docs/architecture/$filename'
+      path: '/docs/architecture/$filename'
+      fullPath: '/docs/architecture/$filename'
+      preLoaderRoute: typeof DocsArchitectureFilenameRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/v1/admin/auth': {
       id: '/api/v1/admin/auth'
