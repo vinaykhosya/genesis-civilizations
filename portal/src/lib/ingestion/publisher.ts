@@ -43,9 +43,18 @@ export async function publishExperiment(
   };
 
   // 1. Insert into experiments table
-  const survivors = summary.survivors.split("/");
-  const survivorsCount = parseInt(survivors[0], 10) || 0;
-  const totalAgents = parseInt(survivors[1], 10) || 0;
+  const survivorsRaw = summary.survivors;
+  let survivorsCount = 0;
+  let totalAgents = 0;
+
+  if (typeof survivorsRaw === "string" && survivorsRaw.includes("/")) {
+    const parts = survivorsRaw.split("/");
+    survivorsCount = parseInt(parts[0], 10) || 0;
+    totalAgents = parseInt(parts[1], 10) || 0;
+  } else {
+    survivorsCount = parseInt(survivorsRaw, 10) || 0;
+    totalAgents = parseInt(summary.total_agents, 10) || 0;
+  }
 
   const { error: expError } = await supabaseServer.from("experiments").insert({
     id,
