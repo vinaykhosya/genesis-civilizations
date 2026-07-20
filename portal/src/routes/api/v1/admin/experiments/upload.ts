@@ -73,6 +73,7 @@ export const Route = createFileRoute("/api/v1/admin/experiments/upload")({
             }
 
             fileBuffer = Buffer.from(await fileData.arrayBuffer());
+            console.log("Downloaded file size from storage:", fileBuffer.length);
             filename = path.basename(filePath);
           } else {
             // Legacy form-data flow (small files fallback)
