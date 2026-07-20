@@ -168,7 +168,9 @@ const ExperimentExplorer: React.FC<Props> = ({ replay, coverUrl, experimentId, e
         const isAlive = (agent.cause_of_death === "none" || agent.cause_of_death === "None")
           ? true : (agent.born_tick + (agent.ticks_survived||0)) > frameTick;
         if (!isAlive) return;
-        const [row, col] = agent.shelter_location;
+        const loc = agent.shelter_location || replay.spawn_conditions[COLONY_NAMES[agent.colony_id]]?.coords;
+        if (!loc) return;
+        const [row, col] = loc;
         const x = col*scale, y = row*scale;
         const r = (mapLayers.shelters && agent.shelter_level > 0 ? 4 : 3) * scale;
         const color = COLONY_COLORS[agent.colony_id] || "#fff";
@@ -181,10 +183,13 @@ const ExperimentExplorer: React.FC<Props> = ({ replay, coverUrl, experimentId, e
       });
       // Follow ring
       if (followAgent) {
-        const [row, col] = followAgent.shelter_location;
-        ctx.beginPath(); ctx.arc(col*scale, row*scale, 12*scale, 0, Math.PI*2);
-        ctx.strokeStyle = "#fff"; ctx.lineWidth = 1.5;
-        ctx.setLineDash([4,3]); ctx.stroke(); ctx.setLineDash([]);
+        const loc = followAgent.shelter_location || replay.spawn_conditions[COLONY_NAMES[followAgent.colony_id]]?.coords;
+        if (loc) {
+          const [row, col] = loc;
+          ctx.beginPath(); ctx.arc(col*scale, row*scale, 12*scale, 0, Math.PI*2);
+          ctx.strokeStyle = "#fff"; ctx.lineWidth = 1.5;
+          ctx.setLineDash([4,3]); ctx.stroke(); ctx.setLineDash([]);
+        }
       }
     }
   }, [replay, timeline, mapLayers, followAgent]);
