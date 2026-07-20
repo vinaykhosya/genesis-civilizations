@@ -1061,7 +1061,7 @@ function CivilizationRecordPage() {
 
       <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
         {/* Navigation Return */}
-        <header style={{ marginBottom: "2rem" }}>
+        <header style={{ marginBottom: "1.5rem" }}>
           <Link
             to="/archive"
             style={{
@@ -1078,6 +1078,104 @@ function CivilizationRecordPage() {
             ← Return to Experiment Archive
           </Link>
         </header>
+
+        {/* 🚀 TOP VISITOR RAW DASHBOARD LAUNCHER RIBBON */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            background: "linear-gradient(90deg, rgba(0, 242, 254, 0.08) 0%, rgba(99, 102, 241, 0.12) 100%)",
+            border: "1px solid rgba(0, 242, 254, 0.3)",
+            borderRadius: "var(--radius-lg)",
+            padding: "1rem 1.5rem",
+            marginBottom: "1.5rem",
+            boxShadow: "0 4px 20px rgba(0, 242, 254, 0.08)",
+            flexWrap: "wrap",
+            gap: "1rem",
+          }}
+          className="glass"
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+            <div
+              style={{
+                width: "42px",
+                height: "42px",
+                borderRadius: "10px",
+                background: "rgba(0, 242, 254, 0.15)",
+                border: "1px solid rgba(0, 242, 254, 0.4)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "20px",
+                boxShadow: "0 0 15px rgba(0,242,254,0.2)",
+              }}
+            >
+              ⚡
+            </div>
+            <div>
+              <h3 style={{ fontSize: "14px", fontWeight: 800, color: "#fff", margin: 0, fontFamily: "var(--font-display)", letterSpacing: "0.02em" }}>
+                Interactive Simulation & Visitor Raw Dashboard
+              </h3>
+              <p style={{ fontSize: "12px", color: "#a5b4fc", margin: "0.2rem 0 0 0" }}>
+                Live agent telemetry, replay timeline, ecosystem charts, and lineage family tree visualizer.
+              </p>
+            </div>
+          </div>
+
+          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }}>
+            <button
+              onClick={() => {
+                const el = document.getElementById("interactive-dashboard-console");
+                if (el) {
+                  el.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
+              style={{
+                background: "linear-gradient(135deg, #00f2fe 0%, #4facfe 100%)",
+                border: "none",
+                color: "#020617",
+                padding: "0.55rem 1.25rem",
+                borderRadius: "8px",
+                fontSize: "12px",
+                fontWeight: 800,
+                fontFamily: "var(--font-display)",
+                cursor: "pointer",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                boxShadow: "0 4px 15px rgba(0, 242, 254, 0.3)",
+                transition: "all 0.2s ease",
+              }}
+            >
+              <span>🖥️ Launch Visitor Raw Dashboard</span>
+              <span style={{ fontSize: "14px" }}>↓</span>
+            </button>
+
+            <a
+              href={`/visualizer.html?id=${record.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(255,255,255,0.15)",
+                color: "#fff",
+                padding: "0.55rem 1rem",
+                borderRadius: "8px",
+                fontSize: "12px",
+                fontWeight: 600,
+                fontFamily: "var(--font-display)",
+                textDecoration: "none",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.4rem",
+                transition: "all 0.2s ease",
+              }}
+            >
+              <span>↗ Fullscreen Tab</span>
+            </a>
+          </div>
+        </div>
 
         {/* Dynamic Seed Info Ribbon */}
         <div
@@ -1115,7 +1213,7 @@ function CivilizationRecordPage() {
               {record.title}
             </h1>
           </div>
-          <div style={{ display: "flex", gap: "3rem" }}>
+          <div style={{ display: "flex", gap: "2.5rem", alignItems: "center" }}>
             <div>
               <p
                 style={{
@@ -3784,6 +3882,7 @@ function CivilizationRecordPage() {
 
         {/* ═══ Interactive Simulation Explorer ═════════════════════════════ */}
         <section
+          id="interactive-dashboard-console"
           style={{
             marginTop: "4rem",
             borderTop: "1px solid rgba(255,255,255,0.08)",
