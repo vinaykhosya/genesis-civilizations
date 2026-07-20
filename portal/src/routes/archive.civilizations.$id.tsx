@@ -317,6 +317,7 @@ function CivilizationRecordPage() {
   const [showColonies, setShowColonies] = useState<boolean>(true);
   const [activeTab, setActiveTab] = useState<
     "research" | "chronicle" | "observatory" | "technical"
+  >("research");
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   // Admin status check (only logged-in admin sees research editing controls)
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
