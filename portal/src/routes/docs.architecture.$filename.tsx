@@ -28,37 +28,45 @@ function DocumentReaderPage() {
   const content = Route.useLoaderData();
 
   return (
-    <main style={{
-      minHeight: "100vh",
-      backgroundColor: "var(--bg-void)",
-      color: "var(--text-primary)",
-      fontFamily: "var(--font-body)",
-      padding: "4rem 2rem"
-    }}>
+    <main
+      style={{
+        minHeight: "100vh",
+        backgroundColor: "var(--bg-void)",
+        color: "var(--text-primary)",
+        fontFamily: "var(--font-body)",
+        padding: "4rem 2rem",
+      }}
+    >
       <div style={{ maxWidth: "var(--content-width)", margin: "0 auto" }}>
         <header style={{ marginBottom: "2.5rem" }}>
-          <Link to="/" style={{
-            fontFamily: "var(--font-display)",
-            fontWeight: 500,
-            fontSize: "var(--text-sm)",
-            color: "var(--text-secondary)",
-            textDecoration: "none"
-          }}>
+          <Link
+            to="/"
+            style={{
+              fontFamily: "var(--font-display)",
+              fontWeight: 500,
+              fontSize: "var(--text-sm)",
+              color: "var(--text-secondary)",
+              textDecoration: "none",
+            }}
+          >
             ← Return to Laboratory
           </Link>
         </header>
 
-        <article style={{
-          background: "var(--bg-secondary)",
-          border: "1px solid var(--border-default)",
-          borderRadius: "var(--radius-xl)",
-          padding: "3rem",
-          whiteSpace: "pre-wrap",
-          fontFamily: "var(--font-mono)",
-          fontSize: "13px",
-          lineHeight: "1.6",
-          color: "var(--text-secondary)"
-        }} className="glass">
+        <article
+          style={{
+            background: "var(--bg-secondary)",
+            border: "1px solid var(--border-default)",
+            borderRadius: "var(--radius-xl)",
+            padding: "3rem",
+            whiteSpace: "pre-wrap",
+            fontFamily: "var(--font-mono)",
+            fontSize: "13px",
+            lineHeight: "1.6",
+            color: "var(--text-secondary)",
+          }}
+          className="glass"
+        >
           {content}
         </article>
       </div>

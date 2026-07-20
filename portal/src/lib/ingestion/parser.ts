@@ -10,7 +10,7 @@ export async function parseExperimentZip(zipBuffer: Buffer): Promise<ParsedExper
     throw {
       file: "zip",
       message: `Failed to open ZIP archive: ${err.message || err}`,
-      tier: "structural"
+      tier: "structural",
     } as IngestionError;
   }
 
@@ -29,7 +29,7 @@ export async function parseExperimentZip(zipBuffer: Buffer): Promise<ParsedExper
         throw {
           file: name,
           message: `Missing required file: ${name}`,
-          tier: "structural"
+          tier: "structural",
         } as IngestionError;
       }
       return "";
@@ -44,7 +44,7 @@ export async function parseExperimentZip(zipBuffer: Buffer): Promise<ParsedExper
         throw {
           file: name,
           message: `Missing required file: ${name}`,
-          tier: "structural"
+          tier: "structural",
         } as IngestionError;
       }
       return null;
@@ -57,7 +57,7 @@ export async function parseExperimentZip(zipBuffer: Buffer): Promise<ParsedExper
   const config = JSON.parse(await getFileStr("config.json"));
   const summary = JSON.parse(await getFileStr("summary.json"));
   const events = JSON.parse(await getFileStr("events.json"));
-  
+
   const populationCsv = await getFileStr("population.csv");
   const timelineCsv = await getFileStr("timeline.csv");
   const birthsCsv = await getFileStr("births.csv");
@@ -97,6 +97,6 @@ export async function parseExperimentZip(zipBuffer: Buffer): Promise<ParsedExper
     riversPngBytes,
     habitabilityPngBytes,
     tradePngBytes,
-    simulationPngBytes
+    simulationPngBytes,
   };
 }

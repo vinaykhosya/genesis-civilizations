@@ -28,62 +28,75 @@ export default function RecordHero({ hero }: { hero: RecordHeroProps }) {
   const years = Math.floor(hero.ticks / 360);
 
   return (
-    <section style={{
-      display: "flex",
-      flexDirection: "column",
-      gap: "2rem",
-      marginBottom: "3rem"
-    }}>
+    <section
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "2rem",
+        marginBottom: "3rem",
+      }}
+    >
       {/* Title block */}
       <div>
-        <span style={{
-          fontFamily: "var(--font-mono)",
-          fontSize: "var(--text-xs)",
-          color: "var(--text-tertiary)",
-          letterSpacing: "var(--tracking-wider)",
-          textTransform: "uppercase"
-        }}>
+        <span
+          style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: "var(--text-xs)",
+            color: "var(--text-tertiary)",
+            letterSpacing: "var(--tracking-wider)",
+            textTransform: "uppercase",
+          }}
+        >
           Civilization Record · {hero.id}
         </span>
-        <h1 style={{
-          fontFamily: "var(--font-display)",
-          fontSize: "var(--text-4xl)",
-          fontWeight: 700,
-          margin: "0.5rem 0",
-          color: "var(--text-primary)"
-        }}>
+        <h1
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "var(--text-4xl)",
+            fontWeight: 700,
+            margin: "0.5rem 0",
+            color: "var(--text-primary)",
+          }}
+        >
           {hero.title}
         </h1>
-        <p style={{
-          fontFamily: "var(--font-body)",
-          fontSize: "var(--text-lg)",
-          color: "var(--text-secondary)",
-          margin: 0,
-          fontStyle: "italic"
-        }}>
+        <p
+          style={{
+            fontFamily: "var(--font-body)",
+            fontSize: "var(--text-lg)",
+            color: "var(--text-secondary)",
+            margin: 0,
+            fontStyle: "italic",
+          }}
+        >
           &quot;We expected conflict. Instead we observed cooperation.&quot;
         </p>
       </div>
 
       {/* Specimen side-by-side block */}
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-        gap: "2rem",
-        background: "var(--bg-secondary)",
-        border: "1px solid var(--border-default)",
-        borderRadius: "var(--radius-xl)",
-        overflow: "hidden"
-      }} className="glass">
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+          gap: "2rem",
+          background: "var(--bg-secondary)",
+          border: "1px solid var(--border-default)",
+          borderRadius: "var(--radius-xl)",
+          overflow: "hidden",
+        }}
+        className="glass"
+      >
         {/* Left: Specimen image */}
-        <div style={{
-          position: "relative",
-          height: "260px",
-          background: "var(--bg-surface)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center"
-        }}>
+        <div
+          style={{
+            position: "relative",
+            height: "260px",
+            background: "var(--bg-surface)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           {hero.thumbnailUrl ? (
             <img
               src={hero.thumbnailUrl}
@@ -95,34 +108,40 @@ export default function RecordHero({ hero }: { hero: RecordHeroProps }) {
               No Specimen Map Available
             </span>
           )}
-          <div style={{
-            position: "absolute",
-            top: "1rem",
-            left: "1rem",
-            background: "rgba(7, 10, 16, 0.75)",
-            padding: "0.25rem 0.5rem",
-            borderRadius: "var(--radius-sm)",
-            fontFamily: "var(--font-mono)",
-            fontSize: "10px",
-            color: "var(--teal)",
-            border: "1px solid oklch(0.78 0.11 195 / 30%)"
-          }}>
+          <div
+            style={{
+              position: "absolute",
+              top: "1rem",
+              left: "1rem",
+              background: "rgba(7, 10, 16, 0.75)",
+              padding: "0.25rem 0.5rem",
+              borderRadius: "var(--radius-sm)",
+              fontFamily: "var(--font-mono)",
+              fontSize: "10px",
+              color: "var(--teal)",
+              border: "1px solid oklch(0.78 0.11 195 / 30%)",
+            }}
+          >
             SPECIMEN VIEW
           </div>
         </div>
 
         {/* Right: Specimen details & citations */}
         <div style={{ padding: "2rem", display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "1rem",
-            fontFamily: "var(--font-mono)",
-            fontSize: "var(--text-sm)"
-          }}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "1rem",
+              fontFamily: "var(--font-mono)",
+              fontSize: "var(--text-sm)",
+            }}
+          >
             <div>
               <div style={{ fontSize: "10px", color: "var(--text-tertiary)" }}>PRESET</div>
-              <div style={{ color: "var(--text-primary)", fontWeight: 600 }}>{hero.worldPreset || "Custom"}</div>
+              <div style={{ color: "var(--text-primary)", fontWeight: 600 }}>
+                {hero.worldPreset || "Custom"}
+              </div>
             </div>
             <div>
               <div style={{ fontSize: "10px", color: "var(--text-tertiary)" }}>SCARCITY</div>
@@ -130,7 +149,9 @@ export default function RecordHero({ hero }: { hero: RecordHeroProps }) {
             </div>
             <div>
               <div style={{ fontSize: "10px", color: "var(--text-tertiary)" }}>DURATION</div>
-              <div style={{ color: "var(--text-primary)", fontWeight: 600 }}>{hero.ticks.toLocaleString()} ticks ({years} yr)</div>
+              <div style={{ color: "var(--text-primary)", fontWeight: 600 }}>
+                {hero.ticks.toLocaleString()} ticks ({years} yr)
+              </div>
             </div>
             <div>
               <div style={{ fontSize: "10px", color: "var(--text-tertiary)" }}>SEED</div>
@@ -149,20 +170,30 @@ export default function RecordHero({ hero }: { hero: RecordHeroProps }) {
               fontFamily: "var(--font-display)",
               fontWeight: 600,
               cursor: "not-allowed",
-              textAlign: "center"
+              textAlign: "center",
             }}
           >
             Watch Civilization (Coming in Phase 4)
           </button>
 
           {/* Citation card block */}
-          <div style={{
-            padding: "1rem",
-            background: "var(--bg-void)",
-            borderRadius: "var(--radius-md)",
-            border: "1px solid var(--border-subtle)"
-          }}>
-            <div style={{ fontSize: "10px", color: "var(--text-tertiary)", textTransform: "uppercase", marginBottom: "0.5rem", fontWeight: 600 }}>
+          <div
+            style={{
+              padding: "1rem",
+              background: "var(--bg-void)",
+              borderRadius: "var(--radius-md)",
+              border: "1px solid var(--border-subtle)",
+            }}
+          >
+            <div
+              style={{
+                fontSize: "10px",
+                color: "var(--text-tertiary)",
+                textTransform: "uppercase",
+                marginBottom: "0.5rem",
+                fontWeight: 600,
+              }}
+            >
               Cite this Record
             </div>
             <div style={{ display: "flex", gap: "0.5rem" }}>
@@ -176,7 +207,7 @@ export default function RecordHero({ hero }: { hero: RecordHeroProps }) {
                   color: "var(--text-secondary)",
                   borderRadius: "var(--radius-sm)",
                   fontSize: "11px",
-                  cursor: "pointer"
+                  cursor: "pointer",
                 }}
               >
                 Copy BibTeX
@@ -191,7 +222,7 @@ export default function RecordHero({ hero }: { hero: RecordHeroProps }) {
                   color: "var(--text-secondary)",
                   borderRadius: "var(--radius-sm)",
                   fontSize: "11px",
-                  cursor: "pointer"
+                  cursor: "pointer",
                 }}
               >
                 Copy APA

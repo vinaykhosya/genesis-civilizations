@@ -25,7 +25,7 @@ export async function uploadAssets(
     habitability?: Buffer | null;
     trade?: Buffer | null;
     simulation?: Buffer | null;
-  }
+  },
 ): Promise<UploadedPaths> {
   const ensureBucketExists = async (bucket: string, isPublic: boolean) => {
     try {
@@ -33,10 +33,12 @@ export async function uploadAssets(
       const exists = buckets?.some((b) => b.id === bucket);
       if (!exists) {
         const { error } = await supabaseServer.storage.createBucket(bucket, {
-          public: isPublic
+          public: isPublic,
         });
         if (error) {
-          console.error(`Failed to programmatically create storage bucket [${bucket}]: ${error.message}`);
+          console.error(
+            `Failed to programmatically create storage bucket [${bucket}]: ${error.message}`,
+          );
         }
       }
     } catch (err: any) {
@@ -47,19 +49,22 @@ export async function uploadAssets(
   // Ensure unified public experiments bucket exists
   await ensureBucketExists("experiments", true);
 
-  const uploadToBucket = async (bucket: string, path: string, body: Buffer | string, contentType: string) => {
-    const { error } = await supabaseServer.storage
-      .from(bucket)
-      .upload(path, body, {
-        contentType,
-        upsert: true
-      });
+  const uploadToBucket = async (
+    bucket: string,
+    path: string,
+    body: Buffer | string,
+    contentType: string,
+  ) => {
+    const { error } = await supabaseServer.storage.from(bucket).upload(path, body, {
+      contentType,
+      upsert: true,
+    });
 
     if (error) {
       throw {
         file: path,
         message: `Failed to upload asset to storage [${bucket}]: ${error.message}`,
-        tier: "structural"
+        tier: "structural",
       } as IngestionError;
     }
   };
@@ -109,6 +114,6 @@ export async function uploadAssets(
     worldPngPath,
     thumbnailWebpPath,
     ogWebpPath,
-    replayJsonPath
+    replayJsonPath,
   };
 }

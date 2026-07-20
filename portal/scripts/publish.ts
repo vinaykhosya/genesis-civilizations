@@ -18,7 +18,10 @@ if (fs.existsSync(envPath)) {
     const eqIdx = trimmed.indexOf("=");
     if (eqIdx > 0) {
       const key = trimmed.substring(0, eqIdx).trim();
-      const val = trimmed.substring(eqIdx + 1).trim().replace(/^["']|["']$/g, "");
+      const val = trimmed
+        .substring(eqIdx + 1)
+        .trim()
+        .replace(/^["']|["']$/g, "");
       process.env[key] = val;
     }
   });
@@ -69,13 +72,13 @@ async function runPublisher() {
 
     if (health.errors.length > 0) {
       console.error("Ingestion blocked due to critical validation errors:");
-      health.errors.forEach(err => console.error(` - [${err.tier}] ${err.file}: ${err.message}`));
+      health.errors.forEach((err) => console.error(` - [${err.tier}] ${err.file}: ${err.message}`));
       process.exit(1);
     }
 
     if (health.warnings.length > 0) {
       console.log("Warnings flagged during checks:");
-      health.warnings.forEach(warn => console.log(` - ${warn.message}`));
+      health.warnings.forEach((warn) => console.log(` - ${warn.message}`));
     }
 
     // 3. Metadata inputs (Pre-formatted title based on seed)
@@ -106,7 +109,7 @@ async function runPublisher() {
       canonical.worldPngBytes,
       webpAssets.thumbnailWebp,
       webpAssets.ogWebp,
-      parsed.replayJsonStr
+      parsed.replayJsonStr,
     );
 
     // 7. Database Writes

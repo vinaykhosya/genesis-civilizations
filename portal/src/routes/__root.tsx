@@ -22,7 +22,9 @@ function NotFoundComponent() {
           This coordinate is outside the archive. The record you seek may have been sealed.
         </p>
         <div className="mt-8">
-          <Link to="/" className="btn-genesis">Return to Genesis</Link>
+          <Link to="/" className="btn-genesis">
+            Return to Genesis
+          </Link>
         </div>
       </div>
     </div>
@@ -46,12 +48,17 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <button
-            onClick={() => { router.invalidate(); reset(); }}
+            onClick={() => {
+              router.invalidate();
+              reset();
+            }}
             className="btn-genesis"
           >
             Recalibrate
           </button>
-          <a href="/" className="btn-genesis">Return home</a>
+          <a href="/" className="btn-genesis">
+            Return home
+          </a>
         </div>
       </div>
     </div>

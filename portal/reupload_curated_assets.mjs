@@ -4,7 +4,8 @@ import path from "path";
 import sharp from "sharp";
 
 const supabaseUrl = "https://tyajlotsxwocxxawcwta.supabase.co";
-const supabaseServiceKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR5YWpsb3RzeHdvY3h4YXdjd3RhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NDA0MTQxNiwiZXhwIjoyMDk5NjE3NDE2fQ.DNByNwePQi2msrT6eJvsoti1NCow2cX3-3LdRNrUCFk";
+const supabaseServiceKey =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR5YWpsb3RzeHdvY3h4YXdjd3RhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NDA0MTQxNiwiZXhwIjoyMDk5NjE3NDE2fQ.DNByNwePQi2msrT6eJvsoti1NCow2cX3-3LdRNrUCFk";
 
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
@@ -16,16 +17,14 @@ const mapping = {
   "GEN-0003": "2026-06-28_21-37-33_fights alowwed with insta heal , new seed",
   "GEN-0004": "2026-07-13_08-58-04_fights alowwed with insta heal , new seed",
   "GEN-VAL-001": "2026-07-16_22-40-00_atlas_verification_run",
-  "GEN-VAL-002": "2026-06-28_19-23-06_reflex validation short"
+  "GEN-VAL-002": "2026-06-28_19-23-06_reflex validation short",
 };
 
 async function uploadToBucket(bucket, storagePath, body, contentType) {
-  const { error } = await supabase.storage
-    .from(bucket)
-    .upload(storagePath, body, {
-      contentType,
-      upsert: true
-    });
+  const { error } = await supabase.storage.from(bucket).upload(storagePath, body, {
+    contentType,
+    upsert: true,
+  });
 
   if (error) {
     console.error(`  [Storage Error] Failed to upload ${storagePath}: ${error.message}`);
@@ -67,7 +66,7 @@ async function run() {
     const thumbnailBytes = await sharp(worldPngBytes)
       .resize(1024, 1024, {
         fit: "contain",
-        background: { r: 12, g: 16, b: 25, alpha: 1 }
+        background: { r: 12, g: 16, b: 25, alpha: 1 },
       })
       .webp({ quality: 85 })
       .toBuffer();
@@ -75,7 +74,7 @@ async function run() {
     const ogBytes = await sharp(worldPngBytes)
       .resize(1200, 630, {
         fit: "contain",
-        background: { r: 12, g: 16, b: 25, alpha: 1 }
+        background: { r: 12, g: 16, b: 25, alpha: 1 },
       })
       .webp({ quality: 85 })
       .toBuffer();
@@ -84,7 +83,12 @@ async function run() {
     console.log("  Uploading core package assets...");
     await uploadToBucket("experiments", `${id}/exports/package.zip`, zipBytes, "application/zip");
     await uploadToBucket("experiments", `${id}/preview/world.png`, worldPngBytes, "image/png");
-    await uploadToBucket("experiments", `${id}/preview/thumbnail.webp`, thumbnailBytes, "image/webp");
+    await uploadToBucket(
+      "experiments",
+      `${id}/preview/thumbnail.webp`,
+      thumbnailBytes,
+      "image/webp",
+    );
     await uploadToBucket("experiments", `${id}/preview/og.webp`, ogBytes, "image/webp");
 
     // Optional replay.json
@@ -92,7 +96,12 @@ async function run() {
     let hasReplay = false;
     if (fs.existsSync(replayJsonPath)) {
       const replayJsonStr = fs.readFileSync(replayJsonPath, "utf8");
-      await uploadToBucket("experiments", `${id}/replay/replay.json`, replayJsonStr, "application/json");
+      await uploadToBucket(
+        "experiments",
+        `${id}/replay/replay.json`,
+        replayJsonStr,
+        "application/json",
+      );
       hasReplay = true;
     }
 
@@ -106,7 +115,7 @@ async function run() {
       "rivers.png",
       "habitability.png",
       "trade.png",
-      "simulation.png"
+      "simulation.png",
     ];
 
     const availableMaps = [];
@@ -135,7 +144,7 @@ async function run() {
 
     const updatedSummary = {
       ...(record.summary_json || {}),
-      available_maps: availableMaps
+      available_maps: availableMaps,
     };
 
     const storageUrlPrefix = `${supabaseUrl}/storage/v1/object/public/experiments`;
@@ -146,7 +155,7 @@ async function run() {
         cover_url: `${storageUrlPrefix}/${id}/preview/world.png`,
         og_url: `${storageUrlPrefix}/${id}/preview/og.webp`,
         has_replay: hasReplay,
-        summary_json: updatedSummary
+        summary_json: updatedSummary,
       })
       .eq("id", id);
 

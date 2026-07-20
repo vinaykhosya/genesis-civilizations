@@ -12,5 +12,5 @@ export const BIOME_COLORS: BiomeInfo[] = [
   { id: 4, label: "Forest", color: "#2E7548" },
   { id: 5, label: "Grassland", color: "#ACB86A" },
   { id: 6, label: "Desert", color: "#E0BB73" },
-  { id: 7, label: "Rainforest", color: "#0C552D" }
+  { id: 7, label: "Rainforest", color: "#0C552D" },
 ];

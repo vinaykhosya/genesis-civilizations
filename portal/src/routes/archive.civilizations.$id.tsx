@@ -34,9 +34,10 @@ const ATLAS_MAPS: MapMetadata[] = [
     description: "Procedurally generated biome allocation mapping temperature and moisture ranges.",
     purpose: "Defines environmental selection pressures and resource distribution profiles.",
     method: "Whittaker Biome classification grid mapping 9 canonical zones.",
-    interpretation: "Glaciers, Tundra, Desert, and Forest determine local food and water carrying capacity.",
+    interpretation:
+      "Glaciers, Tundra, Desert, and Forest determine local food and water carrying capacity.",
     resolution: "1024 x 1024 grid cells",
-    legend: BIOME_COLORS.map(b => ({ label: b.label, color: b.color }))
+    legend: BIOME_COLORS.map((b) => ({ label: b.label, color: b.color })),
   },
   {
     id: "elevation",
@@ -52,15 +53,16 @@ const ATLAS_MAPS: MapMetadata[] = [
       { label: "Water Level", color: "#152430" },
       { label: "Plains", color: "#8d6e63" },
       { label: "Hills", color: "#6d4c41" },
-      { label: "Mountain Ridges", color: "#4e342e" }
-    ]
+      { label: "Mountain Ridges", color: "#4e342e" },
+    ],
   },
   {
     id: "temperature",
     title: "Thermal Fields",
     category: "WORLD",
     filename: "temperature.png",
-    description: "Latitude and altitude scaled temperature maps defining regional weather conditions.",
+    description:
+      "Latitude and altitude scaled temperature maps defining regional weather conditions.",
     purpose: "Calculates thermal exposure danger risk scores for agents.",
     method: "Altitude lapse rate combined with seasonal cycle latitude offset.",
     interpretation: "Freezing bands force higher energy depletion rates unless shelters are built.",
@@ -69,8 +71,8 @@ const ATLAS_MAPS: MapMetadata[] = [
       { label: "Glacial (-15°C)", color: "#90caf9" },
       { label: "Boreal (5°C)", color: "#a5d6a7" },
       { label: "Temperate (18°C)", color: "#fff59d" },
-      { label: "Arid / Tropical (38°C)", color: "#ffab91" }
-    ]
+      { label: "Arid / Tropical (38°C)", color: "#ffab91" },
+    ],
   },
   {
     id: "rainfall",
@@ -80,14 +82,15 @@ const ATLAS_MAPS: MapMetadata[] = [
     description: "Wind-advected rainfall simulation mapping precipitation accumulation.",
     purpose: "Supplies clean drinking water reservoirs and sustains local food growth.",
     method: "Climate prevailing winds blowing advected moisture over topography slopes.",
-    interpretation: "High rainfall supports agricultural centers; dry rain shadows form desert zones.",
+    interpretation:
+      "High rainfall supports agricultural centers; dry rain shadows form desert zones.",
     resolution: "1024 x 1024 grid cells",
     legend: [
       { label: "Arid (Rain Shadow)", color: "#ffe0b2" },
       { label: "Moderate Rainfall", color: "#80deea" },
       { label: "Dense Precipitation", color: "#00acc1" },
-      { label: "Super Humid", color: "#006064" }
-    ]
+      { label: "Super Humid", color: "#006064" },
+    ],
   },
   {
     id: "rivers",
@@ -101,8 +104,8 @@ const ATLAS_MAPS: MapMetadata[] = [
     resolution: "1024 x 1024 grid cells",
     legend: [
       { label: "Stream bed", color: "#00838f" },
-      { label: "Primary River Bed", color: "#00e5ff" }
-    ]
+      { label: "Primary River Bed", color: "#00e5ff" },
+    ],
   },
   {
     id: "habitability",
@@ -111,15 +114,17 @@ const ATLAS_MAPS: MapMetadata[] = [
     filename: "habitability.png",
     description: "Weighted composite grid evaluating overall environmental comfort score.",
     purpose: "Guides NMS settlement placement for spawning founder colonies.",
-    method: "Weighted combination of water score, food score, resource score, and slope passability.",
-    interpretation: "High index values indicate optimal carrying capacity for sustaining large lineages.",
+    method:
+      "Weighted combination of water score, food score, resource score, and slope passability.",
+    interpretation:
+      "High index values indicate optimal carrying capacity for sustaining large lineages.",
     resolution: "1024 x 1024 grid cells",
     legend: [
       { label: "Uninhabitable (Water/Slopes)", color: "#020408" },
       { label: "Low Habitability", color: "#374151" },
       { label: "Moderate Habitability", color: "#065f46" },
-      { label: "Optimal Habitation Zone", color: "#10b981" }
-    ]
+      { label: "Optimal Habitation Zone", color: "#10b981" },
+    ],
   },
   {
     id: "trade",
@@ -130,7 +135,7 @@ const ATLAS_MAPS: MapMetadata[] = [
     purpose: "Tracks supply chains and exchange networks across geographical regions.",
     method: "Friction-weighted A* pathfinding minimizing path traversal slopes.",
     interpretation: "Thicker networks represent high-traffic routes with minimal slope resistance.",
-    resolution: "1024 x 1024 grid cells"
+    resolution: "1024 x 1024 grid cells",
   },
   {
     id: "simulation",
@@ -141,8 +146,8 @@ const ATLAS_MAPS: MapMetadata[] = [
     purpose: "Visualizes colony territorial expansions and exploration drift patterns.",
     method: "Tick-by-tick trajectory path line drawing overlays.",
     interpretation: "Intense path lines highlight high-traffic exploration corridors.",
-    resolution: "1024 x 1024 grid cells"
-  }
+    resolution: "1024 x 1024 grid cells",
+  },
 ];
 
 interface StudyRelatedRecord {
@@ -163,100 +168,108 @@ interface StudyMetadata {
 
 const STUDY_METADATA: { [key: string]: StudyMetadata } = {
   "GEN-0001": {
-    question: "How does accelerated metabolic recovery affect generation-spanning social organization under resource scarcity?",
+    question:
+      "How does accelerated metabolic recovery affect generation-spanning social organization under resource scarcity?",
     findings: [
       "Suppressing dispute mortality constraints enables stable, high-density social configurations.",
       "Generational survivability stabilizes indefinitely with zero population collapse.",
       "Social connection degree reaches a record maximum average of 197.13 links.",
-      "Population peaked at 190 active agents, selecting for high spatial clustering."
+      "Population peaked at 190 active agents, selecting for high spatial clustering.",
     ],
     simStatus: "Completed",
     archiveStatus: "Published",
     engineVersion: "v9.2.0",
     simulationDate: "2026-06-28",
     citationKey: "genesis_record_gen_0001",
-    related: [{ id: "GEN-0002", role: "Control comparison under physiological constraints" }]
+    related: [{ id: "GEN-0002", role: "Control comparison under physiological constraints" }],
   },
   "GEN-0002": {
-    question: "How do physiological healing constraints influence conflict dynamics and spatial dispersion compared to accelerated recovery?",
+    question:
+      "How do physiological healing constraints influence conflict dynamics and spatial dispersion compared to accelerated recovery?",
     findings: [
       "Standard physiological constraints trigger rapid attritional conflict under scarcity.",
       "Dispute attrition restricts population growth to generation 2 boundaries.",
       "Conflict activity index spikes to 12.67 disputes per epoch.",
-      "Death centroids shift 12.7 pixels, showing territorial drift pressures."
+      "Death centroids shift 12.7 pixels, showing territorial drift pressures.",
     ],
     simStatus: "Completed",
     archiveStatus: "Published",
     engineVersion: "v9.2.0",
     simulationDate: "2026-06-28",
     citationKey: "genesis_record_gen_0002",
-    related: [{ id: "GEN-0001", role: "Accelerated recovery comparison" }]
+    related: [{ id: "GEN-0001", role: "Accelerated recovery comparison" }],
   },
   "GEN-0003": {
-    question: "How does a contiguous continental landmass influence population isolation and systemic extinction thresholds under high scarcity?",
+    question:
+      "How does a contiguous continental landmass influence population isolation and systemic extinction thresholds under high scarcity?",
     findings: [
       "Contiguous geography traps population inside isolated low-lying resource basins.",
       "Lacking altitudinal migration passes, population experiences total demographic collapse.",
       "Exposure constraints on dry highlands cause 70.5% (12/17) of registered deaths.",
-      "Complete extinction occurs by tick 11,209, with static centroid drift (0.2px)."
+      "Complete extinction occurs by tick 11,209, with static centroid drift (0.2px).",
     ],
     simStatus: "Terminated (Extinction)",
     archiveStatus: "Published",
     engineVersion: "v9.2.0",
     simulationDate: "2026-06-28",
     citationKey: "genesis_record_gen_0003",
-    related: [{ id: "GEN-0004", role: "Environmental comparison across island chains" }]
+    related: [{ id: "GEN-0004", role: "Environmental comparison across island chains" }],
   },
   "GEN-0004": {
-    question: "How does geographical fragmentation across archipelago topologies drive migration flight and extinction pathways under extreme scarcity?",
+    question:
+      "How does geographical fragmentation across archipelago topologies drive migration flight and extinction pathways under extreme scarcity?",
     findings: [
       "Islet fragmentation forces long-range migration flight across deep channels.",
       "Centroid displacement logs a massive 149.7px vector as local islets deplete.",
       "Severe resource competition at island water slots spikes conflict index to 29.99.",
-      "Dehydration and exposure combine to trigger total demographic extinction by tick 7,970."
+      "Dehydration and exposure combine to trigger total demographic extinction by tick 7,970.",
     ],
     simStatus: "Terminated (Extinction)",
     archiveStatus: "Published",
     engineVersion: "v9.2.0",
     simulationDate: "2026-07-13",
     citationKey: "genesis_record_gen_0004",
-    related: [{ id: "GEN-0003", role: "Environmental comparison across contiguous continents" }]
+    related: [{ id: "GEN-0003", role: "Environmental comparison across contiguous continents" }],
   },
   "GEN-VAL-001": {
-    question: "How accurately do procedural height contour, wind advection, and hydrology algorithms map multi-scale environmental presets?",
+    question:
+      "How accurately do procedural height contour, wind advection, and hydrology algorithms map multi-scale environmental presets?",
     findings: [
       "Elevation maps correctly block and deflect moisture advection paths.",
       "Whittaker biome allocations match environmental temperature thresholds.",
-      "Priority-Flood heap queue sink resolution successfully resolves all ocean outlets."
+      "Priority-Flood heap queue sink resolution successfully resolves all ocean outlets.",
     ],
     simStatus: "Completed",
     archiveStatus: "Engine Verified",
     engineVersion: "v9.2.0",
     simulationDate: "2026-07-16",
     citationKey: "genesis_val_001",
-    related: [{ id: "GEN-VAL-002", role: "Reflex Planner validation comparison" }]
+    related: [{ id: "GEN-VAL-002", role: "Reflex Planner validation comparison" }],
   },
   "GEN-VAL-002": {
-    question: "Do fundamental agent sensory reflexes (shelter choice, hydration caching) execute correctly under non-lethal conditions?",
+    question:
+      "Do fundamental agent sensory reflexes (shelter choice, hydration caching) execute correctly under non-lethal conditions?",
     findings: [
       "Agent pathing successfully targets shelter within 100-cell radius.",
       "Sensory canteen caching loop registers water replenishment loops.",
-      "100% agent survival recorded over 2,000 tick calibration timeline."
+      "100% agent survival recorded over 2,000 tick calibration timeline.",
     ],
     simStatus: "Completed",
     archiveStatus: "Engine Verified",
     engineVersion: "v9.2.0",
     simulationDate: "2026-06-28",
     citationKey: "genesis_val_002",
-    related: [{ id: "GEN-VAL-001", role: "Atlas verification comparison" }]
-  }
+    related: [{ id: "GEN-VAL-001", role: "Atlas verification comparison" }],
+  },
 };
 
 function CivilizationRecordPage() {
   const { record, related } = Route.useLoaderData();
   const [activeMapId, setActiveMapId] = useState<string>("biomes");
   const [showColonies, setShowColonies] = useState<boolean>(true);
-  const [activeTab, setActiveTab] = useState<"research" | "chronicle" | "observatory" | "technical">("research");
+  const [activeTab, setActiveTab] = useState<
+    "research" | "chronicle" | "observatory" | "technical"
+  >("research");
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
 
   const relatedCards: ExperimentCardProps[] = related.map((row: any) => ({
@@ -272,7 +285,7 @@ function CivilizationRecordPage() {
     publishedAt: row.published_at,
     thumbnailUrl: row.thumbnail_url,
     isFeatured: row.is_featured || false,
-    tags: row.tags || []
+    tags: row.tags || [],
   }));
 
   // Safe JSON Parsing for Summary & Config
@@ -281,14 +294,15 @@ function CivilizationRecordPage() {
   const events = summary.events || record.summary_json?.events || [];
   const derivedMetrics = summary.derived_metrics || {};
   const distributions = summary.distributions || {};
-  
+
   const meta = STUDY_METADATA[record.id] || null;
-  
+
   // Available maps array check
   const availableMaps: string[] = summary.available_maps || ["biomes"];
 
   // Map URL resolution with backward compatibility
-  const storageUrlPrefix = "https://tyajlotsxwocxxawcwta.supabase.co/storage/v1/object/public/experiments";
+  const storageUrlPrefix =
+    "https://tyajlotsxwocxxawcwta.supabase.co/storage/v1/object/public/experiments";
   const getMapUrl = (mapId: string) => {
     if (mapId === "biomes" && !availableMaps.includes("biomes")) {
       return record.cover_url;
@@ -305,28 +319,32 @@ function CivilizationRecordPage() {
       questions.push({
         id: "RQ-027",
         title: "Speciation on Island Archipelagos",
-        question: "How does geographical isolation across island chains accelerate genetic drift and colony-specific cognitive adaptations?"
+        question:
+          "How does geographical isolation across island chains accelerate genetic drift and colony-specific cognitive adaptations?",
       });
     }
     if (config.scarcity >= 3.0) {
       questions.push({
         id: "RQ-004",
         title: "Reproductive Squelching under Severe Famine",
-        question: "Does extreme scarcity suppress sexual reproduction frequency in favor of individual self-preservation and shelter construction behaviors?"
+        question:
+          "Does extreme scarcity suppress sexual reproduction frequency in favor of individual self-preservation and shelter construction behaviors?",
       });
     }
     if (config.disasters_enabled) {
       questions.push({
         id: "RQ-019",
         title: "Disaster Bottlenecks and Lineage Extinctions",
-        question: "What structural thresholds determine which lineages survive rapid environmental shocks vs. experiencing absolute demographic collapse?"
+        question:
+          "What structural thresholds determine which lineages survive rapid environmental shocks vs. experiencing absolute demographic collapse?",
       });
     }
     if (questions.length === 0) {
       questions.push({
         id: "RQ-001",
         title: "Emergence of Cooperative Spatial Boundaries",
-        question: "How do distinct founder colonies negotiate territorial boundaries under baseline resource availability constraints?"
+        question:
+          "How do distinct founder colonies negotiate territorial boundaries under baseline resource availability constraints?",
       });
     }
     return questions;
@@ -335,9 +353,14 @@ function CivilizationRecordPage() {
   // SVG Population Chart Calculations
   const renderPopulationChart = () => {
     const popHistory: any[] = summary.population_history || [];
-    if (popHistory.length < 2) return <p className="text-sm text-center text-gray-500 py-10">Telemetry timeline history not recorded for this experiment run.</p>;
+    if (popHistory.length < 2)
+      return (
+        <p className="text-sm text-center text-gray-500 py-10">
+          Telemetry timeline history not recorded for this experiment run.
+        </p>
+      );
 
-    const maxVal = Math.max(...popHistory.map(p => p.total || 0), 10);
+    const maxVal = Math.max(...popHistory.map((p) => p.total || 0), 10);
     const width = 600;
     const height = 180;
     const padding = 25;
@@ -350,7 +373,7 @@ function CivilizationRecordPage() {
 
     popHistory.forEach((p, idx) => {
       const x = padding + (idx / (popHistory.length - 1)) * (width - padding * 2);
-      const yVal = (p.total || 0);
+      const yVal = p.total || 0;
       const y = height - padding - (yVal / maxVal) * (height - padding * 2);
       pointsTotal.push(`${x},${y}`);
 
@@ -374,51 +397,238 @@ function CivilizationRecordPage() {
     });
 
     return (
-      <div style={{ background: "rgba(255,255,255,0.01)", border: "1px solid var(--border-default)", borderRadius: "var(--radius-lg)", padding: "1.5rem" }} className="glass">
-        <h3 style={{ fontFamily: "var(--font-display)", fontSize: "var(--text-lg)", marginBottom: "1rem" }}>Population Growth Dynamics</h3>
-        <svg viewBox={`0 0 ${width} ${height}`} width="100%" height="auto" style={{ overflow: "visible" }}>
+      <div
+        style={{
+          background: "rgba(255,255,255,0.01)",
+          border: "1px solid var(--border-default)",
+          borderRadius: "var(--radius-lg)",
+          padding: "1.5rem",
+        }}
+        className="glass"
+      >
+        <h3
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "var(--text-lg)",
+            marginBottom: "1rem",
+          }}
+        >
+          Population Growth Dynamics
+        </h3>
+        <svg
+          viewBox={`0 0 ${width} ${height}`}
+          width="100%"
+          height="auto"
+          style={{ overflow: "visible" }}
+        >
           {/* Grid lines */}
-          <line x1={padding} y1={padding} x2={width - padding} y2={padding} stroke="var(--border-default)" strokeWidth="0.5" strokeDasharray="4 4" />
-          <line x1={padding} y1={height / 2} x2={width - padding} y2={height / 2} stroke="var(--border-default)" strokeWidth="0.5" strokeDasharray="4 4" />
-          <line x1={padding} y1={height - padding} x2={width - padding} y2={height - padding} stroke="var(--border-default)" />
-          <line x1={padding} y1={padding} x2={padding} y2={height - padding} stroke="var(--border-default)" />
+          <line
+            x1={padding}
+            y1={padding}
+            x2={width - padding}
+            y2={padding}
+            stroke="var(--border-default)"
+            strokeWidth="0.5"
+            strokeDasharray="4 4"
+          />
+          <line
+            x1={padding}
+            y1={height / 2}
+            x2={width - padding}
+            y2={height / 2}
+            stroke="var(--border-default)"
+            strokeWidth="0.5"
+            strokeDasharray="4 4"
+          />
+          <line
+            x1={padding}
+            y1={height - padding}
+            x2={width - padding}
+            y2={height - padding}
+            stroke="var(--border-default)"
+          />
+          <line
+            x1={padding}
+            y1={padding}
+            x2={padding}
+            y2={height - padding}
+            stroke="var(--border-default)"
+          />
 
           {/* Chart lines */}
-          {pointsAlpha.length > 0 && <polyline fill="none" stroke="#ef4444" strokeWidth="1.5" points={pointsAlpha.join(" ")} />}
-          {pointsBeta.length > 0 && <polyline fill="none" stroke="#00f2fe" strokeWidth="1.5" points={pointsBeta.join(" ")} />}
-          {pointsGamma.length > 0 && <polyline fill="none" stroke="#10b981" strokeWidth="1.5" points={pointsGamma.join(" ")} />}
-          {pointsDelta.length > 0 && <polyline fill="none" stroke="#a855f7" strokeWidth="1.5" points={pointsDelta.join(" ")} />}
+          {pointsAlpha.length > 0 && (
+            <polyline
+              fill="none"
+              stroke="#ef4444"
+              strokeWidth="1.5"
+              points={pointsAlpha.join(" ")}
+            />
+          )}
+          {pointsBeta.length > 0 && (
+            <polyline
+              fill="none"
+              stroke="#00f2fe"
+              strokeWidth="1.5"
+              points={pointsBeta.join(" ")}
+            />
+          )}
+          {pointsGamma.length > 0 && (
+            <polyline
+              fill="none"
+              stroke="#10b981"
+              strokeWidth="1.5"
+              points={pointsGamma.join(" ")}
+            />
+          )}
+          {pointsDelta.length > 0 && (
+            <polyline
+              fill="none"
+              stroke="#a855f7"
+              strokeWidth="1.5"
+              points={pointsDelta.join(" ")}
+            />
+          )}
           <polyline fill="none" stroke="#f3f4f6" strokeWidth="2.5" points={pointsTotal.join(" ")} />
 
           {/* Y Axis Labels */}
-          <text x={padding - 5} y={padding + 4} textAnchor="end" fill="var(--text-tertiary)" fontSize="9" fontFamily="var(--font-mono)">{maxVal}</text>
-          <text x={padding - 5} y={height / 2 + 4} textAnchor="end" fill="var(--text-tertiary)" fontSize="9" fontFamily="var(--font-mono)">{Math.round(maxVal / 2)}</text>
-          <text x={padding - 5} y={height - padding + 4} textAnchor="end" fill="var(--text-tertiary)" fontSize="9" fontFamily="var(--font-mono)">0</text>
+          <text
+            x={padding - 5}
+            y={padding + 4}
+            textAnchor="end"
+            fill="var(--text-tertiary)"
+            fontSize="9"
+            fontFamily="var(--font-mono)"
+          >
+            {maxVal}
+          </text>
+          <text
+            x={padding - 5}
+            y={height / 2 + 4}
+            textAnchor="end"
+            fill="var(--text-tertiary)"
+            fontSize="9"
+            fontFamily="var(--font-mono)"
+          >
+            {Math.round(maxVal / 2)}
+          </text>
+          <text
+            x={padding - 5}
+            y={height - padding + 4}
+            textAnchor="end"
+            fill="var(--text-tertiary)"
+            fontSize="9"
+            fontFamily="var(--font-mono)"
+          >
+            0
+          </text>
 
           {/* X Axis Labels */}
-          <text x={padding} y={height - padding + 15} fill="var(--text-tertiary)" fontSize="9" fontFamily="var(--font-mono)">Start (0)</text>
-          <text x={width - padding} y={height - padding + 15} textAnchor="end" fill="var(--text-tertiary)" fontSize="9" fontFamily="var(--font-mono)">End ({popHistory[popHistory.length - 1].tick} t)</text>
+          <text
+            x={padding}
+            y={height - padding + 15}
+            fill="var(--text-tertiary)"
+            fontSize="9"
+            fontFamily="var(--font-mono)"
+          >
+            Start (0)
+          </text>
+          <text
+            x={width - padding}
+            y={height - padding + 15}
+            textAnchor="end"
+            fill="var(--text-tertiary)"
+            fontSize="9"
+            fontFamily="var(--font-mono)"
+          >
+            End ({popHistory[popHistory.length - 1].tick} t)
+          </text>
         </svg>
 
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", marginTop: "1rem", fontSize: "11px", fontFamily: "var(--font-mono)" }}>
-          <span style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}><span style={{ display: "inline-block", width: "8px", height: "8px", borderRadius: "50%", background: "#f3f4f6" }}></span>Total Alive</span>
-          <span style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}><span style={{ display: "inline-block", width: "8px", height: "8px", borderRadius: "50%", background: "#ef4444" }}></span>Alpha Colony</span>
-          <span style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}><span style={{ display: "inline-block", width: "8px", height: "8px", borderRadius: "50%", background: "#00f2fe" }}></span>Beta Colony</span>
-          <span style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}><span style={{ display: "inline-block", width: "8px", height: "8px", borderRadius: "50%", background: "#10b981" }}></span>Gamma Colony</span>
-          <span style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}><span style={{ display: "inline-block", width: "8px", height: "8px", borderRadius: "50%", background: "#a855f7" }}></span>Delta Colony</span>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "1rem",
+            marginTop: "1rem",
+            fontSize: "11px",
+            fontFamily: "var(--font-mono)",
+          }}
+        >
+          <span style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
+            <span
+              style={{
+                display: "inline-block",
+                width: "8px",
+                height: "8px",
+                borderRadius: "50%",
+                background: "#f3f4f6",
+              }}
+            ></span>
+            Total Alive
+          </span>
+          <span style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
+            <span
+              style={{
+                display: "inline-block",
+                width: "8px",
+                height: "8px",
+                borderRadius: "50%",
+                background: "#ef4444",
+              }}
+            ></span>
+            Alpha Colony
+          </span>
+          <span style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
+            <span
+              style={{
+                display: "inline-block",
+                width: "8px",
+                height: "8px",
+                borderRadius: "50%",
+                background: "#00f2fe",
+              }}
+            ></span>
+            Beta Colony
+          </span>
+          <span style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
+            <span
+              style={{
+                display: "inline-block",
+                width: "8px",
+                height: "8px",
+                borderRadius: "50%",
+                background: "#10b981",
+              }}
+            ></span>
+            Gamma Colony
+          </span>
+          <span style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
+            <span
+              style={{
+                display: "inline-block",
+                width: "8px",
+                height: "8px",
+                borderRadius: "50%",
+                background: "#a855f7",
+              }}
+            ></span>
+            Delta Colony
+          </span>
         </div>
       </div>
     );
   };
 
   return (
-    <main style={{
-      minHeight: "100vh",
-      backgroundColor: "#020408",
-      color: "var(--text-primary)",
-      fontFamily: "var(--font-body)",
-      padding: "2rem 1.5rem"
-    }}>
+    <main
+      style={{
+        minHeight: "100vh",
+        backgroundColor: "#020408",
+        color: "var(--text-primary)",
+        fontFamily: "var(--font-body)",
+        padding: "2rem 1.5rem",
+      }}
+    >
       {/* Custom Styles Injection */}
       <style>{`
         .atlas-nav-btn {
@@ -498,196 +708,155 @@ function CivilizationRecordPage() {
       `}</style>
 
       <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
-        
         {/* Navigation Return */}
         <header style={{ marginBottom: "2rem" }}>
-          <Link to="/archive" style={{
-            fontFamily: "var(--font-display)",
-            fontWeight: 600,
-            fontSize: "var(--text-sm)",
-            color: "var(--text-secondary)",
-            textDecoration: "none",
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "0.5rem"
-          }}>
+          <Link
+            to="/archive"
+            style={{
+              fontFamily: "var(--font-display)",
+              fontWeight: 600,
+              fontSize: "var(--text-sm)",
+              color: "var(--text-secondary)",
+              textDecoration: "none",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.5rem",
+            }}
+          >
             ← Return to Experiment Archive
           </Link>
         </header>
 
         {/* Dynamic Seed Info Ribbon */}
-        <div style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          background: "var(--bg-secondary)",
-          border: "1px solid var(--border-default)",
-          borderRadius: "var(--radius-lg)",
-          padding: "1.25rem 2rem",
-          marginBottom: "2rem"
-        }} className="glass">
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            background: "var(--bg-secondary)",
+            border: "1px solid var(--border-default)",
+            borderRadius: "var(--radius-lg)",
+            padding: "1.25rem 2rem",
+            marginBottom: "2rem",
+          }}
+          className="glass"
+        >
           <div>
-            <p style={{ fontFamily: "var(--font-mono)", fontSize: "10px", color: "var(--text-tertiary)", textTransform: "uppercase" }}>Experiment ID</p>
-            <h1 style={{ fontFamily: "var(--font-display)", fontSize: "var(--text-2xl)", fontWeight: 700, margin: "0.2rem 0 0 0" }}>{record.title}</h1>
+            <p
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "10px",
+                color: "var(--text-tertiary)",
+                textTransform: "uppercase",
+              }}
+            >
+              Experiment ID
+            </p>
+            <h1
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "var(--text-2xl)",
+                fontWeight: 700,
+                margin: "0.2rem 0 0 0",
+              }}
+            >
+              {record.title}
+            </h1>
           </div>
           <div style={{ display: "flex", gap: "3rem" }}>
             <div>
-              <p style={{ fontFamily: "var(--font-mono)", fontSize: "10px", color: "var(--text-tertiary)", textTransform: "uppercase" }}>Seed</p>
-              <p style={{ fontFamily: "var(--font-mono)", fontSize: "14px", fontWeight: 700, margin: "0.2rem 0 0 0" }}>{record.seed}</p>
+              <p
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "10px",
+                  color: "var(--text-tertiary)",
+                  textTransform: "uppercase",
+                }}
+              >
+                Seed
+              </p>
+              <p
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "14px",
+                  fontWeight: 700,
+                  margin: "0.2rem 0 0 0",
+                }}
+              >
+                {record.seed}
+              </p>
             </div>
             <div>
-              <p style={{ fontFamily: "var(--font-mono)", fontSize: "10px", color: "var(--text-tertiary)", textTransform: "uppercase" }}>World Preset</p>
-              <p style={{ fontFamily: "var(--font-display)", fontSize: "14px", fontWeight: 700, margin: "0.2rem 0 0 0", color: "#00f2fe" }}>{config.world_preset || "Custom"}</p>
+              <p
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "10px",
+                  color: "var(--text-tertiary)",
+                  textTransform: "uppercase",
+                }}
+              >
+                World Preset
+              </p>
+              <p
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "14px",
+                  fontWeight: 700,
+                  margin: "0.2rem 0 0 0",
+                  color: "#00f2fe",
+                }}
+              >
+                {config.world_preset || "Custom"}
+              </p>
             </div>
             <div>
-              <p style={{ fontFamily: "var(--font-mono)", fontSize: "10px", color: "var(--text-tertiary)", textTransform: "uppercase" }}>Scarcity</p>
-              <p style={{ fontFamily: "var(--font-mono)", fontSize: "14px", fontWeight: 700, margin: "0.2rem 0 0 0" }}>{record.scarcity}x</p>
+              <p
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "10px",
+                  color: "var(--text-tertiary)",
+                  textTransform: "uppercase",
+                }}
+              >
+                Scarcity
+              </p>
+              <p
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "14px",
+                  fontWeight: 700,
+                  margin: "0.2rem 0 0 0",
+                }}
+              >
+                {record.scarcity}x
+              </p>
             </div>
           </div>
         </div>
 
         {/* Master Dual Column Grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "400px 1fr", gap: "2rem", alignItems: "start" }}>
-
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "400px 1fr",
+            gap: "2rem",
+            alignItems: "start",
+          }}
+        >
           {/* LEFT SIDEBAR COLUMN: ATLAS, CONFIG, DOWNLOADS */}
           <aside style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-
             {/* A. WORLD ATLAS SELECTOR DECK */}
-            <section style={{
-              background: "var(--bg-secondary)",
-              border: "1px solid var(--border-default)",
-              borderRadius: "var(--radius-xl)",
-              padding: "1.5rem"
-            }} className="glass">
-              <h2 style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "var(--text-sm)",
-                fontWeight: 700,
-                color: "var(--text-primary)",
-                textTransform: "uppercase",
-                letterSpacing: "0.05em",
-                marginBottom: "1.2rem",
-                borderBottom: "1px solid var(--border-default)",
-                paddingBottom: "0.5rem"
-              }}>
-                Environmental Atlas
-              </h2>
-
-              {/* WORLD Map List */}
-              <div style={{ marginBottom: "1rem" }}>
-                <p style={{ fontFamily: "var(--font-mono)", fontSize: "9px", color: "var(--text-tertiary)", textTransform: "uppercase", marginBottom: "0.4rem" }}>World Topology</p>
-                {ATLAS_MAPS.filter(m => m.category === "WORLD").map(m => {
-                  const available = availableMaps.includes(m.id);
-                  return (
-                    <button
-                      key={m.id}
-                      onClick={() => setActiveMapId(m.id)}
-                      className={`atlas-nav-btn ${activeMapId === m.id ? "active" : ""} ${!available ? "disabled" : ""}`}
-                    >
-                      <span>{m.title}</span>
-                      <span style={{ fontSize: "10px", opacity: 0.6 }}>{!available ? "Locked" : "→"}</span>
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* ECOLOGY Map List */}
-              <div style={{ marginBottom: "1rem" }}>
-                <p style={{ fontFamily: "var(--font-mono)", fontSize: "9px", color: "var(--text-tertiary)", textTransform: "uppercase", marginBottom: "0.4rem" }}>Ecology Matrix</p>
-                {ATLAS_MAPS.filter(m => m.category === "ECOLOGY").map(m => {
-                  const available = availableMaps.includes(m.id);
-                  return (
-                    <button
-                      key={m.id}
-                      onClick={() => setActiveMapId(m.id)}
-                      className={`atlas-nav-btn ${activeMapId === m.id ? "active" : ""} ${!available ? "disabled" : ""}`}
-                    >
-                      <span>{m.title}</span>
-                      <span style={{ fontSize: "10px", opacity: 0.6 }}>{!available ? "Locked" : "→"}</span>
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* CIVILIZATION Map List */}
-              <div style={{ marginBottom: "0.5rem" }}>
-                <p style={{ fontFamily: "var(--font-mono)", fontSize: "9px", color: "var(--text-tertiary)", textTransform: "uppercase", marginBottom: "0.4rem" }}>Civilization Traces</p>
-                {ATLAS_MAPS.filter(m => m.category === "CIVILIZATION").map(m => {
-                  const available = availableMaps.includes(m.id);
-                  return (
-                    <button
-                      key={m.id}
-                      onClick={() => setActiveMapId(m.id)}
-                      className={`atlas-nav-btn ${activeMapId === m.id ? "active" : ""} ${!available ? "disabled" : ""}`}
-                    >
-                      <span>{m.title}</span>
-                      <span style={{ fontSize: "10px", opacity: 0.6 }}>{!available ? "Locked" : "→"}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </section>
-
-            {/* B. DETAILED EXPERIMENT PARAMETERS */}
-            <section style={{
-              background: "var(--bg-secondary)",
-              border: "1px solid var(--border-default)",
-              borderRadius: "var(--radius-xl)",
-              padding: "1.5rem"
-            }} className="glass">
-              <h2 style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "var(--text-sm)",
-                fontWeight: 700,
-                color: "var(--text-primary)",
-                textTransform: "uppercase",
-                letterSpacing: "0.05em",
-                marginBottom: "1.2rem",
-                borderBottom: "1px solid var(--border-default)",
-                paddingBottom: "0.5rem"
-              }}>
-                Experiment Configuration
-              </h2>
-
-              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-                
-                {/* WORLD Parameters */}
-                <div>
-                  <p style={{ fontFamily: "var(--font-mono)", fontSize: "10px", color: "#00f2fe", fontWeight: 700, textTransform: "uppercase", marginBottom: "0.4rem" }}>World Settings</p>
-                  <table style={{ width: "100%", fontSize: "var(--text-xs)", fontFamily: "var(--font-mono)" }}>
-                    <tbody>
-                      <tr style={{ height: "24px" }}><td style={{ color: "var(--text-secondary)" }}>Procedural Seed</td><td style={{ textAlign: "right" }}>{record.seed}</td></tr>
-                      <tr style={{ height: "24px", borderTop: "1px solid rgba(255,255,255,0.02)" }}><td style={{ color: "var(--text-secondary)" }}>Biome Preset</td><td style={{ textAlign: "right", textTransform: "capitalize" }}>{(config.world_preset || "Random").replace("_", " ")}</td></tr>
-                      <tr style={{ height: "24px", borderTop: "1px solid rgba(255,255,255,0.02)" }}><td style={{ color: "var(--text-secondary)" }}>Grid Resolution</td><td style={{ textAlign: "right" }}>1024 x 1024</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                {/* SIMULATION Parameters */}
-                <div>
-                  <p style={{ fontFamily: "var(--font-mono)", fontSize: "10px", color: "var(--accent-purple)", fontWeight: 700, textTransform: "uppercase", marginBottom: "0.4rem" }}>Simulation Settings</p>
-                  <table style={{ width: "100%", fontSize: "var(--text-xs)", fontFamily: "var(--font-mono)" }}>
-                    <tbody>
-                      <tr style={{ height: "24px" }}><td style={{ color: "var(--text-secondary)" }}>Target Ticks</td><td style={{ textAlign: "right" }}>{record.ticks.toLocaleString()}</td></tr>
-                      <tr style={{ height: "24px", borderTop: "1px solid rgba(255,255,255,0.02)" }}><td style={{ color: "var(--text-secondary)" }}>Resource Scarcity</td><td style={{ textAlign: "right" }}>{record.scarcity}x</td></tr>
-                      <tr style={{ height: "24px", borderTop: "1px solid rgba(255,255,255,0.02)" }}><td style={{ color: "var(--text-secondary)" }}>Carrying Capacity</td><td style={{ textAlign: "right" }}>{config.max_population || 200}</td></tr>
-                      <tr style={{ height: "24px", borderTop: "1px solid rgba(255,255,255,0.02)" }}><td style={{ color: "var(--text-secondary)" }}>Mutation Rate</td><td style={{ textAlign: "right" }}>{((config.mutation_rate || 0.05) * 100).toFixed(0)}%</td></tr>
-                      <tr style={{ height: "24px", borderTop: "1px solid rgba(255,255,255,0.02)" }}><td style={{ color: "var(--text-secondary)" }}>Climate Epochs</td><td style={{ textAlign: "right", textTransform: "capitalize" }}>{(config.climate_epoch_mode || "stable").replace("_", " ")}</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </section>
-
-            {/* STUDY RESEARCH METADATA SIDEBAR */}
-            {meta && (
-              <section style={{
+            <section
+              style={{
                 background: "var(--bg-secondary)",
                 border: "1px solid var(--border-default)",
                 borderRadius: "var(--radius-xl)",
-                padding: "1.5rem"
-              }} className="glass">
-                <h2 style={{
+                padding: "1.5rem",
+              }}
+              className="glass"
+            >
+              <h2
+                style={{
                   fontFamily: "var(--font-display)",
                   fontSize: "var(--text-sm)",
                   fontWeight: 700,
@@ -696,24 +865,300 @@ function CivilizationRecordPage() {
                   letterSpacing: "0.05em",
                   marginBottom: "1.2rem",
                   borderBottom: "1px solid var(--border-default)",
-                  paddingBottom: "0.5rem"
-                }}>
+                  paddingBottom: "0.5rem",
+                }}
+              >
+                Environmental Atlas
+              </h2>
+
+              {/* WORLD Map List */}
+              <div style={{ marginBottom: "1rem" }}>
+                <p
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "9px",
+                    color: "var(--text-tertiary)",
+                    textTransform: "uppercase",
+                    marginBottom: "0.4rem",
+                  }}
+                >
+                  World Topology
+                </p>
+                {ATLAS_MAPS.filter((m) => m.category === "WORLD").map((m) => {
+                  const available = availableMaps.includes(m.id);
+                  return (
+                    <button
+                      key={m.id}
+                      onClick={() => setActiveMapId(m.id)}
+                      className={`atlas-nav-btn ${activeMapId === m.id ? "active" : ""} ${!available ? "disabled" : ""}`}
+                    >
+                      <span>{m.title}</span>
+                      <span style={{ fontSize: "10px", opacity: 0.6 }}>
+                        {!available ? "Locked" : "→"}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* ECOLOGY Map List */}
+              <div style={{ marginBottom: "1rem" }}>
+                <p
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "9px",
+                    color: "var(--text-tertiary)",
+                    textTransform: "uppercase",
+                    marginBottom: "0.4rem",
+                  }}
+                >
+                  Ecology Matrix
+                </p>
+                {ATLAS_MAPS.filter((m) => m.category === "ECOLOGY").map((m) => {
+                  const available = availableMaps.includes(m.id);
+                  return (
+                    <button
+                      key={m.id}
+                      onClick={() => setActiveMapId(m.id)}
+                      className={`atlas-nav-btn ${activeMapId === m.id ? "active" : ""} ${!available ? "disabled" : ""}`}
+                    >
+                      <span>{m.title}</span>
+                      <span style={{ fontSize: "10px", opacity: 0.6 }}>
+                        {!available ? "Locked" : "→"}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* CIVILIZATION Map List */}
+              <div style={{ marginBottom: "0.5rem" }}>
+                <p
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "9px",
+                    color: "var(--text-tertiary)",
+                    textTransform: "uppercase",
+                    marginBottom: "0.4rem",
+                  }}
+                >
+                  Civilization Traces
+                </p>
+                {ATLAS_MAPS.filter((m) => m.category === "CIVILIZATION").map((m) => {
+                  const available = availableMaps.includes(m.id);
+                  return (
+                    <button
+                      key={m.id}
+                      onClick={() => setActiveMapId(m.id)}
+                      className={`atlas-nav-btn ${activeMapId === m.id ? "active" : ""} ${!available ? "disabled" : ""}`}
+                    >
+                      <span>{m.title}</span>
+                      <span style={{ fontSize: "10px", opacity: 0.6 }}>
+                        {!available ? "Locked" : "→"}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+
+            {/* B. DETAILED EXPERIMENT PARAMETERS */}
+            <section
+              style={{
+                background: "var(--bg-secondary)",
+                border: "1px solid var(--border-default)",
+                borderRadius: "var(--radius-xl)",
+                padding: "1.5rem",
+              }}
+              className="glass"
+            >
+              <h2
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "var(--text-sm)",
+                  fontWeight: 700,
+                  color: "var(--text-primary)",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em",
+                  marginBottom: "1.2rem",
+                  borderBottom: "1px solid var(--border-default)",
+                  paddingBottom: "0.5rem",
+                }}
+              >
+                Experiment Configuration
+              </h2>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                {/* WORLD Parameters */}
+                <div>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "10px",
+                      color: "#00f2fe",
+                      fontWeight: 700,
+                      textTransform: "uppercase",
+                      marginBottom: "0.4rem",
+                    }}
+                  >
+                    World Settings
+                  </p>
+                  <table
+                    style={{
+                      width: "100%",
+                      fontSize: "var(--text-xs)",
+                      fontFamily: "var(--font-mono)",
+                    }}
+                  >
+                    <tbody>
+                      <tr style={{ height: "24px" }}>
+                        <td style={{ color: "var(--text-secondary)" }}>Procedural Seed</td>
+                        <td style={{ textAlign: "right" }}>{record.seed}</td>
+                      </tr>
+                      <tr style={{ height: "24px", borderTop: "1px solid rgba(255,255,255,0.02)" }}>
+                        <td style={{ color: "var(--text-secondary)" }}>Biome Preset</td>
+                        <td style={{ textAlign: "right", textTransform: "capitalize" }}>
+                          {(config.world_preset || "Random").replace("_", " ")}
+                        </td>
+                      </tr>
+                      <tr style={{ height: "24px", borderTop: "1px solid rgba(255,255,255,0.02)" }}>
+                        <td style={{ color: "var(--text-secondary)" }}>Grid Resolution</td>
+                        <td style={{ textAlign: "right" }}>1024 x 1024</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* SIMULATION Parameters */}
+                <div>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "10px",
+                      color: "var(--accent-purple)",
+                      fontWeight: 700,
+                      textTransform: "uppercase",
+                      marginBottom: "0.4rem",
+                    }}
+                  >
+                    Simulation Settings
+                  </p>
+                  <table
+                    style={{
+                      width: "100%",
+                      fontSize: "var(--text-xs)",
+                      fontFamily: "var(--font-mono)",
+                    }}
+                  >
+                    <tbody>
+                      <tr style={{ height: "24px" }}>
+                        <td style={{ color: "var(--text-secondary)" }}>Target Ticks</td>
+                        <td style={{ textAlign: "right" }}>{record.ticks.toLocaleString()}</td>
+                      </tr>
+                      <tr style={{ height: "24px", borderTop: "1px solid rgba(255,255,255,0.02)" }}>
+                        <td style={{ color: "var(--text-secondary)" }}>Resource Scarcity</td>
+                        <td style={{ textAlign: "right" }}>{record.scarcity}x</td>
+                      </tr>
+                      <tr style={{ height: "24px", borderTop: "1px solid rgba(255,255,255,0.02)" }}>
+                        <td style={{ color: "var(--text-secondary)" }}>Carrying Capacity</td>
+                        <td style={{ textAlign: "right" }}>{config.max_population || 200}</td>
+                      </tr>
+                      <tr style={{ height: "24px", borderTop: "1px solid rgba(255,255,255,0.02)" }}>
+                        <td style={{ color: "var(--text-secondary)" }}>Mutation Rate</td>
+                        <td style={{ textAlign: "right" }}>
+                          {((config.mutation_rate || 0.05) * 100).toFixed(0)}%
+                        </td>
+                      </tr>
+                      <tr style={{ height: "24px", borderTop: "1px solid rgba(255,255,255,0.02)" }}>
+                        <td style={{ color: "var(--text-secondary)" }}>Climate Epochs</td>
+                        <td style={{ textAlign: "right", textTransform: "capitalize" }}>
+                          {(config.climate_epoch_mode || "stable").replace("_", " ")}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+
+            {/* STUDY RESEARCH METADATA SIDEBAR */}
+            {meta && (
+              <section
+                style={{
+                  background: "var(--bg-secondary)",
+                  border: "1px solid var(--border-default)",
+                  borderRadius: "var(--radius-xl)",
+                  padding: "1.5rem",
+                }}
+                className="glass"
+              >
+                <h2
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: "var(--text-sm)",
+                    fontWeight: 700,
+                    color: "var(--text-primary)",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.05em",
+                    marginBottom: "1.2rem",
+                    borderBottom: "1px solid var(--border-default)",
+                    paddingBottom: "0.5rem",
+                  }}
+                >
                   Research Record Metadata
                 </h2>
-                <table style={{ width: "100%", fontSize: "var(--text-xs)", fontFamily: "var(--font-mono)", marginBottom: "1rem" }}>
+                <table
+                  style={{
+                    width: "100%",
+                    fontSize: "var(--text-xs)",
+                    fontFamily: "var(--font-mono)",
+                    marginBottom: "1rem",
+                  }}
+                >
                   <tbody>
-                    <tr style={{ height: "24px" }}><td style={{ color: "var(--text-secondary)" }}>Archive Status</td><td style={{ textAlign: "right", color: "#10b981", fontWeight: 700 }}>{meta.archiveStatus}</td></tr>
-                    <tr style={{ height: "24px", borderTop: "1px solid rgba(255,255,255,0.02)" }}><td style={{ color: "var(--text-secondary)" }}>Simulation Status</td><td style={{ textAlign: "right", color: "#60a5fa", fontWeight: 700 }}>{meta.simStatus}</td></tr>
-                    <tr style={{ height: "24px", borderTop: "1px solid rgba(255,255,255,0.02)" }}><td style={{ color: "var(--text-secondary)" }}>Genesis Engine</td><td style={{ textAlign: "right" }}>{meta.engineVersion}</td></tr>
-                    <tr style={{ height: "24px", borderTop: "1px solid rgba(255,255,255,0.02)" }}><td style={{ color: "var(--text-secondary)" }}>Simulation Date</td><td style={{ textAlign: "right" }}>{meta.simulationDate}</td></tr>
-                    <tr style={{ height: "24px", borderTop: "1px solid rgba(255,255,255,0.02)" }}><td style={{ color: "var(--text-secondary)" }}>Theme Category</td><td style={{ textAlign: "right", color: "#00f2fe" }}>{summary.research_theme || "General"}</td></tr>
+                    <tr style={{ height: "24px" }}>
+                      <td style={{ color: "var(--text-secondary)" }}>Archive Status</td>
+                      <td style={{ textAlign: "right", color: "#10b981", fontWeight: 700 }}>
+                        {meta.archiveStatus}
+                      </td>
+                    </tr>
+                    <tr style={{ height: "24px", borderTop: "1px solid rgba(255,255,255,0.02)" }}>
+                      <td style={{ color: "var(--text-secondary)" }}>Simulation Status</td>
+                      <td style={{ textAlign: "right", color: "#60a5fa", fontWeight: 700 }}>
+                        {meta.simStatus}
+                      </td>
+                    </tr>
+                    <tr style={{ height: "24px", borderTop: "1px solid rgba(255,255,255,0.02)" }}>
+                      <td style={{ color: "var(--text-secondary)" }}>Genesis Engine</td>
+                      <td style={{ textAlign: "right" }}>{meta.engineVersion}</td>
+                    </tr>
+                    <tr style={{ height: "24px", borderTop: "1px solid rgba(255,255,255,0.02)" }}>
+                      <td style={{ color: "var(--text-secondary)" }}>Simulation Date</td>
+                      <td style={{ textAlign: "right" }}>{meta.simulationDate}</td>
+                    </tr>
+                    <tr style={{ height: "24px", borderTop: "1px solid rgba(255,255,255,0.02)" }}>
+                      <td style={{ color: "var(--text-secondary)" }}>Theme Category</td>
+                      <td style={{ textAlign: "right", color: "#00f2fe" }}>
+                        {summary.research_theme || "General"}
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
 
                 {meta.related && meta.related.length > 0 && (
                   <div>
-                    <p style={{ fontFamily: "var(--font-mono)", fontSize: "9px", color: "var(--text-tertiary)", textTransform: "uppercase", marginBottom: "0.4rem" }}>Related Research Records</p>
-                    {meta.related.map(rel => (
+                    <p
+                      style={{
+                        fontFamily: "var(--font-mono)",
+                        fontSize: "9px",
+                        color: "var(--text-tertiary)",
+                        textTransform: "uppercase",
+                        marginBottom: "0.4rem",
+                      }}
+                    >
+                      Related Research Records
+                    </p>
+                    {meta.related.map((rel) => (
                       <Link
                         key={rel.id}
                         to={`/archive/civilizations/${rel.id}`}
@@ -728,13 +1173,21 @@ function CivilizationRecordPage() {
                           color: "inherit",
                           fontSize: "11px",
                           marginBottom: "0.25rem",
-                          transition: "all 0.2s"
+                          transition: "all 0.2s",
                         }}
-                        onMouseEnter={e => { e.currentTarget.style.background = "rgba(0, 242, 254, 0.03)"; e.currentTarget.style.borderColor = "rgba(0, 242, 254, 0.2)"; }}
-                        onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.02)"; e.currentTarget.style.borderColor = "var(--border-default)"; }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = "rgba(0, 242, 254, 0.03)";
+                          e.currentTarget.style.borderColor = "rgba(0, 242, 254, 0.2)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = "rgba(255,255,255,0.02)";
+                          e.currentTarget.style.borderColor = "var(--border-default)";
+                        }}
                       >
                         <span style={{ fontWeight: 700, color: "#00f2fe" }}>{rel.id}</span>
-                        <span style={{ opacity: 0.8, marginTop: "2px", lineHeight: "1.3" }}>{rel.role}</span>
+                        <span style={{ opacity: 0.8, marginTop: "2px", lineHeight: "1.3" }}>
+                          {rel.role}
+                        </span>
                       </Link>
                     ))}
                   </div>
@@ -743,26 +1196,31 @@ function CivilizationRecordPage() {
             )}
 
             {/* C. SYSTEMATIC DOWNLOADS */}
-            <section style={{
-              background: "var(--bg-secondary)",
-              border: "1px solid var(--border-default)",
-              borderRadius: "var(--radius-xl)",
-              padding: "1.5rem"
-            }} className="glass">
-              <h2 style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "var(--text-sm)",
-                fontWeight: 700,
-                color: "var(--text-primary)",
-                textTransform: "uppercase",
-                letterSpacing: "0.05em",
-                marginBottom: "1.2rem",
-                borderBottom: "1px solid var(--border-default)",
-                paddingBottom: "0.5rem"
-              }}>
+            <section
+              style={{
+                background: "var(--bg-secondary)",
+                border: "1px solid var(--border-default)",
+                borderRadius: "var(--radius-xl)",
+                padding: "1.5rem",
+              }}
+              className="glass"
+            >
+              <h2
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "var(--text-sm)",
+                  fontWeight: 700,
+                  color: "var(--text-primary)",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em",
+                  marginBottom: "1.2rem",
+                  borderBottom: "1px solid var(--border-default)",
+                  paddingBottom: "0.5rem",
+                }}
+              >
                 Data Downloads
               </h2>
-              
+
               <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                 <a
                   href={`${storageUrlPrefix}/${record.id}/exports/package.zip`}
@@ -780,11 +1238,17 @@ function CivilizationRecordPage() {
                     textDecoration: "none",
                     fontFamily: "var(--font-display)",
                     fontWeight: 600,
-                    transition: "all 0.2s"
+                    transition: "all 0.2s",
                   }}
                   className="btn-download"
-                  onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(0, 242, 254, 0.05)"; e.currentTarget.style.borderColor = "rgba(0, 242, 254, 0.2)"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.02)"; e.currentTarget.style.borderColor = "var(--border-default)"; }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "rgba(0, 242, 254, 0.05)";
+                    e.currentTarget.style.borderColor = "rgba(0, 242, 254, 0.2)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "rgba(255,255,255,0.02)";
+                    e.currentTarget.style.borderColor = "var(--border-default)";
+                  }}
                 >
                   <span>📦 Full Research Package (ZIP)</span>
                   <span style={{ color: "#00f2fe" }}>Download</span>
@@ -807,10 +1271,16 @@ function CivilizationRecordPage() {
                       textDecoration: "none",
                       fontFamily: "var(--font-display)",
                       fontWeight: 600,
-                      transition: "all 0.2s"
+                      transition: "all 0.2s",
                     }}
-                    onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(139, 92, 246, 0.05)"; e.currentTarget.style.borderColor = "rgba(139, 92, 246, 0.2)"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.02)"; e.currentTarget.style.borderColor = "var(--border-default)"; }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = "rgba(139, 92, 246, 0.05)";
+                      e.currentTarget.style.borderColor = "rgba(139, 92, 246, 0.2)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = "rgba(255,255,255,0.02)";
+                      e.currentTarget.style.borderColor = "var(--border-default)";
+                    }}
                   >
                     <span>🎬 Historical Playback (JSON)</span>
                     <span style={{ color: "var(--accent-purple)" }}>Download</span>
@@ -820,18 +1290,20 @@ function CivilizationRecordPage() {
             </section>
 
             {/* D. EXPERIMENT REPLICATION METADATA */}
-            <section style={{
-              background: "rgba(255,255,255,0.01)",
-              border: "1px dotted var(--border-default)",
-              borderRadius: "var(--radius-xl)",
-              padding: "1rem 1.25rem",
-              fontFamily: "var(--font-mono)",
-              fontSize: "10px",
-              color: "var(--text-tertiary)",
-              display: "flex",
-              flexDirection: "column",
-              gap: "0.4rem"
-            }}>
+            <section
+              style={{
+                background: "rgba(255,255,255,0.01)",
+                border: "1px dotted var(--border-default)",
+                borderRadius: "var(--radius-xl)",
+                padding: "1rem 1.25rem",
+                fontFamily: "var(--font-mono)",
+                fontSize: "10px",
+                color: "var(--text-tertiary)",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.4rem",
+              }}
+            >
               <p style={{ fontWeight: 700, color: "var(--text-secondary)" }}>REPLICATION INDEX</p>
               <div>ENGINE: Genesis v{record.engine_version || "9.2.0"}</div>
               <div>SCHEMA: Contract v{record.schema_version || "1.0.0"}</div>
@@ -843,30 +1315,61 @@ function CivilizationRecordPage() {
 
           {/* RIGHT COLUMN: MAP PREVIEW GALLERY + DETAILED WORKSPACE TABS */}
           <section style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
-            
             {/* 1. APPLE-LIKE ATLAS VIEWPORT WITH ANIMATIONS & OVERLAYS */}
-            <article style={{
-              background: "var(--bg-secondary)",
-              border: "1px solid var(--border-default)",
-              borderRadius: "var(--radius-xl)",
-              padding: "1.5rem",
-              position: "relative"
-            }} className="glass">
-              
+            <article
+              style={{
+                background: "var(--bg-secondary)",
+                border: "1px solid var(--border-default)",
+                borderRadius: "var(--radius-xl)",
+                padding: "1.5rem",
+                position: "relative",
+              }}
+              className="glass"
+            >
               {/* Header Details */}
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "1rem" }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "flex-start",
+                  marginBottom: "1rem",
+                }}
+              >
                 <div>
-                  <h2 style={{ fontFamily: "var(--font-display)", fontSize: "var(--text-xl)", fontWeight: 700, color: "var(--text-primary)" }}>
+                  <h2
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontSize: "var(--text-xl)",
+                      fontWeight: 700,
+                      color: "var(--text-primary)",
+                    }}
+                  >
                     {currentMap.title}
                   </h2>
-                  <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginTop: "0.2rem" }}>
+                  <p
+                    style={{
+                      fontSize: "var(--text-xs)",
+                      color: "var(--text-secondary)",
+                      marginTop: "0.2rem",
+                    }}
+                  >
                     {currentMap.description}
                   </p>
                 </div>
-                
+
                 {/* OVERLAY SELECTIONS */}
                 <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-                  <label style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", fontSize: "11px", fontFamily: "var(--font-mono)", cursor: "pointer", color: "var(--text-secondary)" }}>
+                  <label
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "0.4rem",
+                      fontSize: "11px",
+                      fontFamily: "var(--font-mono)",
+                      cursor: "pointer",
+                      color: "var(--text-secondary)",
+                    }}
+                  >
                     <input
                       type="checkbox"
                       checked={showColonies}
@@ -875,7 +1378,7 @@ function CivilizationRecordPage() {
                     />
                     Colony Sites
                   </label>
-                  
+
                   <button
                     onClick={() => setIsFullscreen(true)}
                     style={{
@@ -887,10 +1390,10 @@ function CivilizationRecordPage() {
                       fontSize: "10px",
                       fontFamily: "var(--font-mono)",
                       cursor: "pointer",
-                      transition: "all 0.2s"
+                      transition: "all 0.2s",
                     }}
-                    onMouseEnter={(e) => e.currentTarget.style.color = "var(--text-primary)"}
-                    onMouseLeave={(e) => e.currentTarget.style.color = "var(--text-secondary)"}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text-primary)")}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-secondary)")}
                   >
                     🔍 Inspect Map
                   </button>
@@ -898,57 +1401,82 @@ function CivilizationRecordPage() {
               </div>
 
               {/* THE IMAGE DISPLAY CONTAINER */}
-              <div style={{
-                position: "relative",
-                width: "100%",
-                background: "#05070c",
-                borderRadius: "var(--radius-lg)",
-                overflow: "hidden",
-                border: "1px solid rgba(255,255,255,0.03)",
-                aspectRatio: "1/1",
-                maxHeight: "600px",
-                margin: "0 auto"
-              }}>
-                
+              <div
+                style={{
+                  position: "relative",
+                  width: "100%",
+                  background: "#05070c",
+                  borderRadius: "var(--radius-lg)",
+                  overflow: "hidden",
+                  border: "1px solid rgba(255,255,255,0.03)",
+                  aspectRatio: "1/1",
+                  maxHeight: "600px",
+                  margin: "0 auto",
+                }}
+              >
                 {/* Conditional Map Image / Placeholder rendering */}
-                {(availableMaps.includes(activeMapId) || (activeMapId === "biomes" && record.cover_url)) ? (
-                   <img
-                     key={activeMapId}
-                     src={getMapUrl(activeMapId)}
-                     alt={currentMap.title}
-                     style={{
-                       width: "100%",
-                       height: "100%",
-                       objectFit: "contain",
-                       objectPosition: "center",
-                       display: "block",
-                       animation: "mapFadeIn 0.4s ease-out forwards",
-                       transformOrigin: "center center"
-                     }}
-                   />
+                {availableMaps.includes(activeMapId) ||
+                (activeMapId === "biomes" && record.cover_url) ? (
+                  <img
+                    key={activeMapId}
+                    src={getMapUrl(activeMapId)}
+                    alt={currentMap.title}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "contain",
+                      objectPosition: "center",
+                      display: "block",
+                      animation: "mapFadeIn 0.4s ease-out forwards",
+                      transformOrigin: "center center",
+                    }}
+                  />
                 ) : (
-                  <div style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: "100%",
-                    height: "100%",
-                    background: "radial-gradient(circle at center, #0c101a 0%, #05070c 100%)",
-                    color: "var(--text-secondary)",
-                    padding: "2rem",
-                    textAlign: "center"
-                  }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: "100%",
+                      height: "100%",
+                      background: "radial-gradient(circle at center, #0c101a 0%, #05070c 100%)",
+                      color: "var(--text-secondary)",
+                      padding: "2rem",
+                      textAlign: "center",
+                    }}
+                  >
                     <span style={{ fontSize: "28px", marginBottom: "0.5rem" }}>📡</span>
-                    <p style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: "var(--text-sm)", margin: 0, color: "var(--text-primary)" }}>
-                      {activeMapId === "biomes" ? "World visualization unavailable (legacy experiment)" : `${currentMap.title} unavailable (legacy experiment)`}
+                    <p
+                      style={{
+                        fontFamily: "var(--font-display)",
+                        fontWeight: 600,
+                        fontSize: "var(--text-sm)",
+                        margin: 0,
+                        color: "var(--text-primary)",
+                      }}
+                    >
+                      {activeMapId === "biomes"
+                        ? "World visualization unavailable (legacy experiment)"
+                        : `${currentMap.title} unavailable (legacy experiment)`}
                     </p>
-                    <p style={{ fontFamily: "var(--font-mono)", fontSize: "10px", color: "var(--text-tertiary)", marginTop: "0.4rem", marginBottom: 0, maxWidth: "420px", lineHeight: "1.5" }}>
-                      Procedural map exporting was not active in early version v1.0 engine runs. The numerical data is preserved in the Technical Details tab.
+                    <p
+                      style={{
+                        fontFamily: "var(--font-mono)",
+                        fontSize: "10px",
+                        color: "var(--text-tertiary)",
+                        marginTop: "0.4rem",
+                        marginBottom: 0,
+                        maxWidth: "420px",
+                        lineHeight: "1.5",
+                      }}
+                    >
+                      Procedural map exporting was not active in early version v1.0 engine runs. The
+                      numerical data is preserved in the Technical Details tab.
                     </p>
                   </div>
                 )}
-                
+
                 {/* Keyframes injection inside the component */}
                 <style>{`
                   @keyframes mapFadeIn {
@@ -958,94 +1486,151 @@ function CivilizationRecordPage() {
                 `}</style>
 
                 {/* COLONY LOCATION MARKERS OVERLAY */}
-                {showColonies && summary.colony_locations && Object.entries(summary.colony_locations).map(([colName, coords]: [string, any]) => {
-                  const colors: { [key: string]: string } = {
-                    "Alpha": "#ef4444",
-                    "Beta": "#00f2fe",
-                    "Gamma": "#10b981",
-                    "Delta": "#a855f7"
-                  };
-                  const colColor = colors[colName] || "#ffffff";
-                  
-                  // coordinates mapping [x, y] in 1024x1024 grid
-                  const xPct = (coords[0] / 1024) * 100;
-                  const yPct = (coords[1] / 1024) * 100;
+                {showColonies &&
+                  summary.colony_locations &&
+                  Object.entries(summary.colony_locations).map(
+                    ([colName, coords]: [string, any]) => {
+                      const colors: { [key: string]: string } = {
+                        Alpha: "#ef4444",
+                        Beta: "#00f2fe",
+                        Gamma: "#10b981",
+                        Delta: "#a855f7",
+                      };
+                      const colColor = colors[colName] || "#ffffff";
 
-                  return (
-                    <div
-                      key={colName}
-                      className="ping-beacon"
-                      style={{
-                        left: `${xPct}%`,
-                        top: `${yPct}%`,
-                        borderColor: colColor
-                      }}
-                      title={`${colName} Colony Founder Spawn Site`}
-                    >
-                      <div className="ping-pulse" style={{ borderColor: colColor }}></div>
-                      <span style={{
-                        position: "absolute",
-                        top: "16px",
-                        left: "50%",
-                        transform: "translateX(-50%)",
-                        background: "rgba(2, 4, 8, 0.85)",
-                        border: `1px solid ${colColor}`,
-                        color: "#fff",
-                        padding: "0.15rem 0.4rem",
-                        borderRadius: "3px",
-                        fontSize: "9px",
-                        fontWeight: 700,
-                        fontFamily: "var(--font-display)",
-                        whiteSpace: "nowrap"
-                      }}>
-                        {colName}
-                      </span>
-                    </div>
-                  );
-                })}
+                      // coordinates mapping [x, y] in 1024x1024 grid
+                      const xPct = (coords[0] / 1024) * 100;
+                      const yPct = (coords[1] / 1024) * 100;
+
+                      return (
+                        <div
+                          key={colName}
+                          className="ping-beacon"
+                          style={{
+                            left: `${xPct}%`,
+                            top: `${yPct}%`,
+                            borderColor: colColor,
+                          }}
+                          title={`${colName} Colony Founder Spawn Site`}
+                        >
+                          <div className="ping-pulse" style={{ borderColor: colColor }}></div>
+                          <span
+                            style={{
+                              position: "absolute",
+                              top: "16px",
+                              left: "50%",
+                              transform: "translateX(-50%)",
+                              background: "rgba(2, 4, 8, 0.85)",
+                              border: `1px solid ${colColor}`,
+                              color: "#fff",
+                              padding: "0.15rem 0.4rem",
+                              borderRadius: "3px",
+                              fontSize: "9px",
+                              fontWeight: 700,
+                              fontFamily: "var(--font-display)",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            {colName}
+                          </span>
+                        </div>
+                      );
+                    },
+                  )}
               </div>
 
               {/* MAP METADATA DESCRIPTIVE SHEETS (Apple-like Atlas Details) */}
-              <div style={{
-                display: "grid",
-                gridTemplateColumns: "1.2fr 1fr 1fr",
-                gap: "1.5rem",
-                marginTop: "1.5rem",
-                paddingTop: "1rem",
-                borderTop: "1px solid var(--border-default)",
-                fontSize: "var(--text-xs)"
-              }}>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1.2fr 1fr 1fr",
+                  gap: "1.5rem",
+                  marginTop: "1.5rem",
+                  paddingTop: "1rem",
+                  borderTop: "1px solid var(--border-default)",
+                  fontSize: "var(--text-xs)",
+                }}
+              >
                 <div>
-                  <h4 style={{ fontFamily: "var(--font-mono)", fontSize: "9px", color: "var(--text-tertiary)", textTransform: "uppercase", marginBottom: "0.25rem" }}>Atlas Purpose</h4>
-                  <p style={{ color: "var(--text-secondary)", lineHeight: 1.4 }}>{currentMap.purpose}</p>
+                  <h4
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "9px",
+                      color: "var(--text-tertiary)",
+                      textTransform: "uppercase",
+                      marginBottom: "0.25rem",
+                    }}
+                  >
+                    Atlas Purpose
+                  </h4>
+                  <p style={{ color: "var(--text-secondary)", lineHeight: 1.4 }}>
+                    {currentMap.purpose}
+                  </p>
                 </div>
                 <div>
-                  <h4 style={{ fontFamily: "var(--font-mono)", fontSize: "9px", color: "var(--text-tertiary)", textTransform: "uppercase", marginBottom: "0.25rem" }}>Generation Method</h4>
-                  <p style={{ color: "var(--text-secondary)", lineHeight: 1.4 }}>{currentMap.method}</p>
+                  <h4
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "9px",
+                      color: "var(--text-tertiary)",
+                      textTransform: "uppercase",
+                      marginBottom: "0.25rem",
+                    }}
+                  >
+                    Generation Method
+                  </h4>
+                  <p style={{ color: "var(--text-secondary)", lineHeight: 1.4 }}>
+                    {currentMap.method}
+                  </p>
                 </div>
                 <div>
-                  <h4 style={{ fontFamily: "var(--font-mono)", fontSize: "9px", color: "var(--text-tertiary)", textTransform: "uppercase", marginBottom: "0.25rem" }}>Research Notes</h4>
-                  <p style={{ color: "var(--text-secondary)", lineHeight: 1.4 }}>{currentMap.interpretation}</p>
+                  <h4
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "9px",
+                      color: "var(--text-tertiary)",
+                      textTransform: "uppercase",
+                      marginBottom: "0.25rem",
+                    }}
+                  >
+                    Research Notes
+                  </h4>
+                  <p style={{ color: "var(--text-secondary)", lineHeight: 1.4 }}>
+                    {currentMap.interpretation}
+                  </p>
                 </div>
               </div>
 
               {/* Map Legend (if exists) */}
               {currentMap.legend && (
-                <div style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: "0.75rem",
-                  marginTop: "1rem",
-                  padding: "0.6rem 0.8rem",
-                  background: "rgba(255,255,255,0.01)",
-                  border: "1px solid var(--border-default)",
-                  borderRadius: "var(--radius-md)",
-                  fontSize: "10px",
-                  fontFamily: "var(--font-mono)"
-                }}>
-                  {currentMap.legend.map(lg => (
-                    <span key={lg.label} style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
-                      <span style={{ display: "inline-block", width: "10px", height: "10px", borderRadius: "2px", background: lg.color }}></span>
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: "0.75rem",
+                    marginTop: "1rem",
+                    padding: "0.6rem 0.8rem",
+                    background: "rgba(255,255,255,0.01)",
+                    border: "1px solid var(--border-default)",
+                    borderRadius: "var(--radius-md)",
+                    fontSize: "10px",
+                    fontFamily: "var(--font-mono)",
+                  }}
+                >
+                  {currentMap.legend.map((lg) => (
+                    <span
+                      key={lg.label}
+                      style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}
+                    >
+                      <span
+                        style={{
+                          display: "inline-block",
+                          width: "10px",
+                          height: "10px",
+                          borderRadius: "2px",
+                          background: lg.color,
+                        }}
+                      ></span>
                       {lg.label}
                     </span>
                   ))}
@@ -1055,18 +1640,34 @@ function CivilizationRecordPage() {
 
             {/* FULLSCREEN MAP VIEWER MODAL */}
             {isFullscreen && (
-              <div style={{
-                position: "fixed",
-                top: 0, left: 0, right: 0, bottom: 0,
-                background: "rgba(2, 4, 8, 0.95)",
-                zIndex: 9999,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                padding: "2rem"
-              }}>
-                <div style={{ position: "relative", width: "100%", maxWidth: "90vh", aspectRatio: "1/1", background: "#05070c", border: "1px solid var(--border-default)", borderRadius: "var(--radius-lg)", overflow: "hidden" }}>
+              <div
+                style={{
+                  position: "fixed",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  background: "rgba(2, 4, 8, 0.95)",
+                  zIndex: 9999,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: "2rem",
+                }}
+              >
+                <div
+                  style={{
+                    position: "relative",
+                    width: "100%",
+                    maxWidth: "90vh",
+                    aspectRatio: "1/1",
+                    background: "#05070c",
+                    border: "1px solid var(--border-default)",
+                    borderRadius: "var(--radius-lg)",
+                    overflow: "hidden",
+                  }}
+                >
                   <img
                     src={getMapUrl(activeMapId)}
                     alt={currentMap.title}
@@ -1076,7 +1677,8 @@ function CivilizationRecordPage() {
                     onClick={() => setIsFullscreen(false)}
                     style={{
                       position: "absolute",
-                      top: "1rem", right: "1rem",
+                      top: "1rem",
+                      right: "1rem",
                       background: "rgba(255,255,255,0.1)",
                       border: "none",
                       color: "#fff",
@@ -1084,13 +1686,26 @@ function CivilizationRecordPage() {
                       borderRadius: "var(--radius-md)",
                       cursor: "pointer",
                       fontWeight: 600,
-                      fontFamily: "var(--font-display)"
+                      fontFamily: "var(--font-display)",
                     }}
                   >
                     Close View
                   </button>
-                  <div style={{ position: "absolute", bottom: "1rem", left: "1rem", right: "1rem", background: "rgba(0,0,0,0.7)", padding: "0.75rem", borderRadius: "var(--radius-md)", fontSize: "11px" }}>
-                    <p style={{ fontWeight: 700, color: "#fff", marginBottom: "0.2rem" }}>{currentMap.title}</p>
+                  <div
+                    style={{
+                      position: "absolute",
+                      bottom: "1rem",
+                      left: "1rem",
+                      right: "1rem",
+                      background: "rgba(0,0,0,0.7)",
+                      padding: "0.75rem",
+                      borderRadius: "var(--radius-md)",
+                      fontSize: "11px",
+                    }}
+                  >
+                    <p style={{ fontWeight: 700, color: "#fff", marginBottom: "0.2rem" }}>
+                      {currentMap.title}
+                    </p>
                     <p style={{ color: "var(--text-secondary)" }}>{currentMap.description}</p>
                   </div>
                 </div>
@@ -1098,47 +1713,86 @@ function CivilizationRecordPage() {
             )}
 
             {/* 2. THE MAIN TAB NAVIGATION SHEETS */}
-            <article style={{
-              background: "var(--bg-secondary)",
-              border: "1px solid var(--border-default)",
-              borderRadius: "var(--radius-xl)",
-              overflow: "hidden"
-            }} className="glass">
-              
+            <article
+              style={{
+                background: "var(--bg-secondary)",
+                border: "1px solid var(--border-default)",
+                borderRadius: "var(--radius-xl)",
+                overflow: "hidden",
+              }}
+              className="glass"
+            >
               {/* Tab button row */}
-              <div style={{ display: "flex", borderBottom: "1px solid var(--border-default)", background: "rgba(255,255,255,0.01)" }}>
-                <button onClick={() => setActiveTab("research")} className={`tab-button ${activeTab === "research" ? "active" : ""}`}>
+              <div
+                style={{
+                  display: "flex",
+                  borderBottom: "1px solid var(--border-default)",
+                  background: "rgba(255,255,255,0.01)",
+                }}
+              >
+                <button
+                  onClick={() => setActiveTab("research")}
+                  className={`tab-button ${activeTab === "research" ? "active" : ""}`}
+                >
                   Research
                 </button>
-                <button onClick={() => setActiveTab("chronicle")} className={`tab-button ${activeTab === "chronicle" ? "active" : ""}`}>
+                <button
+                  onClick={() => setActiveTab("chronicle")}
+                  className={`tab-button ${activeTab === "chronicle" ? "active" : ""}`}
+                >
                   Chronicle
                 </button>
-                <button onClick={() => setActiveTab("observatory")} className={`tab-button ${activeTab === "observatory" ? "active" : ""}`}>
+                <button
+                  onClick={() => setActiveTab("observatory")}
+                  className={`tab-button ${activeTab === "observatory" ? "active" : ""}`}
+                >
                   Observatory
                 </button>
-                <button onClick={() => setActiveTab("technical")} className={`tab-button ${activeTab === "technical" ? "active" : ""}`}>
+                <button
+                  onClick={() => setActiveTab("technical")}
+                  className={`tab-button ${activeTab === "technical" ? "active" : ""}`}
+                >
                   Technical Details
                 </button>
               </div>
 
               {/* Tab Contents */}
               <div style={{ padding: "2rem" }}>
-
                 {/* TAB 1: RESEARCH (Abstract + Cards + Research Questions) */}
                 {activeTab === "research" && (
                   <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
-                    
                     {/* Research Question */}
                     {meta && (
-                      <div style={{
-                        padding: "1.25rem 1.5rem",
-                        background: "rgba(0, 242, 254, 0.02)",
-                        borderLeft: "3px solid #00f2fe",
-                        borderRadius: "0 var(--radius-md) var(--radius-md) 0",
-                        marginBottom: "1rem"
-                      }}>
-                        <span style={{ fontSize: "10px", fontFamily: "var(--font-mono)", color: "#00f2fe", textTransform: "uppercase", fontWeight: 700 }}>Research Question</span>
-                        <p style={{ margin: "0.25rem 0 0 0", fontSize: "var(--text-sm)", fontWeight: 600, color: "var(--text-primary)", fontStyle: "italic", lineHeight: 1.5 }}>
+                      <div
+                        style={{
+                          padding: "1.25rem 1.5rem",
+                          background: "rgba(0, 242, 254, 0.02)",
+                          borderLeft: "3px solid #00f2fe",
+                          borderRadius: "0 var(--radius-md) var(--radius-md) 0",
+                          marginBottom: "1rem",
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontSize: "10px",
+                            fontFamily: "var(--font-mono)",
+                            color: "#00f2fe",
+                            textTransform: "uppercase",
+                            fontWeight: 700,
+                          }}
+                        >
+                          Research Question
+                        </span>
+                        <p
+                          style={{
+                            margin: "0.25rem 0 0 0",
+                            fontSize: "var(--text-sm)",
+                            fontWeight: 600,
+                            color: "var(--text-primary)",
+                            fontStyle: "italic",
+                            lineHeight: 1.5,
+                          }}
+                        >
                           "{meta.question}"
                         </p>
                       </div>
@@ -1146,19 +1800,46 @@ function CivilizationRecordPage() {
 
                     {/* Key Findings */}
                     {meta && meta.findings && meta.findings.length > 0 && (
-                      <div style={{
-                        padding: "1.25rem 1.5rem",
-                        background: "rgba(255,255,255,0.01)",
-                        border: "1px solid var(--border-default)",
-                        borderRadius: "var(--radius-lg)",
-                        marginBottom: "1rem"
-                      }}>
-                        <h3 style={{ fontFamily: "var(--font-display)", fontSize: "var(--text-xs)", fontWeight: 700, marginBottom: "0.75rem", color: "var(--text-primary)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                      <div
+                        style={{
+                          padding: "1.25rem 1.5rem",
+                          background: "rgba(255,255,255,0.01)",
+                          border: "1px solid var(--border-default)",
+                          borderRadius: "var(--radius-lg)",
+                          marginBottom: "1rem",
+                        }}
+                      >
+                        <h3
+                          style={{
+                            fontFamily: "var(--font-display)",
+                            fontSize: "var(--text-xs)",
+                            fontWeight: 700,
+                            marginBottom: "0.75rem",
+                            color: "var(--text-primary)",
+                            textTransform: "uppercase",
+                            letterSpacing: "0.05em",
+                          }}
+                        >
                           Key Findings
                         </h3>
-                        <ul style={{ paddingLeft: "1.2rem", margin: 0, display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+                        <ul
+                          style={{
+                            paddingLeft: "1.2rem",
+                            margin: 0,
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "0.4rem",
+                          }}
+                        >
                           {meta.findings.map((finding, idx) => (
-                            <li key={idx} style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", lineHeight: 1.4 }}>
+                            <li
+                              key={idx}
+                              style={{
+                                fontSize: "var(--text-xs)",
+                                color: "var(--text-secondary)",
+                                lineHeight: 1.4,
+                              }}
+                            >
                               {finding}
                             </li>
                           ))}
@@ -1168,37 +1849,161 @@ function CivilizationRecordPage() {
 
                     {/* Abstract Monograph */}
                     <div>
-                      <h3 style={{ fontFamily: "var(--font-display)", fontSize: "var(--text-lg)", fontWeight: 700, marginBottom: "0.75rem", color: "#00f2fe" }}>Research Abstract</h3>
-                      <p style={{ lineHeight: 1.6, color: "var(--text-secondary)", fontSize: "var(--text-sm)" }}>
-                        {record.abstract || "Scientific summary abstract has not been documented for this dynamic experiment record."}
+                      <h3
+                        style={{
+                          fontFamily: "var(--font-display)",
+                          fontSize: "var(--text-lg)",
+                          fontWeight: 700,
+                          marginBottom: "0.75rem",
+                          color: "#00f2fe",
+                        }}
+                      >
+                        Research Abstract
+                      </h3>
+                      <p
+                        style={{
+                          lineHeight: 1.6,
+                          color: "var(--text-secondary)",
+                          fontSize: "var(--text-sm)",
+                        }}
+                      >
+                        {record.abstract ||
+                          "Scientific summary abstract has not been documented for this dynamic experiment record."}
                       </p>
                     </div>
 
                     {/* Snapshot Grid Cards */}
                     <div>
-                      <h3 style={{ fontFamily: "var(--font-display)", fontSize: "var(--text-lg)", fontWeight: 700, marginBottom: "1rem" }}>Experiment Highlights</h3>
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem" }}>
-                        <div style={{ padding: "1.25rem", background: "rgba(255,255,255,0.01)", border: "1px solid var(--border-default)", borderRadius: "var(--radius-lg)" }}>
-                          <span style={{ fontSize: "10px", fontFamily: "var(--font-mono)", color: "var(--text-tertiary)", textTransform: "uppercase" }}>Extinction Status</span>
-                          <p style={{ fontSize: "var(--text-xl)", fontWeight: 700, color: record.survivors_count > 0 ? "#10b981" : "#ef4444", marginTop: "0.25rem" }}>
-                            {record.survivors_count > 0 ? `SURVIVED (${record.survivors_count}/${record.total_agents})` : "EXTINCTION"}
+                      <h3
+                        style={{
+                          fontFamily: "var(--font-display)",
+                          fontSize: "var(--text-lg)",
+                          fontWeight: 700,
+                          marginBottom: "1rem",
+                        }}
+                      >
+                        Experiment Highlights
+                      </h3>
+                      <div
+                        style={{
+                          display: "grid",
+                          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                          gap: "1rem",
+                        }}
+                      >
+                        <div
+                          style={{
+                            padding: "1.25rem",
+                            background: "rgba(255,255,255,0.01)",
+                            border: "1px solid var(--border-default)",
+                            borderRadius: "var(--radius-lg)",
+                          }}
+                        >
+                          <span
+                            style={{
+                              fontSize: "10px",
+                              fontFamily: "var(--font-mono)",
+                              color: "var(--text-tertiary)",
+                              textTransform: "uppercase",
+                            }}
+                          >
+                            Extinction Status
+                          </span>
+                          <p
+                            style={{
+                              fontSize: "var(--text-xl)",
+                              fontWeight: 700,
+                              color: record.survivors_count > 0 ? "#10b981" : "#ef4444",
+                              marginTop: "0.25rem",
+                            }}
+                          >
+                            {record.survivors_count > 0
+                              ? `SURVIVED (${record.survivors_count}/${record.total_agents})`
+                              : "EXTINCTION"}
                           </p>
                         </div>
-                        <div style={{ padding: "1.25rem", background: "rgba(255,255,255,0.01)", border: "1px solid var(--border-default)", borderRadius: "var(--radius-lg)" }}>
-                          <span style={{ fontSize: "10px", fontFamily: "var(--font-mono)", color: "var(--text-tertiary)", textTransform: "uppercase" }}>Ticks Simulated</span>
-                          <p style={{ fontSize: "var(--text-xl)", fontWeight: 700, marginTop: "0.25rem" }}>
+                        <div
+                          style={{
+                            padding: "1.25rem",
+                            background: "rgba(255,255,255,0.01)",
+                            border: "1px solid var(--border-default)",
+                            borderRadius: "var(--radius-lg)",
+                          }}
+                        >
+                          <span
+                            style={{
+                              fontSize: "10px",
+                              fontFamily: "var(--font-mono)",
+                              color: "var(--text-tertiary)",
+                              textTransform: "uppercase",
+                            }}
+                          >
+                            Ticks Simulated
+                          </span>
+                          <p
+                            style={{
+                              fontSize: "var(--text-xl)",
+                              fontWeight: 700,
+                              marginTop: "0.25rem",
+                            }}
+                          >
                             {record.ticks.toLocaleString()}
                           </p>
                         </div>
-                        <div style={{ padding: "1.25rem", background: "rgba(255,255,255,0.01)", border: "1px solid var(--border-default)", borderRadius: "var(--radius-lg)" }}>
-                          <span style={{ fontSize: "10px", fontFamily: "var(--font-mono)", color: "var(--text-tertiary)", textTransform: "uppercase" }}>Genetic Diversity</span>
-                          <p style={{ fontSize: "var(--text-xl)", fontWeight: 700, color: "#a855f7", marginTop: "0.25rem" }}>
+                        <div
+                          style={{
+                            padding: "1.25rem",
+                            background: "rgba(255,255,255,0.01)",
+                            border: "1px solid var(--border-default)",
+                            borderRadius: "var(--radius-lg)",
+                          }}
+                        >
+                          <span
+                            style={{
+                              fontSize: "10px",
+                              fontFamily: "var(--font-mono)",
+                              color: "var(--text-tertiary)",
+                              textTransform: "uppercase",
+                            }}
+                          >
+                            Genetic Diversity
+                          </span>
+                          <p
+                            style={{
+                              fontSize: "var(--text-xl)",
+                              fontWeight: 700,
+                              color: "#a855f7",
+                              marginTop: "0.25rem",
+                            }}
+                          >
                             {(record.avg_genetic_diversity || 0).toFixed(4)}
                           </p>
                         </div>
-                        <div style={{ padding: "1.25rem", background: "rgba(255,255,255,0.01)", border: "1px solid var(--border-default)", borderRadius: "var(--radius-lg)" }}>
-                          <span style={{ fontSize: "10px", fontFamily: "var(--font-mono)", color: "var(--text-tertiary)", textTransform: "uppercase" }}>Max Generation</span>
-                          <p style={{ fontSize: "var(--text-xl)", fontWeight: 700, marginTop: "0.25rem" }}>
+                        <div
+                          style={{
+                            padding: "1.25rem",
+                            background: "rgba(255,255,255,0.01)",
+                            border: "1px solid var(--border-default)",
+                            borderRadius: "var(--radius-lg)",
+                          }}
+                        >
+                          <span
+                            style={{
+                              fontSize: "10px",
+                              fontFamily: "var(--font-mono)",
+                              color: "var(--text-tertiary)",
+                              textTransform: "uppercase",
+                            }}
+                          >
+                            Max Generation
+                          </span>
+                          <p
+                            style={{
+                              fontSize: "var(--text-xl)",
+                              fontWeight: 700,
+                              marginTop: "0.25rem",
+                            }}
+                          >
                             Gen {record.max_generation}
                           </p>
                         </div>
@@ -1206,15 +2011,65 @@ function CivilizationRecordPage() {
                     </div>
 
                     {/* Research Questions Section */}
-                    <div style={{ borderTop: "1px solid var(--border-default)", paddingTop: "1.5rem" }}>
-                      <h3 style={{ fontFamily: "var(--font-display)", fontSize: "var(--text-lg)", fontWeight: 700, marginBottom: "1rem" }}>Hypothesis Inquiry (Research Questions)</h3>
+                    <div
+                      style={{ borderTop: "1px solid var(--border-default)", paddingTop: "1.5rem" }}
+                    >
+                      <h3
+                        style={{
+                          fontFamily: "var(--font-display)",
+                          fontSize: "var(--text-lg)",
+                          fontWeight: 700,
+                          marginBottom: "1rem",
+                        }}
+                      >
+                        Hypothesis Inquiry (Research Questions)
+                      </h3>
                       <div style={{ display: "grid", gap: "1rem" }}>
-                        {getResearchQuestions().map(rq => (
-                          <div key={rq.id} style={{ display: "flex", gap: "1.5rem", padding: "1.25rem", background: "rgba(255,255,255,0.01)", borderLeft: "4px solid #00f2fe", borderTop: "1px solid var(--border-default)", borderRight: "1px solid var(--border-default)", borderBottom: "1px solid var(--border-default)", borderRadius: "var(--radius-md)" }}>
-                            <span style={{ fontFamily: "var(--font-mono)", fontSize: "13px", fontWeight: 700, color: "#00f2fe" }}>{rq.id}</span>
+                        {getResearchQuestions().map((rq) => (
+                          <div
+                            key={rq.id}
+                            style={{
+                              display: "flex",
+                              gap: "1.5rem",
+                              padding: "1.25rem",
+                              background: "rgba(255,255,255,0.01)",
+                              borderLeft: "4px solid #00f2fe",
+                              borderTop: "1px solid var(--border-default)",
+                              borderRight: "1px solid var(--border-default)",
+                              borderBottom: "1px solid var(--border-default)",
+                              borderRadius: "var(--radius-md)",
+                            }}
+                          >
+                            <span
+                              style={{
+                                fontFamily: "var(--font-mono)",
+                                fontSize: "13px",
+                                fontWeight: 700,
+                                color: "#00f2fe",
+                              }}
+                            >
+                              {rq.id}
+                            </span>
                             <div>
-                              <p style={{ fontWeight: 700, fontSize: "var(--text-sm)", color: "var(--text-primary)" }}>{rq.title}</p>
-                              <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginTop: "0.3rem", lineHeight: 1.4 }}>{rq.question}</p>
+                              <p
+                                style={{
+                                  fontWeight: 700,
+                                  fontSize: "var(--text-sm)",
+                                  color: "var(--text-primary)",
+                                }}
+                              >
+                                {rq.title}
+                              </p>
+                              <p
+                                style={{
+                                  fontSize: "var(--text-xs)",
+                                  color: "var(--text-secondary)",
+                                  marginTop: "0.3rem",
+                                  lineHeight: 1.4,
+                                }}
+                              >
+                                {rq.question}
+                              </p>
                             </div>
                           </div>
                         ))}
@@ -1223,25 +2078,48 @@ function CivilizationRecordPage() {
 
                     {/* Cite this Research Record */}
                     {meta && (
-                      <div style={{ borderTop: "1px solid var(--border-default)", paddingTop: "1.5rem", marginTop: "1rem" }}>
-                        <h3 style={{ fontFamily: "var(--font-display)", fontSize: "var(--text-lg)", fontWeight: 700, marginBottom: "0.5rem" }}>
+                      <div
+                        style={{
+                          borderTop: "1px solid var(--border-default)",
+                          paddingTop: "1.5rem",
+                          marginTop: "1rem",
+                        }}
+                      >
+                        <h3
+                          style={{
+                            fontFamily: "var(--font-display)",
+                            fontSize: "var(--text-lg)",
+                            fontWeight: 700,
+                            marginBottom: "0.5rem",
+                          }}
+                        >
                           Cite this Research Record
                         </h3>
-                        <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginBottom: "1rem", lineHeight: 1.4 }}>
-                          To cite this computational ecology record in your publications, please use the following BibTeX entry:
+                        <p
+                          style={{
+                            fontSize: "var(--text-xs)",
+                            color: "var(--text-secondary)",
+                            marginBottom: "1rem",
+                            lineHeight: 1.4,
+                          }}
+                        >
+                          To cite this computational ecology record in your publications, please use
+                          the following BibTeX entry:
                         </p>
-                        <div style={{
-                          position: "relative",
-                          background: "#080b11",
-                          border: "1px solid var(--border-default)",
-                          borderRadius: "var(--radius-lg)",
-                          padding: "1.25rem 1.5rem",
-                          fontFamily: "var(--font-mono)",
-                          fontSize: "11px",
-                          color: "var(--text-secondary)",
-                          lineHeight: "1.6",
-                          whiteSpace: "pre-wrap"
-                        }}>
+                        <div
+                          style={{
+                            position: "relative",
+                            background: "#080b11",
+                            border: "1px solid var(--border-default)",
+                            borderRadius: "var(--radius-lg)",
+                            padding: "1.25rem 1.5rem",
+                            fontFamily: "var(--font-mono)",
+                            fontSize: "11px",
+                            color: "var(--text-secondary)",
+                            lineHeight: "1.6",
+                            whiteSpace: "pre-wrap",
+                          }}
+                        >
                           {`@article{${meta.citationKey},\n  title={${record.title}},\n  author={Project Genesis Research Registry},\n  journal={Computational Ecology Archive},\n  volume={${record.id}},\n  year={2026},\n  note={Genesis Engine ${meta.engineVersion}, Sim Date: ${meta.simulationDate}}\n}`}
                         </div>
                       </div>
@@ -1252,32 +2130,95 @@ function CivilizationRecordPage() {
                 {/* TAB 2: CHRONICLE (climate milestones) */}
                 {activeTab === "chronicle" && (
                   <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-                    <h3 style={{ fontFamily: "var(--font-display)", fontSize: "var(--text-lg)", fontWeight: 700, color: "var(--text-primary)" }}>Global Environmental Chronicle</h3>
-                    <div style={{ display: "flex", flexDirection: "column", gap: "1rem", maxHeight: "400px", overflowY: "auto", paddingRight: "0.5rem" }}>
-                      {events.length > 0 ? events.map((ev: any, idx: number) => (
-                        <div key={idx} style={{
-                          display: "flex",
-                          gap: "1.5rem",
-                          padding: "1rem",
-                          border: "1px solid var(--border-default)",
-                          borderRadius: "var(--radius-lg)",
-                          background: "rgba(255,255,255,0.01)",
-                          alignItems: "center"
-                        }}>
-                          <div style={{ textAlign: "center", minWidth: "90px" }}>
-                            <span style={{ fontSize: "11px", fontFamily: "var(--font-mono)", color: "#00f2fe" }}>Tick {ev.tick}</span>
-                            <div style={{ fontSize: "9px", fontFamily: "var(--font-mono)", color: "var(--text-tertiary)", textTransform: "uppercase", marginTop: "0.15rem" }}>Year {Math.floor(ev.tick / 360)}</div>
+                    <h3
+                      style={{
+                        fontFamily: "var(--font-display)",
+                        fontSize: "var(--text-lg)",
+                        fontWeight: 700,
+                        color: "var(--text-primary)",
+                      }}
+                    >
+                      Global Environmental Chronicle
+                    </h3>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "1rem",
+                        maxHeight: "400px",
+                        overflowY: "auto",
+                        paddingRight: "0.5rem",
+                      }}
+                    >
+                      {events.length > 0 ? (
+                        events.map((ev: any, idx: number) => (
+                          <div
+                            key={idx}
+                            style={{
+                              display: "flex",
+                              gap: "1.5rem",
+                              padding: "1rem",
+                              border: "1px solid var(--border-default)",
+                              borderRadius: "var(--radius-lg)",
+                              background: "rgba(255,255,255,0.01)",
+                              alignItems: "center",
+                            }}
+                          >
+                            <div style={{ textAlign: "center", minWidth: "90px" }}>
+                              <span
+                                style={{
+                                  fontSize: "11px",
+                                  fontFamily: "var(--font-mono)",
+                                  color: "#00f2fe",
+                                }}
+                              >
+                                Tick {ev.tick}
+                              </span>
+                              <div
+                                style={{
+                                  fontSize: "9px",
+                                  fontFamily: "var(--font-mono)",
+                                  color: "var(--text-tertiary)",
+                                  textTransform: "uppercase",
+                                  marginTop: "0.15rem",
+                                }}
+                              >
+                                Year {Math.floor(ev.tick / 360)}
+                              </div>
+                            </div>
+                            <div>
+                              <span
+                                style={{
+                                  fontSize: "12px",
+                                  fontFamily: "var(--font-mono)",
+                                  background: "rgba(0,242,254,0.05)",
+                                  border: "1px solid rgba(0,242,254,0.15)",
+                                  color: "#00f2fe",
+                                  padding: "0.15rem 0.4rem",
+                                  borderRadius: "3px",
+                                  fontWeight: 700,
+                                }}
+                              >
+                                {ev.type || "Global Event"}
+                              </span>
+                              <p
+                                style={{
+                                  fontSize: "var(--text-sm)",
+                                  color: "var(--text-secondary)",
+                                  marginTop: "0.5rem",
+                                  lineHeight: 1.4,
+                                }}
+                              >
+                                {ev.description}
+                              </p>
+                            </div>
                           </div>
-                          <div>
-                            <span style={{ fontSize: "12px", fontFamily: "var(--font-mono)", background: "rgba(0,242,254,0.05)", border: "1px solid rgba(0,242,254,0.15)", color: "#00f2fe", padding: "0.15rem 0.4rem", borderRadius: "3px", fontWeight: 700 }}>
-                              {ev.type || "Global Event"}
-                            </span>
-                            <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", marginTop: "0.5rem", lineHeight: 1.4 }}>
-                              {ev.description}
-                            </p>
-                          </div>
-                        </div>
-                      )) : <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)" }}>No chronological environmental anomalies logged for this run.</p>}
+                        ))
+                      ) : (
+                        <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)" }}>
+                          No chronological environmental anomalies logged for this run.
+                        </p>
+                      )}
                     </div>
                   </div>
                 )}
@@ -1285,37 +2226,91 @@ function CivilizationRecordPage() {
                 {/* TAB 3: OBSERVATORY (charts + derived metrics) */}
                 {activeTab === "observatory" && (
                   <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
-                    
                     {/* SVG Population Chart */}
                     {renderPopulationChart()}
 
                     {/* Derived Metrics Table */}
-                    <div style={{ borderTop: "1px solid var(--border-default)", paddingTop: "1.5rem" }}>
-                      <h3 style={{ fontFamily: "var(--font-display)", fontSize: "var(--text-lg)", fontWeight: 700, marginBottom: "1rem" }}>Derived Telemetry Metrics</h3>
+                    <div
+                      style={{ borderTop: "1px solid var(--border-default)", paddingTop: "1.5rem" }}
+                    >
+                      <h3
+                        style={{
+                          fontFamily: "var(--font-display)",
+                          fontSize: "var(--text-lg)",
+                          fontWeight: 700,
+                          marginBottom: "1rem",
+                        }}
+                      >
+                        Derived Telemetry Metrics
+                      </h3>
                       {Object.keys(derivedMetrics).length > 0 ? (
-                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
-                          <table style={{ width: "100%", fontSize: "var(--text-xs)", fontFamily: "var(--font-mono)", borderCollapse: "collapse" }}>
+                        <div
+                          style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}
+                        >
+                          <table
+                            style={{
+                              width: "100%",
+                              fontSize: "var(--text-xs)",
+                              fontFamily: "var(--font-mono)",
+                              borderCollapse: "collapse",
+                            }}
+                          >
                             <tbody>
-                              {Object.entries(derivedMetrics).slice(0, 9).map(([k, v]: [string, any]) => (
-                                <tr key={k} style={{ height: "30px", borderBottom: "1px solid var(--border-default)" }}>
-                                  <td style={{ color: "var(--text-secondary)" }}>{k.replace(/_/g, " ").toUpperCase()}</td>
-                                  <td style={{ textAlign: "right", fontWeight: 700 }}>{typeof v === "number" ? v.toFixed(4) : String(v)}</td>
-                                </tr>
-                              ))}
+                              {Object.entries(derivedMetrics)
+                                .slice(0, 9)
+                                .map(([k, v]: [string, any]) => (
+                                  <tr
+                                    key={k}
+                                    style={{
+                                      height: "30px",
+                                      borderBottom: "1px solid var(--border-default)",
+                                    }}
+                                  >
+                                    <td style={{ color: "var(--text-secondary)" }}>
+                                      {k.replace(/_/g, " ").toUpperCase()}
+                                    </td>
+                                    <td style={{ textAlign: "right", fontWeight: 700 }}>
+                                      {typeof v === "number" ? v.toFixed(4) : String(v)}
+                                    </td>
+                                  </tr>
+                                ))}
                             </tbody>
                           </table>
-                          <table style={{ width: "100%", fontSize: "var(--text-xs)", fontFamily: "var(--font-mono)", borderCollapse: "collapse" }}>
+                          <table
+                            style={{
+                              width: "100%",
+                              fontSize: "var(--text-xs)",
+                              fontFamily: "var(--font-mono)",
+                              borderCollapse: "collapse",
+                            }}
+                          >
                             <tbody>
-                              {Object.entries(derivedMetrics).slice(9).map(([k, v]: [string, any]) => (
-                                <tr key={k} style={{ height: "30px", borderBottom: "1px solid var(--border-default)" }}>
-                                  <td style={{ color: "var(--text-secondary)" }}>{k.replace(/_/g, " ").toUpperCase()}</td>
-                                  <td style={{ textAlign: "right", fontWeight: 700 }}>{typeof v === "number" ? v.toFixed(4) : String(v)}</td>
-                                </tr>
-                              ))}
+                              {Object.entries(derivedMetrics)
+                                .slice(9)
+                                .map(([k, v]: [string, any]) => (
+                                  <tr
+                                    key={k}
+                                    style={{
+                                      height: "30px",
+                                      borderBottom: "1px solid var(--border-default)",
+                                    }}
+                                  >
+                                    <td style={{ color: "var(--text-secondary)" }}>
+                                      {k.replace(/_/g, " ").toUpperCase()}
+                                    </td>
+                                    <td style={{ textAlign: "right", fontWeight: 700 }}>
+                                      {typeof v === "number" ? v.toFixed(4) : String(v)}
+                                    </td>
+                                  </tr>
+                                ))}
                             </tbody>
                           </table>
                         </div>
-                      ) : <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)" }}>Derived scientific variables not computed for this legacy experiment.</p>}
+                      ) : (
+                        <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)" }}>
+                          Derived scientific variables not computed for this legacy experiment.
+                        </p>
+                      )}
                     </div>
                   </div>
                 )}
@@ -1323,26 +2318,95 @@ function CivilizationRecordPage() {
                 {/* TAB 4: TECHNICAL DETAILS (Profiler) */}
                 {activeTab === "technical" && (
                   <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-                    
                     {/* Profiler Table */}
                     <div>
-                      <h3 style={{ fontFamily: "var(--font-display)", fontSize: "var(--text-lg)", fontWeight: 700, marginBottom: "0.5rem" }}>Subsystem Performance Profile</h3>
-                      <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginBottom: "1rem" }}>
-                        Microsecond-precision latencies for core loops. Spatial hashing grids are active.
+                      <h3
+                        style={{
+                          fontFamily: "var(--font-display)",
+                          fontSize: "var(--text-lg)",
+                          fontWeight: 700,
+                          marginBottom: "0.5rem",
+                        }}
+                      >
+                        Subsystem Performance Profile
+                      </h3>
+                      <p
+                        style={{
+                          fontSize: "var(--text-xs)",
+                          color: "var(--text-secondary)",
+                          marginBottom: "1rem",
+                        }}
+                      >
+                        Microsecond-precision latencies for core loops. Spatial hashing grids are
+                        active.
                       </p>
-                      
-                      <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "var(--text-xs)", fontFamily: "var(--font-mono)", textAlign: "left" }}>
+
+                      <table
+                        style={{
+                          width: "100%",
+                          borderCollapse: "collapse",
+                          fontSize: "var(--text-xs)",
+                          fontFamily: "var(--font-mono)",
+                          textAlign: "left",
+                        }}
+                      >
                         <thead>
-                          <tr style={{ height: "32px", borderBottom: "2px solid var(--border-default)", color: "var(--text-secondary)" }}>
+                          <tr
+                            style={{
+                              height: "32px",
+                              borderBottom: "2px solid var(--border-default)",
+                              color: "var(--text-secondary)",
+                            }}
+                          >
                             <th>Subsystem</th>
                             <th style={{ textAlign: "right" }}>Total Time (ms)</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr style={{ height: "30px", borderBottom: "1px solid var(--border-default)" }}><td>Terrain Slope Advection</td><td style={{ textAlign: "right" }}>{derivedMetrics.terrain_slope_advection_time || "45.22"} ms</td></tr>
-                          <tr style={{ height: "30px", borderBottom: "1px solid var(--border-default)" }}><td>Hydrology Sink Flood</td><td style={{ textAlign: "right" }}>{derivedMetrics.priority_flood_time || "124.8"} ms</td></tr>
-                          <tr style={{ height: "30px", borderBottom: "1px solid var(--border-default)" }}><td>Spatial Hashing Lookups</td><td style={{ textAlign: "right" }}>{derivedMetrics.spatial_hash_lookup_time || "9.11"} ms</td></tr>
-                          <tr style={{ height: "30px", borderBottom: "1px solid var(--border-default)" }}><td>Hierarchical Action Planning</td><td style={{ textAlign: "right" }}>{derivedMetrics.cognitive_planner_time || "81.65"} ms</td></tr>
+                          <tr
+                            style={{
+                              height: "30px",
+                              borderBottom: "1px solid var(--border-default)",
+                            }}
+                          >
+                            <td>Terrain Slope Advection</td>
+                            <td style={{ textAlign: "right" }}>
+                              {derivedMetrics.terrain_slope_advection_time || "45.22"} ms
+                            </td>
+                          </tr>
+                          <tr
+                            style={{
+                              height: "30px",
+                              borderBottom: "1px solid var(--border-default)",
+                            }}
+                          >
+                            <td>Hydrology Sink Flood</td>
+                            <td style={{ textAlign: "right" }}>
+                              {derivedMetrics.priority_flood_time || "124.8"} ms
+                            </td>
+                          </tr>
+                          <tr
+                            style={{
+                              height: "30px",
+                              borderBottom: "1px solid var(--border-default)",
+                            }}
+                          >
+                            <td>Spatial Hashing Lookups</td>
+                            <td style={{ textAlign: "right" }}>
+                              {derivedMetrics.spatial_hash_lookup_time || "9.11"} ms
+                            </td>
+                          </tr>
+                          <tr
+                            style={{
+                              height: "30px",
+                              borderBottom: "1px solid var(--border-default)",
+                            }}
+                          >
+                            <td>Hierarchical Action Planning</td>
+                            <td style={{ textAlign: "right" }}>
+                              {derivedMetrics.cognitive_planner_time || "81.65"} ms
+                            </td>
+                          </tr>
                         </tbody>
                       </table>
                     </div>
@@ -1350,40 +2414,48 @@ function CivilizationRecordPage() {
                 )}
               </div>
             </article>
-
           </section>
         </div>
 
         {/* Dynamic Related Experiments Grid */}
         {relatedCards.length > 0 && (
-          <section style={{
-            marginTop: "6rem",
-            borderTop: "1px solid var(--border-default)",
-            paddingTop: "3rem"
-          }}>
-            <h2 style={{
-              fontFamily: "var(--font-display)",
-              fontSize: "var(--text-xl)",
-              fontWeight: 700,
-              color: "var(--text-primary)",
-              marginBottom: "2rem"
-            }}>
+          <section
+            style={{
+              marginTop: "6rem",
+              borderTop: "1px solid var(--border-default)",
+              paddingTop: "3rem",
+            }}
+          >
+            <h2
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "var(--text-xl)",
+                fontWeight: 700,
+                color: "var(--text-primary)",
+                marginBottom: "2rem",
+              }}
+            >
               Related Scientific Records
             </h2>
-            <div style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-              gap: "1.5rem"
-            }}>
-              {relatedCards.map(card => (
-                <Link key={card.id} to={`/archive/civilizations/${card.id}`} style={{ textDecoration: "none", color: "inherit" }}>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+                gap: "1.5rem",
+              }}
+            >
+              {relatedCards.map((card) => (
+                <Link
+                  key={card.id}
+                  to={`/archive/civilizations/${card.id}`}
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
                   <CivilizationCard card={card} />
                 </Link>
               ))}
             </div>
           </section>
         )}
-
       </div>
     </main>
   );

@@ -61,6 +61,6 @@ export function formatEventToProse(evt: ChronicleEvent): ChronicleProse | null {
     tick,
     text,
     eventType: type,
-    affectedAgents
+    affectedAgents,
   };
 }

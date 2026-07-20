@@ -21,7 +21,12 @@ const stagingStore = new Map<string, StagingEntry>();
 
 const TTL_MS = 30 * 60 * 1000; // 30 minutes
 
-export function stageExperiment(stagingId: string, parsed: any, health: any, zipBytes: Uint8Array): void {
+export function stageExperiment(
+  stagingId: string,
+  parsed: any,
+  health: any,
+  zipBytes: Uint8Array,
+): void {
   // Evict expired entries to prevent memory leaks
   const now = Date.now();
   for (const [key, entry] of stagingStore.entries()) {

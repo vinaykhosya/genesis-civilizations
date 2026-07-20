@@ -20,6 +20,6 @@ export async function rollbackStagingAssets(id: string, hasReplay = false): Prom
     deleteFile("thumbnails", worldPngPath),
     deleteFile("thumbnails", thumbnailWebpPath),
     deleteFile("thumbnails", ogWebpPath),
-    hasReplay ? deleteFile("replays", replayJsonPath) : Promise.resolve()
+    hasReplay ? deleteFile("replays", replayJsonPath) : Promise.resolve(),
   ]);
 }

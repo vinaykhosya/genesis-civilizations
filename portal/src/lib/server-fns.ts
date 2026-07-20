@@ -6,7 +6,8 @@ import { createSessionToken, verifySessionToken } from "./auth";
 import { supabaseServer } from "./supabase-server";
 
 // Atlas URL builder - single source of truth for storage paths
-const SUPABASE_STORAGE_BASE = "https://tyajlotsxwocxxawcwta.supabase.co/storage/v1/object/public/experiments";
+const SUPABASE_STORAGE_BASE =
+  "https://tyajlotsxwocxxawcwta.supabase.co/storage/v1/object/public/experiments";
 
 export function buildAtlasUrls(experimentId: string) {
   const base = `${SUPABASE_STORAGE_BASE}/${experimentId}/atlas`;
@@ -32,54 +33,53 @@ export const loginAction = createServerFn({ method: "POST" })
     }
 
     const token = await createSessionToken();
-    
+
     // Set HttpOnly session cookie natively via Response headers
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
       headers: {
         "Set-Cookie": `genesis_admin_session=${token}; Path=/; HttpOnly; SameSite=Strict; Secure; Max-Age=86400`,
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     });
   });
 
 // 2. Verify auth session cookie on control panel
-export const verifyAdminAuth = createServerFn({ method: "GET" })
-  .handler(async ({ request }) => {
-    const cookies = request.headers.get("cookie") || "";
-    const match = cookies.match(/genesis_admin_session=([^;]+)/);
-    const token = match ? match[1] : "";
+export const verifyAdminAuth = createServerFn({ method: "GET" }).handler(async ({ request }) => {
+  const cookies = request.headers.get("cookie") || "";
+  const match = cookies.match(/genesis_admin_session=([^;]+)/);
+  const token = match ? match[1] : "";
 
-    if (!token || !(await verifySessionToken(token))) {
-      throw redirect({ to: "/control/login" });
-    }
-    return { authenticated: true };
-  });
-
+  if (!token || !(await verifySessionToken(token))) {
+    throw redirect({ to: "/control/login" });
+  }
+  return { authenticated: true };
+});
 
 // 3. Fetch published experiments from database (includes computed atlas URLs)
-export const fetchCivilizations = createServerFn({ method: "GET" })
-  .handler(async () => {
-    const { data: civilizations, error } = await supabaseServer
-      .from("experiments")
-      .select("id, slug, title, seed, world_preset, scarcity, ticks, total_agents, survivors_count, max_generation, published_at, thumbnail_url, cover_url, is_featured, tags, abstract, engine_version")
-      .eq("is_published", true)
-      .order("published_at", { ascending: false });
+export const fetchCivilizations = createServerFn({ method: "GET" }).handler(async () => {
+  const { data: civilizations, error } = await supabaseServer
+    .from("experiments")
+    .select(
+      "id, slug, title, seed, world_preset, scarcity, ticks, total_agents, survivors_count, max_generation, published_at, thumbnail_url, cover_url, is_featured, tags, abstract, engine_version",
+    )
+    .eq("is_published", true)
+    .order("published_at", { ascending: false });
 
-    if (error) {
-      throw new Error(`Database query failed: ${error.message}`);
-    }
+  if (error) {
+    throw new Error(`Database query failed: ${error.message}`);
+  }
 
-    // Enrich each record with computed atlas URLs - UI never hardcodes storage paths
-    const enriched = (civilizations || []).map((civ: any) => ({
-      ...civ,
-      atlas: buildAtlasUrls(civ.id),
-      // Prefer atlas biome map, fallback to thumbnail, then cover
-      previewUrl: civ.thumbnail_url || civ.cover_url || buildAtlasUrls(civ.id).biomes,
-    }));
+  // Enrich each record with computed atlas URLs - UI never hardcodes storage paths
+  const enriched = (civilizations || []).map((civ: any) => ({
+    ...civ,
+    atlas: buildAtlasUrls(civ.id),
+    // Prefer atlas biome map, fallback to thumbnail, then cover
+    previewUrl: civ.thumbnail_url || civ.cover_url || buildAtlasUrls(civ.id).biomes,
+  }));
 
-    return enriched;
-  });
+  return enriched;
+});
 
 // 4. Fetch a single experiment + 3 related ones (includes atlas URLs)
 export const fetchCivilizationData = createServerFn({ method: "GET" })
@@ -103,7 +103,9 @@ export const fetchCivilizationData = createServerFn({ method: "GET" })
 
     const { data: relatedData } = await supabaseServer
       .from("experiments")
-      .select("id, slug, title, seed, world_preset, scarcity, ticks, total_agents, survivors_count, max_generation, published_at, thumbnail_url, is_featured, tags")
+      .select(
+        "id, slug, title, seed, world_preset, scarcity, ticks, total_agents, survivors_count, max_generation, published_at, thumbnail_url, is_featured, tags",
+      )
       .eq("is_published", true)
       .neq("id", id)
       .limit(3);
@@ -118,6 +120,6 @@ export const fetchCivilizationData = createServerFn({ method: "GET" })
         ...r,
         atlas: buildAtlasUrls(r.id),
         previewUrl: r.thumbnail_url || r.cover_url || buildAtlasUrls(r.id).biomes,
-      }))
+      })),
     };
   });

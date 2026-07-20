@@ -6,13 +6,12 @@ export function processExperiment(
   slug: string,
   parsed: ParsedExperiment,
   healthReport: ExperimentHealthReport,
-  rawZipBytes: Buffer
+  rawZipBytes: Buffer,
 ): CanonicalExperiment {
-  
   // Downsample population data to max 5,000 rows to ensure fast chart loads
   const rawPop = Papa.parse(parsed.populationCsv, { header: true, skipEmptyLines: true }).data;
   let downsampledPop = rawPop;
-  
+
   if (rawPop.length > 5000) {
     const sampleEvery = Math.max(1, Math.floor(rawPop.length / 5000));
     downsampledPop = rawPop.filter((row: any, i: number) => {
@@ -37,10 +36,16 @@ export function processExperiment(
       children_count: parseInt(agent.children_count, 10) || 0,
       shelter_level: parseInt(agent.shelter_level, 10) || 0,
       cause_of_death: agent.cause_of_death || "unknown",
-      birth_location: { y: parseFloat(agent.birth_location_y), x: parseFloat(agent.birth_location_x) },
-      death_location: { y: parseFloat(agent.death_location_y), x: parseFloat(agent.death_location_x) },
+      birth_location: {
+        y: parseFloat(agent.birth_location_y),
+        x: parseFloat(agent.birth_location_x),
+      },
+      death_location: {
+        y: parseFloat(agent.death_location_y),
+        x: parseFloat(agent.death_location_x),
+      },
       exploration_radius: parseFloat(agent.exploration_radius) || 0.0,
-      genes: {} // Extracted from genes.csv or summary later if needed
+      genes: {}, // Extracted from genes.csv or summary later if needed
     };
   });
 
@@ -62,6 +67,6 @@ export function processExperiment(
     riversPngBytes: parsed.riversPngBytes,
     habitabilityPngBytes: parsed.habitabilityPngBytes,
     tradePngBytes: parsed.tradePngBytes,
-    simulationPngBytes: parsed.simulationPngBytes
+    simulationPngBytes: parsed.simulationPngBytes,
   };
 }

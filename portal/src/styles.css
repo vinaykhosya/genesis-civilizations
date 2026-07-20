@@ -56,7 +56,7 @@
   --background: oklch(0.14 0.012 240);
   --foreground: oklch(0.96 0.005 240);
 
-  --ink: oklch(0.10 0.010 240);
+  --ink: oklch(0.1 0.01 240);
   --ink-2: oklch(0.18 0.014 240);
   --ink-3: oklch(0.24 0.016 240);
   --bone: oklch(0.94 0.006 240);
@@ -73,10 +73,10 @@
 
   --secondary: oklch(0.22 0.014 240);
   --secondary-foreground: oklch(0.94 0.006 240);
-  --muted: oklch(0.20 0.014 240);
-  --muted-foreground: oklch(0.66 0.020 240);
+  --muted: oklch(0.2 0.014 240);
+  --muted-foreground: oklch(0.66 0.02 240);
   --accent: oklch(0.78 0.11 195);
-  --accent-foreground: oklch(0.10 0.010 240);
+  --accent-foreground: oklch(0.1 0.01 240);
   --destructive: oklch(0.62 0.22 25);
   --destructive-foreground: oklch(0.98 0 0);
 
@@ -84,9 +84,10 @@
   --input: oklch(1 0 0 / 12%);
   --ring: oklch(0.78 0.11 195 / 60%);
 
-  --grad-space: radial-gradient(ellipse at 50% 0%, oklch(0.24 0.05 220 / 0.55), transparent 60%),
-                radial-gradient(ellipse at 80% 90%, oklch(0.28 0.08 195 / 0.35), transparent 55%),
-                linear-gradient(180deg, oklch(0.10 0.012 240), oklch(0.16 0.014 240));
+  --grad-space:
+    radial-gradient(ellipse at 50% 0%, oklch(0.24 0.05 220 / 0.55), transparent 60%),
+    radial-gradient(ellipse at 80% 90%, oklch(0.28 0.08 195 / 0.35), transparent 55%),
+    linear-gradient(180deg, oklch(0.1 0.012 240), oklch(0.16 0.014 240));
   --grad-teal-line: linear-gradient(90deg, transparent, oklch(0.78 0.11 195 / 0.6), transparent);
 
   --shadow-cinema: 0 30px 80px -20px oklch(0 0 0 / 0.5), 0 0 0 1px oklch(1 0 0 / 0.04);
@@ -98,26 +99,49 @@
 }
 
 @layer base {
-  * { border-color: var(--color-border); }
-  html, body { background: var(--background); color: var(--foreground); }
+  * {
+    border-color: var(--color-border);
+  }
+  html,
+  body {
+    background: var(--background);
+    color: var(--foreground);
+  }
   body {
     font-family: var(--font-sans);
     font-feature-settings: "ss01", "cv11";
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
-  ::selection { background: oklch(0.78 0.11 195 / 0.35); color: var(--bone); }
-  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; letter-spacing: -0.02em; }
+  ::selection {
+    background: oklch(0.78 0.11 195 / 0.35);
+    color: var(--bone);
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
 }
 
-@utility font-display { font-family: var(--font-display); }
-@utility font-mono-tight { font-family: var(--font-mono); letter-spacing: 0.01em; }
+@utility font-display {
+  font-family: var(--font-display);
+}
+@utility font-mono-tight {
+  font-family: var(--font-mono);
+  letter-spacing: 0.01em;
+}
 
 @utility bg-space {
   background: var(--grad-space);
 }
 
-@utility text-balance { text-wrap: balance; }
+@utility text-balance {
+  text-wrap: balance;
+}
 
 @utility eyebrow {
   font-family: var(--font-mono);
@@ -136,7 +160,10 @@
   background: linear-gradient(180deg, oklch(0.19 0.014 240), oklch(0.15 0.012 240));
   border: 1px solid oklch(1 0 0 / 0.06);
   border-radius: 4px;
-  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.6s, box-shadow 0.6s;
+  transition:
+    transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 0.6s,
+    box-shadow 0.6s;
   &:hover {
     border-color: oklch(0.78 0.11 195 / 0.35);
     box-shadow: var(--shadow-glow);
@@ -157,30 +184,87 @@
   color: var(--bone);
   background: linear-gradient(180deg, oklch(0.22 0.02 220), oklch(0.16 0.014 240));
   border: 1px solid oklch(0.78 0.11 195 / 0.4);
-  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.06), 0 0 0 0 oklch(0.78 0.11 195 / 0);
-  transition: box-shadow 0.5s, border-color 0.5s, transform 0.5s;
+  box-shadow:
+    inset 0 1px 0 oklch(1 0 0 / 0.06),
+    0 0 0 0 oklch(0.78 0.11 195 / 0);
+  transition:
+    box-shadow 0.5s,
+    border-color 0.5s,
+    transform 0.5s;
   &:hover {
     border-color: oklch(0.78 0.11 195 / 0.9);
-    box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.08), 0 0 40px oklch(0.78 0.11 195 / 0.35);
+    box-shadow:
+      inset 0 1px 0 oklch(1 0 0 / 0.08),
+      0 0 40px oklch(0.78 0.11 195 / 0.35);
     transform: translateY(-1px);
   }
 }
 
-@utility num-tabular { font-variant-numeric: tabular-nums; }
+@utility num-tabular {
+  font-variant-numeric: tabular-nums;
+}
 
 @keyframes drift {
-  0% { transform: translate3d(0,0,0); opacity: 0.6; }
-  50% { opacity: 1; }
-  100% { transform: translate3d(0,-40px,0); opacity: 0; }
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(0, -40px, 0);
+    opacity: 0;
+  }
 }
-@keyframes spin-slow { to { transform: rotate(360deg); } }
-@keyframes pulse-soft { 0%,100% { opacity: 0.4 } 50% { opacity: 1 } }
-@keyframes reveal { from { opacity: 0; transform: translateY(24px);} to { opacity: 1; transform: none;} }
-@keyframes scan { 0% { transform: translateY(-100%);} 100% { transform: translateY(100%);} }
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes scan {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
 
-@utility animate-drift { animation: drift linear infinite; }
-@utility animate-spin-slow { animation: spin-slow 60s linear infinite; }
-@utility animate-spin-slower { animation: spin-slow 140s linear infinite; }
-@utility animate-pulse-soft { animation: pulse-soft 4s ease-in-out infinite; }
-@utility animate-reveal { animation: reveal 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
-@utility animate-scan { animation: scan 6s linear infinite; }
+@utility animate-drift {
+  animation: drift linear infinite;
+}
+@utility animate-spin-slow {
+  animation: spin-slow 60s linear infinite;
+}
+@utility animate-spin-slower {
+  animation: spin-slow 140s linear infinite;
+}
+@utility animate-pulse-soft {
+  animation: pulse-soft 4s ease-in-out infinite;
+}
+@utility animate-reveal {
+  animation: reveal 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@utility animate-scan {
+  animation: scan 6s linear infinite;
+}

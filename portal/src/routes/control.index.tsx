@@ -48,7 +48,7 @@ function ControlPage() {
     try {
       const res = await fetch("/api/v1/admin/experiments/upload", {
         method: "POST",
-        body: formData
+        body: formData,
       });
 
       const data = await res.json();
@@ -64,7 +64,9 @@ function ControlPage() {
       setPreview(data.preview);
       setHealth(data.health);
       if (data.isDuplicate) {
-        setDuplicateWarning(`Warning: An experiment with seed ${data.preview.seed} and ${data.preview.ticks} ticks has already been published.`);
+        setDuplicateWarning(
+          `Warning: An experiment with seed ${data.preview.seed} and ${data.preview.ticks} ticks has already been published.`,
+        );
       }
 
       // Prepopulate metadata editor
@@ -88,9 +90,12 @@ function ControlPage() {
         body: JSON.stringify({
           title,
           abstract,
-          tags: tags.split(",").map(t => t.trim()).filter(Boolean),
-          isFeatured
-        })
+          tags: tags
+            .split(",")
+            .map((t) => t.trim())
+            .filter(Boolean),
+          isFeatured,
+        }),
       });
 
       const data = await res.json();
@@ -106,30 +111,36 @@ function ControlPage() {
 
   if (success) {
     return (
-      <main style={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "var(--bg-void)",
-        color: "var(--text-primary)",
-        fontFamily: "var(--font-display)",
-        padding: "2rem"
-      }}>
-        <div style={{
-          textAlign: "center",
-          padding: "3rem",
-          borderRadius: "var(--radius-xl)",
-          border: "1px solid var(--border-default)",
-          background: "var(--bg-secondary)",
-          maxWidth: "500px"
-        }} className="glass">
+      <main
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "var(--bg-void)",
+          color: "var(--text-primary)",
+          fontFamily: "var(--font-display)",
+          padding: "2rem",
+        }}
+      >
+        <div
+          style={{
+            textAlign: "center",
+            padding: "3rem",
+            borderRadius: "var(--radius-xl)",
+            border: "1px solid var(--border-default)",
+            background: "var(--bg-secondary)",
+            maxWidth: "500px",
+          }}
+          className="glass"
+        >
           <h2 style={{ color: "var(--text-success)", marginBottom: "1rem" }}>
             ✓ Civilization Published
           </h2>
           <p style={{ color: "var(--text-secondary)", marginBottom: "2rem" }}>
-            Experiment package has been validated, staging directories compiled, and registry initialized.
+            Experiment package has been validated, staging directories compiled, and registry
+            initialized.
           </p>
           <Link to="/archive" className="btn-cta" style={{ textDecoration: "none" }}>
             View in Archive
@@ -140,24 +151,28 @@ function ControlPage() {
   }
 
   return (
-    <main style={{
-      minHeight: "100vh",
-      backgroundColor: "var(--bg-void)",
-      color: "var(--text-primary)",
-      fontFamily: "var(--font-body)",
-      padding: "3rem 2rem"
-    }}>
+    <main
+      style={{
+        minHeight: "100vh",
+        backgroundColor: "var(--bg-void)",
+        color: "var(--text-primary)",
+        fontFamily: "var(--font-body)",
+        padding: "3rem 2rem",
+      }}
+    >
       <div style={{ maxWidth: "800px", margin: "0 auto" }}>
         <header style={{ marginBottom: "3rem" }}>
-          <h1 style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "var(--text-4xl)",
-            fontWeight: 700,
-            background: "linear-gradient(135deg, var(--teal), var(--teal-soft))",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            margin: "0 0 0.5rem 0"
-          }}>
+          <h1
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "var(--text-4xl)",
+              fontWeight: 700,
+              background: "linear-gradient(135deg, var(--teal), var(--teal-soft))",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              margin: "0 0 0.5rem 0",
+            }}
+          >
             Control Center
           </h1>
           <p style={{ color: "var(--text-secondary)", margin: 0 }}>
@@ -167,13 +182,16 @@ function ControlPage() {
 
         {/* Staging & Upload Zone */}
         {!stagingId ? (
-          <section style={{
-            background: "var(--bg-secondary)",
-            border: "1px dashed var(--border-default)",
-            borderRadius: "var(--radius-xl)",
-            padding: "4rem 2rem",
-            textAlign: "center"
-          }} className="glass">
+          <section
+            style={{
+              background: "var(--bg-secondary)",
+              border: "1px dashed var(--border-default)",
+              borderRadius: "var(--radius-xl)",
+              padding: "4rem 2rem",
+              textAlign: "center",
+            }}
+            className="glass"
+          >
             <form onSubmit={handleUpload}>
               <p style={{ color: "var(--text-secondary)", marginBottom: "1.5rem" }}>
                 Select a completed experiment ZIP file exported from the simulation engine.
@@ -196,7 +214,7 @@ function ControlPage() {
                   cursor: "pointer",
                   fontWeight: 600,
                   marginBottom: "1.5rem",
-                  transition: "all var(--duration-fast)"
+                  transition: "all var(--duration-fast)",
                 }}
               >
                 {file ? file.name : "Choose File"}
@@ -219,33 +237,64 @@ function ControlPage() {
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
             {/* Health & Preview Report */}
-            <section style={{
-              background: "var(--bg-secondary)",
-              border: "1px solid var(--border-default)",
-              borderRadius: "var(--radius-xl)",
-              padding: "2rem"
-            }} className="glass">
-              <h2 style={{ fontFamily: "var(--font-display)", fontSize: "var(--text-2xl)", marginBottom: "1.5rem" }}>
+            <section
+              style={{
+                background: "var(--bg-secondary)",
+                border: "1px solid var(--border-default)",
+                borderRadius: "var(--radius-xl)",
+                padding: "2rem",
+              }}
+              className="glass"
+            >
+              <h2
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "var(--text-2xl)",
+                  marginBottom: "1.5rem",
+                }}
+              >
                 Experiment Health & Preview
               </h2>
 
               <div style={{ display: "flex", gap: "2rem", marginBottom: "2rem" }}>
-                <div style={{
-                  padding: "1.5rem",
-                  borderRadius: "var(--radius-lg)",
-                  background: "var(--bg-surface)",
-                  borderLeft: "4px solid " + (health.score >= 80 ? "var(--text-success)" : "var(--text-warning)")
-                }}>
-                  <div style={{ fontSize: "var(--text-xs)", color: "var(--text-tertiary)", textTransform: "uppercase" }}>
+                <div
+                  style={{
+                    padding: "1.5rem",
+                    borderRadius: "var(--radius-lg)",
+                    background: "var(--bg-surface)",
+                    borderLeft:
+                      "4px solid " +
+                      (health.score >= 80 ? "var(--text-success)" : "var(--text-warning)"),
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "var(--text-xs)",
+                      color: "var(--text-tertiary)",
+                      textTransform: "uppercase",
+                    }}
+                  >
                     Health Score
                   </div>
-                  <div style={{ fontSize: "var(--text-4xl)", fontWeight: 700, color: "var(--text-primary)" }}>
+                  <div
+                    style={{
+                      fontSize: "var(--text-4xl)",
+                      fontWeight: 700,
+                      color: "var(--text-primary)",
+                    }}
+                  >
                     {health.score}%
                   </div>
                 </div>
 
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", marginBottom: "0.5rem" }}>
+                  <div
+                    style={{
+                      fontSize: "var(--text-sm)",
+                      color: "var(--text-secondary)",
+                      marginBottom: "0.5rem",
+                    }}
+                  >
                     <strong>Extracted Metrics:</strong>
                   </div>
                   <ul style={{ margin: 0, paddingLeft: "1.25rem", color: "var(--text-secondary)" }}>
@@ -258,21 +307,29 @@ function ControlPage() {
               </div>
 
               {duplicateWarning && (
-                <div style={{
-                  padding: "1rem",
-                  background: "var(--accent-900)",
-                  border: "1px solid var(--border-accent)",
-                  borderRadius: "var(--radius-md)",
-                  color: "var(--text-warning)",
-                  marginBottom: "1.5rem"
-                }}>
+                <div
+                  style={{
+                    padding: "1rem",
+                    background: "var(--accent-900)",
+                    border: "1px solid var(--border-accent)",
+                    borderRadius: "var(--radius-md)",
+                    color: "var(--text-warning)",
+                    marginBottom: "1.5rem",
+                  }}
+                >
                   {duplicateWarning}
                 </div>
               )}
 
               {health.warnings.length > 0 && (
                 <div style={{ marginBottom: "1.5rem" }}>
-                  <div style={{ fontWeight: 600, color: "var(--text-warning)", marginBottom: "0.5rem" }}>
+                  <div
+                    style={{
+                      fontWeight: 600,
+                      color: "var(--text-warning)",
+                      marginBottom: "0.5rem",
+                    }}
+                  >
                     Warnings
                   </div>
                   <ul style={{ margin: 0, paddingLeft: "1.25rem", color: "var(--text-secondary)" }}>
@@ -285,19 +342,32 @@ function ControlPage() {
             </section>
 
             {/* Metadata Editor */}
-            <section style={{
-              background: "var(--bg-secondary)",
-              border: "1px solid var(--border-default)",
-              borderRadius: "var(--radius-xl)",
-              padding: "2rem"
-            }} className="glass">
-              <h2 style={{ fontFamily: "var(--font-display)", fontSize: "var(--text-2xl)", marginBottom: "1.5rem" }}>
+            <section
+              style={{
+                background: "var(--bg-secondary)",
+                border: "1px solid var(--border-default)",
+                borderRadius: "var(--radius-xl)",
+                padding: "2rem",
+              }}
+              className="glass"
+            >
+              <h2
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "var(--text-2xl)",
+                  marginBottom: "1.5rem",
+                }}
+              >
                 Metadata & Publication
               </h2>
 
               <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
                 <div>
-                  <label style={{ display: "block", fontSize: "var(--text-sm)", marginBottom: "0.5rem" }}>Title</label>
+                  <label
+                    style={{ display: "block", fontSize: "var(--text-sm)", marginBottom: "0.5rem" }}
+                  >
+                    Title
+                  </label>
                   <input
                     type="text"
                     value={title}
@@ -309,13 +379,17 @@ function ControlPage() {
                       border: "1px solid var(--border-default)",
                       borderRadius: "var(--radius-md)",
                       color: "var(--text-primary)",
-                      outline: "none"
+                      outline: "none",
                     }}
                   />
                 </div>
 
                 <div>
-                  <label style={{ display: "block", fontSize: "var(--text-sm)", marginBottom: "0.5rem" }}>Abstract</label>
+                  <label
+                    style={{ display: "block", fontSize: "var(--text-sm)", marginBottom: "0.5rem" }}
+                  >
+                    Abstract
+                  </label>
                   <textarea
                     value={abstract}
                     onChange={(e) => setAbstract(e.target.value)}
@@ -329,13 +403,17 @@ function ControlPage() {
                       borderRadius: "var(--radius-md)",
                       color: "var(--text-primary)",
                       outline: "none",
-                      resize: "vertical"
+                      resize: "vertical",
                     }}
                   />
                 </div>
 
                 <div>
-                  <label style={{ display: "block", fontSize: "var(--text-sm)", marginBottom: "0.5rem" }}>Tags (comma-separated)</label>
+                  <label
+                    style={{ display: "block", fontSize: "var(--text-sm)", marginBottom: "0.5rem" }}
+                  >
+                    Tags (comma-separated)
+                  </label>
                   <input
                     type="text"
                     value={tags}
@@ -347,7 +425,7 @@ function ControlPage() {
                       border: "1px solid var(--border-default)",
                       borderRadius: "var(--radius-md)",
                       color: "var(--text-primary)",
-                      outline: "none"
+                      outline: "none",
                     }}
                   />
                 </div>
@@ -383,7 +461,7 @@ function ControlPage() {
                       border: "1px solid var(--border-danger)",
                       color: "var(--text-danger)",
                       borderRadius: "var(--radius-md)",
-                      cursor: "pointer"
+                      cursor: "pointer",
                     }}
                   >
                     Discard Staging

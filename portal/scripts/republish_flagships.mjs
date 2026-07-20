@@ -5,7 +5,8 @@ import sharp from "sharp";
 import Papa from "papaparse";
 
 const supabaseUrl = "https://tyajlotsxwocxxawcwta.supabase.co";
-const supabaseServiceKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR5YWpsb3RzeHdvY3h4YXdjd3RhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NDA0MTQxNiwiZXhwIjoyMDk5NjE3NDE2fQ.DNByNwePQi2msrT6eJvsoti1NCow2cX3-3LdRNrUCFk";
+const supabaseServiceKey =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR5YWpsb3RzeHdvY3h4YXdjd3RhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NDA0MTQxNiwiZXhwIjoyMDk5NjE3NDE2fQ.DNByNwePQi2msrT6eJvsoti1NCow2cX3-3LdRNrUCFk";
 
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
@@ -13,12 +14,10 @@ const workspaceDir = "..";
 const experimentsDir = path.join(workspaceDir, "experiments");
 
 async function uploadToBucket(bucket, storagePath, body, contentType) {
-  const { error } = await supabase.storage
-    .from(bucket)
-    .upload(storagePath, body, {
-      contentType,
-      upsert: true
-    });
+  const { error } = await supabase.storage.from(bucket).upload(storagePath, body, {
+    contentType,
+    upsert: true,
+  });
 
   if (error) {
     throw new Error(`Failed to upload ${storagePath}: ${error.message}`);
@@ -52,7 +51,7 @@ async function run() {
     "GEN-0003": flagshipMapping["GEN-0003"],
     "GEN-0004": flagshipMapping["GEN-0004"],
     "GEN-VAL-001": "2026-07-16_22-40-00_atlas_verification_run",
-    "GEN-VAL-002": "2026-06-28_19-23-06_reflex validation short"
+    "GEN-VAL-002": "2026-06-28_19-23-06_reflex validation short",
   };
 
   const titleOverrides = {
@@ -61,16 +60,22 @@ async function run() {
     "GEN-0003": "Ecological Collapse in High-Scarcity Continental Worlds",
     "GEN-0004": "Isolation and Extinction Across Fragmented Island Topologies",
     "GEN-VAL-001": "Atlas Mapping & Environmental Projection Validation",
-    "GEN-VAL-002": "Early Reflex Execution & Survival Thresholds"
+    "GEN-VAL-002": "Early Reflex Execution & Survival Thresholds",
   };
 
   const abstractOverrides = {
-    "GEN-0001": "An empirical analysis of evolutionary altruism and relationship dynamics under extreme physiological stress with accelerated wound healing.",
-    "GEN-0002": "Establishes baseline social attachment and kinship patterns under standard recovery parameters, tracking the limits of cooperation.",
-    "GEN-0003": "Investigates resource depletion patterns and eventual systemic collapse on a large, contiguous green continental mass.",
-    "GEN-0004": "Tracks geographical isolation, genetic drift, and eventual complete extinction across a fragmented archipelago map layout.",
-    "GEN-VAL-001": "A validation run executing physical advection models to verify accuracy of temperature, rainfall, and advection calculations.",
-    "GEN-VAL-002": "A targeted control run verifying action selection networks and reflex boundaries of the cognitive architecture."
+    "GEN-0001":
+      "An empirical analysis of evolutionary altruism and relationship dynamics under extreme physiological stress with accelerated wound healing.",
+    "GEN-0002":
+      "Establishes baseline social attachment and kinship patterns under standard recovery parameters, tracking the limits of cooperation.",
+    "GEN-0003":
+      "Investigates resource depletion patterns and eventual systemic collapse on a large, contiguous green continental mass.",
+    "GEN-0004":
+      "Tracks geographical isolation, genetic drift, and eventual complete extinction across a fragmented archipelago map layout.",
+    "GEN-VAL-001":
+      "A validation run executing physical advection models to verify accuracy of temperature, rainfall, and advection calculations.",
+    "GEN-VAL-002":
+      "A targeted control run verifying action selection networks and reflex boundaries of the cognitive architecture.",
   };
 
   const tagsOverrides = {
@@ -79,7 +84,7 @@ async function run() {
     "GEN-0003": ["Systemic Collapse", "Scarcity Pressures", "Continental Ecology"],
     "GEN-0004": ["Archipelago Isolation", "Extinction Event", "Island Biogeography"],
     "GEN-VAL-001": ["Calibration Run", "Physical Advection", "Hydrological Model"],
-    "GEN-VAL-002": ["Reflex Calibration", "Action Networks", "Survival Benchmarking"]
+    "GEN-VAL-002": ["Reflex Calibration", "Action Networks", "Survival Benchmarking"],
   };
 
   for (const [id, folderName] of Object.entries(fullMapping)) {
@@ -147,23 +152,44 @@ async function run() {
     const storageUrlPrefix = `${supabaseUrl}/storage/v1/object/public/experiments`;
     await uploadToBucket("experiments", `${id}/exports/package.zip`, zipBytes, "application/zip");
     await uploadToBucket("experiments", `${id}/preview/world.png`, worldPngBytes, "image/png");
-    await uploadToBucket("experiments", `${id}/preview/thumbnail.webp`, thumbnailBytes, "image/webp");
+    await uploadToBucket(
+      "experiments",
+      `${id}/preview/thumbnail.webp`,
+      thumbnailBytes,
+      "image/webp",
+    );
     await uploadToBucket("experiments", `${id}/preview/og.webp`, ogBytes, "image/webp");
 
     if (replayJsonStr) {
-      await uploadToBucket("experiments", `${id}/replay/replay.json`, replayJsonStr, "application/json");
+      await uploadToBucket(
+        "experiments",
+        `${id}/replay/replay.json`,
+        replayJsonStr,
+        "application/json",
+      );
     }
 
     // Upload environment maps
     const mapFiles = [
-      "biomes.png", "elevation.png", "temperature.png", "rainfall.png",
-      "rivers.png", "habitability.png", "trade.png", "simulation.png"
+      "biomes.png",
+      "elevation.png",
+      "temperature.png",
+      "rainfall.png",
+      "rivers.png",
+      "habitability.png",
+      "trade.png",
+      "simulation.png",
     ];
     const availableMaps = [];
     for (const mapFile of mapFiles) {
       const mapPath = path.join(expFolder, mapFile);
       if (fs.existsSync(mapPath)) {
-        await uploadToBucket("experiments", `${id}/atlas/${mapFile}`, fs.readFileSync(mapPath), "image/png");
+        await uploadToBucket(
+          "experiments",
+          `${id}/atlas/${mapFile}`,
+          fs.readFileSync(mapPath),
+          "image/png",
+        );
         availableMaps.push(mapFile.replace(".png", ""));
       }
     }
@@ -176,7 +202,7 @@ async function run() {
     // Build summary with maps list
     const summaryWithMaps = {
       ...summary,
-      available_maps: availableMaps
+      available_maps: availableMaps,
     };
 
     // Calculate actual simulated ticks duration
@@ -213,7 +239,7 @@ async function run() {
       og_url: `${storageUrlPrefix}/${id}/preview/og.webp`,
       has_replay: !!replayJsonStr,
       is_published: true,
-      is_featured: id === "GEN-0004" // Keep GEN-0004 as the main featured centerpiece
+      is_featured: id === "GEN-0004", // Keep GEN-0004 as the main featured centerpiece
     });
 
     if (expError) {
@@ -222,14 +248,14 @@ async function run() {
 
     // 7. Parse and insert child table records
     console.log("  Populating timeline events...");
-    const parsedEvents = events.map(evt => ({
+    const parsedEvents = events.map((evt) => ({
       experiment_id: id,
       tick: evt.tick,
       year: evt.year,
       day: evt.day,
       event_type: evt.type,
       description: evt.description,
-      metadata: evt.metadata
+      metadata: evt.metadata,
     }));
     await chunkAndInsert("experiment_events", parsedEvents);
 
@@ -247,10 +273,16 @@ async function run() {
       children_count: parseInt(agent.children_count, 10) || 0,
       shelter_level: parseInt(agent.shelter_level, 10) || 0,
       cause_of_death: agent.cause_of_death || "unknown",
-      birth_location: { y: parseFloat(agent.birth_location_y), x: parseFloat(agent.birth_location_x) },
-      death_location: { y: parseFloat(agent.death_location_y), x: parseFloat(agent.death_location_x) },
+      birth_location: {
+        y: parseFloat(agent.birth_location_y),
+        x: parseFloat(agent.birth_location_x),
+      },
+      death_location: {
+        y: parseFloat(agent.death_location_y),
+        x: parseFloat(agent.death_location_x),
+      },
       exploration_radius: parseFloat(agent.exploration_radius) || 0.0,
-      genes: {}
+      genes: {},
     }));
     await chunkAndInsert("experiment_agents", parsedAgents);
 
@@ -263,7 +295,7 @@ async function run() {
       alpha: parseInt(row.colony_alpha || row.alpha, 10) || 0,
       beta: parseInt(row.colony_beta || row.beta, 10) || 0,
       gamma: parseInt(row.colony_gamma || row.gamma, 10) || 0,
-      delta: parseInt(row.colony_delta || row.delta, 10) || 0
+      delta: parseInt(row.colony_delta || row.delta, 10) || 0,
     }));
     await chunkAndInsert("experiment_population", parsedPop);
 

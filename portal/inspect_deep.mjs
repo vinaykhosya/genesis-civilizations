@@ -3,8 +3,8 @@ import { join } from "path";
 
 const experimentsDir = "c:/Users/vinay/Desktop/project genesis/experiments";
 const directories = readdirSync(experimentsDir, { withFileTypes: true })
-  .filter(dirent => dirent.isDirectory())
-  .map(dirent => dirent.name);
+  .filter((dirent) => dirent.isDirectory())
+  .map((dirent) => dirent.name);
 
 console.log(`Analyzing ${directories.length} experiments in-depth...\n`);
 
@@ -38,7 +38,10 @@ for (const dirName of directories) {
 
   if (existsSync(deathsPath)) {
     try {
-      const lines = readFileSync(deathsPath, "utf8").split("\n").map(l => l.trim()).filter(Boolean);
+      const lines = readFileSync(deathsPath, "utf8")
+        .split("\n")
+        .map((l) => l.trim())
+        .filter(Boolean);
       const headers = lines[0].split(",");
       const xIdx = headers.indexOf("location_x");
       const yIdx = headers.indexOf("location_y");
@@ -76,7 +79,7 @@ for (const dirName of directories) {
   for (const [colony, data] of Object.entries(colonyLocations)) {
     centroids[colony] = {
       x: Math.round(data.sumX / data.count),
-      y: Math.round(data.sumY / data.count)
+      y: Math.round(data.sumY / data.count),
     };
   }
 
@@ -100,7 +103,7 @@ for (const dirName of directories) {
     deathCauses,
     centroids,
     epochMode: config.climate_epoch_mode ?? "legacy",
-    ablation: config.ecology_ablation ?? {}
+    ablation: config.ecology_ablation ?? {},
   });
 }
 

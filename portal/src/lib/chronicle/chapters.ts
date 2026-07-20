@@ -56,7 +56,7 @@ export function compileChapters(events: ChronicleEvent[], totalTicks: number): C
   if (expansionTick === -1 && totalTicks > 500) expansionTick = Math.min(totalTicks, 1000);
   if (declineTick === -1 && totalTicks > 2000) declineTick = Math.floor(totalTicks * 0.7);
   if (collapseTick === -1 && currentPopulation === 0) {
-    const lastDeath = sortedEvents.filter(e => e.type === "Death").pop();
+    const lastDeath = sortedEvents.filter((e) => e.type === "Death").pop();
     collapseTick = lastDeath ? lastDeath.tick : Math.floor(totalTicks * 0.9);
   }
 
@@ -65,17 +65,19 @@ export function compileChapters(events: ChronicleEvent[], totalTicks: number): C
     {
       name: "founding",
       title: "The Founding",
-      description: "The initial colonizers arrive in the untouched landscape, exploring boundaries and searching for sources of water.",
-      startTick: 0
-    }
+      description:
+        "The initial colonizers arrive in the untouched landscape, exploring boundaries and searching for sources of water.",
+      startTick: 0,
+    },
   ];
 
   if (expansionTick > 0 && expansionTick < totalTicks) {
     triggers.push({
       name: "expansion",
       title: "The Expansion Era",
-      description: "Growth begins as shelters are constructed and localized populations consolidate their territories.",
-      startTick: expansionTick
+      description:
+        "Growth begins as shelters are constructed and localized populations consolidate their territories.",
+      startTick: expansionTick,
     });
   }
 
@@ -83,17 +85,23 @@ export function compileChapters(events: ChronicleEvent[], totalTicks: number): C
     triggers.push({
       name: "conflict",
       title: "The Friction Years",
-      description: "Resource borders tighten. Colony boundaries touch, leading to localized disputes and combat pressures.",
-      startTick: conflictTick
+      description:
+        "Resource borders tighten. Colony boundaries touch, leading to localized disputes and combat pressures.",
+      startTick: conflictTick,
     });
   }
 
-  if (declineTick > 0 && declineTick < totalTicks && declineTick > Math.max(expansionTick, conflictTick)) {
+  if (
+    declineTick > 0 &&
+    declineTick < totalTicks &&
+    declineTick > Math.max(expansionTick, conflictTick)
+  ) {
     triggers.push({
       name: "decline",
       title: "The Long Decline",
-      description: " senescent mortality rises and resources thin out, starting a downward spiral in population counts.",
-      startTick: declineTick
+      description:
+        " senescent mortality rises and resources thin out, starting a downward spiral in population counts.",
+      startTick: declineTick,
     });
   }
 
@@ -101,8 +109,9 @@ export function compileChapters(events: ChronicleEvent[], totalTicks: number): C
     triggers.push({
       name: "collapse",
       title: "The Final Collapse",
-      description: "Births cease entirely. The last surviving organisms face absolute carrying capacity constraints.",
-      startTick: collapseTick
+      description:
+        "Births cease entirely. The last surviving organisms face absolute carrying capacity constraints.",
+      startTick: collapseTick,
     });
   }
 
@@ -118,12 +127,10 @@ export function compileChapters(events: ChronicleEvent[], totalTicks: number): C
     const endTick = next ? next.startTick - 1 : totalTicks;
 
     const chapterEvents = sortedEvents.filter(
-      evt => evt.tick >= current.startTick && evt.tick <= endTick
+      (evt) => evt.tick >= current.startTick && evt.tick <= endTick,
     );
 
-    const proseEntries = chapterEvents
-      .map(formatEventToProse)
-      .filter((p): p is any => p !== null);
+    const proseEntries = chapterEvents.map(formatEventToProse).filter((p): p is any => p !== null);
 
     chapters.push({
       name: current.name,
@@ -131,7 +138,7 @@ export function compileChapters(events: ChronicleEvent[], totalTicks: number): C
       description: current.description,
       startTick: current.startTick,
       endTick,
-      prose: proseEntries
+      prose: proseEntries,
     });
   }
 
