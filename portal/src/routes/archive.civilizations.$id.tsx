@@ -283,65 +283,106 @@ function CivilizationRecordPage() {
         title: "Emergence of Cooperative Spatial Boundaries",
         question:
           "How do distinct founder colonies negotiate territorial boundaries under baseline resource availability constraints?",
+        motivation:
+          "Understanding territorial boundary formation helps determine whether spatial partitioning is an emergent property of resource density or aggression.",
         category: "Colony Organization",
-        status: "Answered",
+        status: "Replicated",
         statusNote: "Validated in GEN-EXP-0001 (Year 300 longitudinal run)",
         priority: "High",
-        variables: ["Colony Spacing", "Resource Density", "Vision Radius"],
-        expectedEvidence: ["Territory Heatmap", "Inter-Colony Trade Frequency", "Border Skirmishes"],
-        relatedExperiments: ["GEN-EXP-0001"],
+        variables: ["Carrying Capacity", "Resource Density", "Vision Radius"],
+        expectedEvidence: ["Territory Heatmap", "Colony Count", "Resource Storage"],
+        evidenceTrail: [
+          { runId: "GEN-EXP-0001", type: "primary", note: "Baseline longitudinal spatial partitioning" },
+        ],
+        proposedDesign: {
+          indVars: "Scarcity = 1.0, Spacing = Fixed",
+          depVars: "Territory Boundary Radius",
+          duration: "100k ticks",
+        },
       },
       {
         id: "RQ-004",
         title: "Reproductive Squelching under Severe Famine",
         question:
           "Does extreme scarcity suppress sexual reproduction frequency in favor of individual self-preservation and shelter construction behaviors?",
+        motivation:
+          "Determines whether demographic collapse under famine is driven by physiological starvation vs. adaptive reproductive suppression.",
         category: "Population Dynamics",
-        status: "Partially Answered",
-        statusNote: "Observational evidence logged in GEN-EXP-0001 under Scarcity 3.0",
+        status: "Investigating",
+        statusNote: "Preliminary evidence logged in GEN-EXP-0001 under Scarcity 3.0",
         priority: "High",
-        variables: ["Scarcity Index", "Healing Mult", "Energy Burn Rate"],
-        expectedEvidence: ["Birth Rate Ramp", "Age Distribution Shift", "Shelter Construction"],
-        relatedExperiments: ["GEN-EXP-0001"],
+        variables: ["Scarcity", "Healing Speed", "Disputes"],
+        expectedEvidence: ["Birth Rate", "Population Curve", "Shelter Count"],
+        evidenceTrail: [
+          { runId: "GEN-EXP-0001", type: "observational", note: "Suppressed birth rates observed during tick 36,000-50,000" },
+        ],
+        proposedDesign: {
+          indVars: "Scarcity = 5.0, Healing = 20",
+          depVars: "Birth Rate, Shelter Count",
+          duration: "50k ticks",
+        },
       },
       {
         id: "RQ-011",
         title: "Land Transpiration & Continental Moisture Recycling",
         question:
           "Does vegetation cover maintain interior continental moisture levels against wind advection drying in large landmasses?",
+        motivation:
+          "Validates size-invariant precipitation advection in continental physical models.",
         category: "Resource Ecology",
         status: "Answered",
         statusNote: "Verified in Physical Simulation Engine v9.2",
         priority: "Medium",
-        variables: ["Evaporation Rate", "Land Transpiration", "Wind Advection Slope"],
-        expectedEvidence: ["Precipitation Grid Invariance", "Vegetation Cover Density"],
-        relatedExperiments: ["GEN-EXP-0001"],
+        variables: ["Climate Mode", "Land Transpiration", "Wind Advection"],
+        expectedEvidence: ["Precipitation Grid", "Resource Storage"],
+        evidenceTrail: [
+          { runId: "GEN-EXP-0001", type: "primary", note: "Moisture recycling confirmed across interior biomes" },
+        ],
+        proposedDesign: {
+          indVars: "Continental width = 128",
+          depVars: "Interior Rainfall Density",
+          duration: "10k ticks",
+        },
       },
       {
         id: "RQ-019",
         title: "Disaster Bottlenecks and Lineage Extinctions",
         question:
           "What structural thresholds determine which lineages survive rapid environmental shocks vs. experiencing absolute demographic collapse?",
+        motivation:
+          "Identifies minimum genetic diversity thresholds required to survive catastrophic environmental shocks.",
         category: "Evolution & Genetics",
         status: "Open",
         statusNote: "Requires disaster stress testing in upcoming runs",
         priority: "Critical",
-        variables: ["Disaster Frequency", "Genetic Diversity", "Habitat Range"],
-        expectedEvidence: ["Survivor Lineage Trees", "Allele Frequency Drift", "Extinction Timelines"],
-        relatedExperiments: ["GEN-EXP-0001"],
+        variables: ["Disasters", "Genetic Diversity", "Mutation Rate"],
+        expectedEvidence: ["Genetic Diversity", "Death Rate", "Population Curve"],
+        evidenceTrail: [],
+        proposedDesign: {
+          indVars: "Disaster Interval = 5000 ticks",
+          depVars: "Allele Diversity Index",
+          duration: "100k ticks",
+        },
       },
       {
         id: "RQ-040",
         title: "Hierarchical Goal Abstraction & Specialized Altruism",
         question:
           "Do high-generation cognitive agents develop division of labor without explicit multi-agent coordination rewards?",
+        motivation:
+          "Tests whether spontaneous division of labor emerges from individual cognitive planning.",
         category: "Emergent Behavior",
         status: "Open",
         statusNote: "Unexplored - Planned for Generation 20+ runs",
         priority: "High",
         variables: ["Cognitive Depth", "Memory Importance", "Social Affinity"],
-        expectedEvidence: ["Specialized Action Logs", "Shared Food Deposits", "Task Distribution"],
-        relatedExperiments: ["GEN-EXP-0001"],
+        expectedEvidence: ["Behavior Clusters", "Resource Storage", "Average Lifespan"],
+        evidenceTrail: [],
+        proposedDesign: {
+          indVars: "Max Generation = 25",
+          depVars: "Action Specialization Metric",
+          duration: "200k ticks",
+        },
       },
     ];
     return questions;
@@ -389,16 +430,27 @@ function CivilizationRecordPage() {
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string>("All");
   const [selectedStatusFilter, setSelectedStatusFilter] = useState<string>("All");
 
-  const [newQId, setNewQId] = useState<string>("RQ-005");
   const [newQTitle, setNewQTitle] = useState<string>("");
+  const [newQMotivation, setNewQMotivation] = useState<string>("");
   const [newQCategory, setNewQCategory] = useState<string>("Population Dynamics");
   const [newQStatus, setNewQStatus] = useState<string>("Open");
   const [newQStatusNote, setNewQStatusNote] = useState<string>("");
   const [newQPriority, setNewQPriority] = useState<string>("High");
   const [newQText, setNewQText] = useState<string>("");
-  const [newQVariables, setNewQVariables] = useState<string>("");
-  const [newQEvidence, setNewQEvidence] = useState<string>("");
-  const [newQRelated, setNewQRelated] = useState<string>(record.id);
+
+  // Tag Selection Arrays
+  const [selectedVariables, setSelectedVariables] = useState<string[]>(["Scarcity"]);
+  const [selectedEvidence, setSelectedEvidence] = useState<string[]>(["Birth Rate", "Population Curve"]);
+
+  // Related Evidence Trail Creation
+  const [newEvidenceRun, setNewEvidenceRun] = useState<string>(record.id);
+  const [newEvidenceType, setNewEvidenceType] = useState<string>("primary");
+  const [newEvidenceNote, setNewEvidenceNote] = useState<string>("");
+
+  // Proposed Design Form States
+  const [proposedIndVars, setProposedIndVars] = useState<string>("");
+  const [proposedDepVars, setProposedDepVars] = useState<string>("");
+  const [proposedDuration, setProposedDuration] = useState<string>("100k ticks");
 
   // Comments / Open Questions State
   const [comments, setComments] = useState<any[]>([]);
@@ -505,25 +557,57 @@ function CivilizationRecordPage() {
 
   const handleAddQuestion = () => {
     if (!newQTitle.trim() || !newQText.trim()) return;
+
+    // Auto-generate ID: Find max numeric index among existing questions
+    let maxIdx = 0;
+    questionsList.forEach((q) => {
+      const match = q.id?.match(/RQ-(\d+)/);
+      if (match) {
+        const num = parseInt(match[1], 10);
+        if (num > maxIdx) maxIdx = num;
+      }
+    });
+    const autoId = `RQ-${(maxIdx + 1).toString().padStart(3, "0")}`;
+
     const newQ = {
-      id: newQId.trim() || `RQ-${Math.floor(100 + Math.random() * 900)}`,
+      id: autoId,
       title: newQTitle.trim(),
       question: newQText.trim(),
+      motivation: newQMotivation.trim() || undefined,
       category: newQCategory,
       status: newQStatus,
       statusNote: newQStatusNote.trim() || undefined,
       priority: newQPriority,
-      variables: newQVariables ? newQVariables.split(",").map((s) => s.trim()).filter(Boolean) : [],
-      expectedEvidence: newQEvidence ? newQEvidence.split(",").map((s) => s.trim()).filter(Boolean) : [],
-      relatedExperiments: newQRelated ? newQRelated.split(",").map((s) => s.trim()).filter(Boolean) : [record.id],
+      variables: selectedVariables,
+      expectedEvidence: selectedEvidence,
+      evidenceTrail: newEvidenceRun
+        ? [
+            {
+              runId: newEvidenceRun.trim(),
+              type: newEvidenceType,
+              note: newEvidenceNote.trim() || "Initial experimental evidence",
+            },
+          ]
+        : [],
+      proposedDesign:
+        proposedIndVars || proposedDepVars
+          ? {
+              indVars: proposedIndVars.trim(),
+              depVars: proposedDepVars.trim(),
+              duration: proposedDuration.trim(),
+            }
+          : undefined,
     };
+
     const updated = [...questionsList, newQ];
     setQuestionsList(updated);
     setNewQTitle("");
     setNewQText("");
+    setNewQMotivation("");
     setNewQStatusNote("");
-    setNewQVariables("");
-    setNewQEvidence("");
+    setNewEvidenceNote("");
+    setProposedIndVars("");
+    setProposedDepVars("");
     setIsAddingQuestion(false);
     persistEdits({ questions: updated });
   };
@@ -2438,32 +2522,62 @@ function CivilizationRecordPage() {
                         )}
                       </div>
 
-                      {/* Filter Controls (Category Filter) */}
-                      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem", marginBottom: "1.5rem", alignItems: "center" }}>
-                        <span style={{ fontSize: "11px", color: "var(--text-tertiary)", fontFamily: "var(--font-mono)", textTransform: "uppercase" }}>
-                          Category:
-                        </span>
-                        {["All", "Population Dynamics", "Evolution & Genetics", "Colony Organization", "Resource Ecology", "Emergent Behavior"].map((cat) => (
-                          <button
-                            key={cat}
-                            onClick={() => setSelectedCategoryFilter(cat)}
-                            style={{
-                              background: selectedCategoryFilter === cat ? "rgba(99, 102, 241, 0.2)" : "rgba(255,255,255,0.02)",
-                              border: `1px solid ${selectedCategoryFilter === cat ? "#6366f1" : "var(--border-default)"}`,
-                              color: selectedCategoryFilter === cat ? "#a5b4fc" : "var(--text-secondary)",
-                              padding: "0.25rem 0.65rem",
-                              borderRadius: "15px",
-                              fontSize: "11px",
-                              fontWeight: 600,
-                              cursor: "pointer",
-                            }}
-                          >
-                            {cat}
-                          </button>
-                        ))}
+                      {/* Filter Controls (Category & Status Filter Bar) */}
+                      <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", marginBottom: "1.5rem" }}>
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", alignItems: "center" }}>
+                          <span style={{ fontSize: "11px", color: "var(--text-tertiary)", fontFamily: "var(--font-mono)", textTransform: "uppercase", width: "70px" }}>
+                            Category:
+                          </span>
+                          {["All", "Population Dynamics", "Evolution & Genetics", "Colony Organization", "Resource Ecology", "Emergent Behavior"].map((cat) => (
+                            <button
+                              key={cat}
+                              onClick={() => setSelectedCategoryFilter(cat)}
+                              style={{
+                                background: selectedCategoryFilter === cat ? "rgba(99, 102, 241, 0.2)" : "rgba(255,255,255,0.02)",
+                                border: `1px solid ${selectedCategoryFilter === cat ? "#6366f1" : "var(--border-default)"}`,
+                                color: selectedCategoryFilter === cat ? "#a5b4fc" : "var(--text-secondary)",
+                                padding: "0.2rem 0.6rem",
+                                borderRadius: "15px",
+                                fontSize: "11px",
+                                fontWeight: 600,
+                                cursor: "pointer",
+                              }}
+                            >
+                              {cat}
+                            </button>
+                          ))}
+                        </div>
+
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", alignItems: "center" }}>
+                          <span style={{ fontSize: "11px", color: "var(--text-tertiary)", fontFamily: "var(--font-mono)", textTransform: "uppercase", width: "70px" }}>
+                            Status:
+                          </span>
+                          {["All", "Open", "Investigating", "Answered", "Replicated", "Refuted", "Archived"].map((st) => {
+                            const badgeColor =
+                              st === "Answered" ? "#10b981" : st === "Replicated" ? "#3b82f6" : st === "Investigating" ? "#f59e0b" : st === "Refuted" ? "#ef4444" : st === "Open" ? "#a855f7" : "#64748b";
+                            return (
+                              <button
+                                key={st}
+                                onClick={() => setSelectedStatusFilter(st)}
+                                style={{
+                                  background: selectedStatusFilter === st ? `${badgeColor}20` : "rgba(255,255,255,0.02)",
+                                  border: `1px solid ${selectedStatusFilter === st ? badgeColor : "var(--border-default)"}`,
+                                  color: selectedStatusFilter === st ? badgeColor : "var(--text-secondary)",
+                                  padding: "0.2rem 0.6rem",
+                                  borderRadius: "15px",
+                                  fontSize: "11px",
+                                  fontWeight: 600,
+                                  cursor: "pointer",
+                                }}
+                              >
+                                {st}
+                              </button>
+                            );
+                          })}
+                        </div>
                       </div>
 
-                      {/* Admin Add Form */}
+                      {/* Admin Creation Form with Tag Pickers */}
                       {isAdmin && isAddingQuestion && (
                         <div
                           style={{
@@ -2477,28 +2591,19 @@ function CivilizationRecordPage() {
                             gap: "0.8rem",
                           }}
                         >
-                          <h4 style={{ fontSize: "13px", fontWeight: 700, color: "#00f2fe", margin: 0 }}>
-                            Add New Open Research Question
-                          </h4>
-                          <div style={{ display: "grid", gridTemplateColumns: "100px 1fr 180px", gap: "0.75rem" }}>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                            <h4 style={{ fontSize: "13px", fontWeight: 700, color: "#00f2fe", margin: 0 }}>
+                              Create Open Research Question & Proposal
+                            </h4>
+                            <span style={{ fontSize: "11px", fontFamily: "var(--font-mono)", color: "#00f2fe", background: "rgba(0,242,254,0.1)", padding: "0.2rem 0.6rem", borderRadius: "4px" }}>
+                              Auto ID: RQ-{((questionsList.length || 0) + 1).toString().padStart(3, "0")}
+                            </span>
+                          </div>
+
+                          <div style={{ display: "grid", gridTemplateColumns: "1fr 180px", gap: "0.75rem" }}>
                             <input
                               type="text"
-                              placeholder="ID (RQ-005)"
-                              value={newQId}
-                              onChange={(e) => setNewQId(e.target.value)}
-                              style={{
-                                background: "rgba(255,255,255,0.03)",
-                                border: "1px solid var(--border-default)",
-                                borderRadius: "4px",
-                                padding: "0.4rem 0.8rem",
-                                color: "#fff",
-                                fontSize: "12px",
-                                fontFamily: "var(--font-mono)",
-                              }}
-                            />
-                            <input
-                              type="text"
-                              placeholder="Question Title (e.g. Speciation on Island Archipelagos)"
+                              placeholder="Question Title (e.g. Reproductive Squelching under Famine)"
                               value={newQTitle}
                               onChange={(e) => setNewQTitle(e.target.value)}
                               style={{
@@ -2530,6 +2635,36 @@ function CivilizationRecordPage() {
                             </select>
                           </div>
 
+                          <textarea
+                            rows={2}
+                            placeholder="Full Core Research Question..."
+                            value={newQText}
+                            onChange={(e) => setNewQText(e.target.value)}
+                            style={{
+                              background: "rgba(255,255,255,0.03)",
+                              border: "1px solid var(--border-default)",
+                              borderRadius: "4px",
+                              padding: "0.5rem 0.8rem",
+                              color: "#fff",
+                              fontSize: "12px",
+                            }}
+                          />
+
+                          <input
+                            type="text"
+                            placeholder="Scientific Motivation (Why is this question interesting?)"
+                            value={newQMotivation}
+                            onChange={(e) => setNewQMotivation(e.target.value)}
+                            style={{
+                              background: "rgba(255,255,255,0.03)",
+                              border: "1px solid var(--border-default)",
+                              borderRadius: "4px",
+                              padding: "0.4rem 0.8rem",
+                              color: "#fff",
+                              fontSize: "12px",
+                            }}
+                          />
+
                           <div style={{ display: "grid", gridTemplateColumns: "150px 1fr 120px", gap: "0.75rem" }}>
                             <select
                               value={newQStatus}
@@ -2543,14 +2678,16 @@ function CivilizationRecordPage() {
                                 fontSize: "12px",
                               }}
                             >
-                              <option value="Open">⚪ Open</option>
-                              <option value="Partially Answered">🟡 Partially Answered</option>
+                              <option value="Open">🟣 Open</option>
+                              <option value="Investigating">🟡 Investigating</option>
                               <option value="Answered">🟢 Answered</option>
-                              <option value="Rejected">🔴 Rejected</option>
+                              <option value="Replicated">🔵 Replicated</option>
+                              <option value="Refuted">🔴 Refuted</option>
+                              <option value="Archived">⚫ Archived</option>
                             </select>
                             <input
                               type="text"
-                              placeholder="Status Note (e.g. Answered by GEN-EXP-0001)"
+                              placeholder="Status Note (e.g. Validated in GEN-EXP-0001)"
                               value={newQStatusNote}
                               onChange={(e) => setNewQStatusNote(e.target.value)}
                               style={{
@@ -2581,63 +2718,88 @@ function CivilizationRecordPage() {
                             </select>
                           </div>
 
-                          <textarea
-                            rows={2}
-                            placeholder="Full Research Question Description..."
-                            value={newQText}
-                            onChange={(e) => setNewQText(e.target.value)}
-                            style={{
-                              background: "rgba(255,255,255,0.03)",
-                              border: "1px solid var(--border-default)",
-                              borderRadius: "4px",
-                              padding: "0.5rem 0.8rem",
-                              color: "#fff",
-                              fontSize: "12px",
-                            }}
-                          />
+                          {/* Variable Tag Picker */}
+                          <div>
+                            <span style={{ fontSize: "11px", color: "var(--text-secondary)", fontWeight: 600 }}>Select Independent Variables:</span>
+                            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem", marginTop: "0.3rem" }}>
+                              {["Scarcity", "Healing Speed", "Disputes", "Mutation Rate", "Carrying Capacity", "Climate", "Seed", "Disasters"].map((v) => {
+                                const isSel = selectedVariables.includes(v);
+                                return (
+                                  <button
+                                    key={v}
+                                    type="button"
+                                    onClick={() =>
+                                      setSelectedVariables(isSel ? selectedVariables.filter((item) => item !== v) : [...selectedVariables, v])
+                                    }
+                                    style={{
+                                      background: isSel ? "rgba(0,242,254,0.15)" : "rgba(255,255,255,0.02)",
+                                      border: `1px solid ${isSel ? "#00f2fe" : "var(--border-default)"}`,
+                                      color: isSel ? "#00f2fe" : "var(--text-secondary)",
+                                      padding: "0.15rem 0.5rem",
+                                      borderRadius: "4px",
+                                      fontSize: "11px",
+                                      cursor: "pointer",
+                                    }}
+                                  >
+                                    {isSel ? "✓ " : ""}{v}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
 
-                          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "0.75rem" }}>
+                          {/* Expected Metrics Tag Picker */}
+                          <div>
+                            <span style={{ fontSize: "11px", color: "var(--text-secondary)", fontWeight: 600 }}>Select Metrics Expected:</span>
+                            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem", marginTop: "0.3rem" }}>
+                              {["Birth Rate", "Death Rate", "Population Curve", "Genetic Diversity", "Colony Count", "Average Lifespan", "Shelter Count", "Resource Storage", "Behavior Clusters"].map((m) => {
+                                const isSel = selectedEvidence.includes(m);
+                                return (
+                                  <button
+                                    key={m}
+                                    type="button"
+                                    onClick={() =>
+                                      setSelectedEvidence(isSel ? selectedEvidence.filter((item) => item !== m) : [...selectedEvidence, m])
+                                    }
+                                    style={{
+                                      background: isSel ? "rgba(16,185,129,0.15)" : "rgba(255,255,255,0.02)",
+                                      border: `1px solid ${isSel ? "#10b981" : "var(--border-default)"}`,
+                                      color: isSel ? "#10b981" : "var(--text-secondary)",
+                                      padding: "0.15rem 0.5rem",
+                                      borderRadius: "4px",
+                                      fontSize: "11px",
+                                      cursor: "pointer",
+                                    }}
+                                  >
+                                    {isSel ? "☑ " : ""}{m}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+
+                          {/* Proposed Experimental Design Inputs */}
+                          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 120px", gap: "0.75rem", background: "rgba(255,255,255,0.01)", padding: "0.75rem", borderRadius: "6px", border: "1px solid var(--border-default)" }}>
                             <input
                               type="text"
-                              placeholder="Variables (comma separated: Scarcity, Healing)"
-                              value={newQVariables}
-                              onChange={(e) => setNewQVariables(e.target.value)}
-                              style={{
-                                background: "rgba(255,255,255,0.03)",
-                                border: "1px solid var(--border-default)",
-                                borderRadius: "4px",
-                                padding: "0.4rem 0.8rem",
-                                color: "#fff",
-                                fontSize: "12px",
-                              }}
+                              placeholder="Proposed Ind. Variables (Scarcity = 5.0)"
+                              value={proposedIndVars}
+                              onChange={(e) => setProposedIndVars(e.target.value)}
+                              style={{ background: "#080b11", border: "1px solid var(--border-default)", borderRadius: "4px", padding: "0.4rem", color: "#fff", fontSize: "11px" }}
                             />
                             <input
                               type="text"
-                              placeholder="Expected Evidence (Birth Rate, Age Shift)"
-                              value={newQEvidence}
-                              onChange={(e) => setNewQEvidence(e.target.value)}
-                              style={{
-                                background: "rgba(255,255,255,0.03)",
-                                border: "1px solid var(--border-default)",
-                                borderRadius: "4px",
-                                padding: "0.4rem 0.8rem",
-                                color: "#fff",
-                                fontSize: "12px",
-                              }}
+                              placeholder="Proposed Dep. Variables (Birth Rate)"
+                              value={proposedDepVars}
+                              onChange={(e) => setProposedDepVars(e.target.value)}
+                              style={{ background: "#080b11", border: "1px solid var(--border-default)", borderRadius: "4px", padding: "0.4rem", color: "#fff", fontSize: "11px" }}
                             />
                             <input
                               type="text"
-                              placeholder="Related Runs (GEN-EXP-0001, GEN-EXP-0004)"
-                              value={newQRelated}
-                              onChange={(e) => setNewQRelated(e.target.value)}
-                              style={{
-                                background: "rgba(255,255,255,0.03)",
-                                border: "1px solid var(--border-default)",
-                                borderRadius: "4px",
-                                padding: "0.4rem 0.8rem",
-                                color: "#fff",
-                                fontSize: "12px",
-                              }}
+                              placeholder="Duration (100k ticks)"
+                              value={proposedDuration}
+                              onChange={(e) => setProposedDuration(e.target.value)}
+                              style={{ background: "#080b11", border: "1px solid var(--border-default)", borderRadius: "4px", padding: "0.4rem", color: "#fff", fontSize: "11px" }}
                             />
                           </div>
 
@@ -2665,24 +2827,33 @@ function CivilizationRecordPage() {
                       <div style={{ display: "grid", gap: "1.25rem" }}>
                         {questionsList
                           .filter((rq) => selectedCategoryFilter === "All" || (rq.category || "Population Dynamics") === selectedCategoryFilter)
+                          .filter((rq) => selectedStatusFilter === "All" || (rq.status || "Open") === selectedStatusFilter)
                           .map((rq, qIdx) => {
                             const statusColor =
                               rq.status === "Answered"
                                 ? "#10b981"
-                                : rq.status === "Partially Answered"
+                                : rq.status === "Replicated"
+                                ? "#3b82f6"
+                                : rq.status === "Investigating"
                                 ? "#f59e0b"
-                                : rq.status === "Rejected"
+                                : rq.status === "Refuted"
                                 ? "#ef4444"
-                                : "#94a3b8";
+                                : rq.status === "Open"
+                                ? "#a855f7"
+                                : "#64748b";
 
                             const statusIcon =
                               rq.status === "Answered"
                                 ? "🟢"
-                                : rq.status === "Partially Answered"
+                                : rq.status === "Replicated"
+                                ? "🔵"
+                                : rq.status === "Investigating"
                                 ? "🟡"
-                                : rq.status === "Rejected"
+                                : rq.status === "Refuted"
                                 ? "🔴"
-                                : "⚪";
+                                : rq.status === "Open"
+                                ? "🟣"
+                                : "⚫";
 
                             return (
                               <div
@@ -2796,7 +2967,7 @@ function CivilizationRecordPage() {
                                   </div>
                                 </div>
 
-                                {/* Question Title & Text */}
+                                {/* Question Title & Core Question Box */}
                                 <div>
                                   <h4 style={{ fontSize: "var(--text-md)", fontWeight: 700, color: "#fff", margin: "0 0 0.5rem 0" }}>
                                     {rq.title}
@@ -2820,7 +2991,24 @@ function CivilizationRecordPage() {
                                   </div>
                                 </div>
 
-                                {/* Metadata Grid (Variables, Evidence, Related) */}
+                                {/* Motivation Section */}
+                                {rq.motivation && (
+                                  <div style={{ fontSize: "11px", color: "var(--text-secondary)", background: "rgba(255,255,255,0.01)", padding: "0.5rem 0.8rem", borderRadius: "4px", border: "1px solid rgba(255,255,255,0.03)" }}>
+                                    <strong style={{ color: "#a5b4fc" }}>💡 Scientific Motivation: </strong>
+                                    {rq.motivation}
+                                  </div>
+                                )}
+
+                                {/* Proposed Design Box */}
+                                {rq.proposedDesign && (
+                                  <div style={{ fontSize: "10px", fontFamily: "var(--font-mono)", background: "#05070d", border: "1px dashed rgba(0,242,254,0.2)", borderRadius: "6px", padding: "0.6rem 0.8rem", display: "flex", flexWrap: "wrap", gap: "1rem", justifyContent: "space-between" }}>
+                                    <div><span style={{ color: "var(--text-tertiary)" }}>Ind. Vars: </span><span style={{ color: "#00f2fe" }}>{rq.proposedDesign.indVars}</span></div>
+                                    <div><span style={{ color: "var(--text-tertiary)" }}>Dep. Vars: </span><span style={{ color: "#10b981" }}>{rq.proposedDesign.depVars}</span></div>
+                                    <div><span style={{ color: "var(--text-tertiary)" }}>Target Duration: </span><span style={{ color: "#f59e0b" }}>{rq.proposedDesign.duration}</span></div>
+                                  </div>
+                                )}
+
+                                {/* Metadata Grid & Evidence Trail */}
                                 <div
                                   style={{
                                     display: "grid",
@@ -2840,7 +3028,7 @@ function CivilizationRecordPage() {
                                       <div style={{ display: "flex", flexWrap: "wrap", gap: "0.3rem", marginTop: "0.2rem" }}>
                                         {rq.variables.map((v: string, vIdx: number) => (
                                           <span key={vIdx} style={{ fontSize: "10px", background: "rgba(0,242,254,0.06)", color: "#00f2fe", border: "1px solid rgba(0,242,254,0.2)", padding: "0.1rem 0.4rem", borderRadius: "3px" }}>
-                                            {v}
+                                            ✓ {v}
                                           </span>
                                         ))}
                                       </div>
@@ -2850,36 +3038,42 @@ function CivilizationRecordPage() {
                                   {rq.expectedEvidence && rq.expectedEvidence.length > 0 && (
                                     <div>
                                       <span style={{ fontSize: "10px", fontFamily: "var(--font-mono)", color: "var(--text-tertiary)", textTransform: "uppercase" }}>
-                                        Expected Evidence:
+                                        Metrics Expected:
                                       </span>
                                       <div style={{ display: "flex", flexWrap: "wrap", gap: "0.3rem", marginTop: "0.2rem" }}>
                                         {rq.expectedEvidence.map((ev: string, evIdx: number) => (
                                           <span key={evIdx} style={{ fontSize: "10px", background: "rgba(16,185,129,0.06)", color: "#10b981", border: "1px solid rgba(16,185,129,0.2)", padding: "0.1rem 0.4rem", borderRadius: "3px" }}>
-                                            {ev}
+                                            ☑ {ev}
                                           </span>
                                         ))}
                                       </div>
                                     </div>
                                   )}
 
-                                  {rq.relatedExperiments && rq.relatedExperiments.length > 0 && (
-                                    <div>
-                                      <span style={{ fontSize: "10px", fontFamily: "var(--font-mono)", color: "var(--text-tertiary)", textTransform: "uppercase" }}>
-                                        Investigated By:
-                                      </span>
-                                      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.3rem", marginTop: "0.2rem" }}>
-                                        {rq.relatedExperiments.map((exp: string, expIdx: number) => (
+                                  {/* Evidence Trail */}
+                                  <div>
+                                    <span style={{ fontSize: "10px", fontFamily: "var(--font-mono)", color: "var(--text-tertiary)", textTransform: "uppercase" }}>
+                                      Evidence Trail:
+                                    </span>
+                                    <div style={{ display: "flex", flexWrap: "wrap", gap: "0.3rem", marginTop: "0.2rem" }}>
+                                      {rq.evidenceTrail && rq.evidenceTrail.length > 0 ? (
+                                        rq.evidenceTrail.map((item: any, expIdx: number) => (
                                           <a
                                             key={expIdx}
-                                            href={`/archive/civilizations/${exp}`}
+                                            href={`/archive/civilizations/${item.runId}`}
+                                            title={item.note || item.type}
                                             style={{ fontSize: "10px", background: "rgba(99,102,241,0.1)", color: "#a5b4fc", border: "1px solid rgba(99,102,241,0.3)", padding: "0.1rem 0.4rem", borderRadius: "3px", textDecoration: "none" }}
                                           >
-                                            {exp}
+                                            {item.runId} ({item.type})
                                           </a>
-                                        ))}
-                                      </div>
+                                        ))
+                                      ) : (
+                                        <span style={{ fontSize: "10px", color: "var(--text-tertiary)", fontStyle: "italic" }}>
+                                          No experimental evidence linked yet
+                                        </span>
+                                      )}
                                     </div>
-                                  )}
+                                  </div>
                                 </div>
                               </div>
                             );
