@@ -32,32 +32,51 @@ function NotFoundComponent() {
 }
 
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
-  console.error(error);
+  console.error("[Root ErrorComponent]", error);
   const router = useRouter();
+
+  const isChunkLoadError =
+    error?.message?.includes("Failed to fetch dynamically imported module") ||
+    error?.message?.includes("Importing a module script failed") ||
+    error?.message?.includes("loading dynamically imported module");
+
   useEffect(() => {
     reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
+
+    // Auto-reload window if a stale chunk 404 error is detected after new deployment
+    if (isChunkLoadError) {
+      const lastReload = sessionStorage.getItem("genesis_chunk_reload");
+      const now = Date.now();
+      if (!lastReload || now - parseInt(lastReload, 10) > 10000) {
+        sessionStorage.setItem("genesis_chunk_reload", String(now));
+        window.location.reload();
+      }
+    }
+  }, [error, isChunkLoadError]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-space px-4">
       <div className="max-w-md text-center">
         <p className="eyebrow">Instrument Fault</p>
-        <h1 className="mt-6 font-display text-3xl text-foreground">This page didn't load</h1>
+        <h1 className="mt-6 font-display text-3xl text-foreground">
+          {isChunkLoadError ? "New Deployment Available" : "This page didn't load"}
+        </h1>
         <p className="mt-3 text-sm text-muted-foreground">
-          A telemetry error occurred. Recalibrate and try again.
+          {isChunkLoadError
+            ? "The platform was recently updated. Reloading page to sync latest scientific assets..."
+            : "A telemetry error occurred. Recalibrate and try again."}
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <button
             onClick={() => {
-              router.invalidate();
-              reset();
+              window.location.reload();
             }}
             className="btn-genesis"
           >
-            Recalibrate
+            Refresh Page
           </button>
           <a href="/" className="btn-genesis">
-            Return home
+            Return Home
           </a>
         </div>
       </div>
