@@ -50,10 +50,9 @@ jobs:
       with:
         node-version: '20'
         cache: 'pnpm'
-        cache-dependency-path: 'portal/pnpm-lock.yaml'
+        cache-dependency-path: 'pnpm-lock.yaml'
 
     - name: Install Dependencies
-      working-directory: ./portal
       run: pnpm install --frozen-lockfile
 
     - name: Lint and Build Portal
