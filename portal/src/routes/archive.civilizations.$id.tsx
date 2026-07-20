@@ -276,40 +276,74 @@ function CivilizationRecordPage() {
   const meta = STUDY_METADATA[record.id] || null;
 
   // Dynamic Research Questions mapping helper
-  const getResearchQuestions = () => {
-    const questions = [];
-    if (config.world_preset === "island_chains") {
-      questions.push({
-        id: "RQ-027",
-        title: "Speciation on Island Archipelagos",
-        question:
-          "How does geographical isolation across island chains accelerate genetic drift and colony-specific cognitive adaptations?",
-      });
-    }
-    if (config.scarcity >= 3.0) {
-      questions.push({
-        id: "RQ-004",
-        title: "Reproductive Squelching under Severe Famine",
-        question:
-          "Does extreme scarcity suppress sexual reproduction frequency in favor of individual self-preservation and shelter construction behaviors?",
-      });
-    }
-    if (config.disasters_enabled) {
-      questions.push({
-        id: "RQ-019",
-        title: "Disaster Bottlenecks and Lineage Extinctions",
-        question:
-          "What structural thresholds determine which lineages survive rapid environmental shocks vs. experiencing absolute demographic collapse?",
-      });
-    }
-    if (questions.length === 0) {
-      questions.push({
+  const getResearchQuestions = (): any[] => {
+    const questions = [
+      {
         id: "RQ-001",
         title: "Emergence of Cooperative Spatial Boundaries",
         question:
           "How do distinct founder colonies negotiate territorial boundaries under baseline resource availability constraints?",
-      });
-    }
+        category: "Colony Organization",
+        status: "Answered",
+        statusNote: "Validated in GEN-EXP-0001 (Year 300 longitudinal run)",
+        priority: "High",
+        variables: ["Colony Spacing", "Resource Density", "Vision Radius"],
+        expectedEvidence: ["Territory Heatmap", "Inter-Colony Trade Frequency", "Border Skirmishes"],
+        relatedExperiments: ["GEN-EXP-0001"],
+      },
+      {
+        id: "RQ-004",
+        title: "Reproductive Squelching under Severe Famine",
+        question:
+          "Does extreme scarcity suppress sexual reproduction frequency in favor of individual self-preservation and shelter construction behaviors?",
+        category: "Population Dynamics",
+        status: "Partially Answered",
+        statusNote: "Observational evidence logged in GEN-EXP-0001 under Scarcity 3.0",
+        priority: "High",
+        variables: ["Scarcity Index", "Healing Mult", "Energy Burn Rate"],
+        expectedEvidence: ["Birth Rate Ramp", "Age Distribution Shift", "Shelter Construction"],
+        relatedExperiments: ["GEN-EXP-0001"],
+      },
+      {
+        id: "RQ-011",
+        title: "Land Transpiration & Continental Moisture Recycling",
+        question:
+          "Does vegetation cover maintain interior continental moisture levels against wind advection drying in large landmasses?",
+        category: "Resource Ecology",
+        status: "Answered",
+        statusNote: "Verified in Physical Simulation Engine v9.2",
+        priority: "Medium",
+        variables: ["Evaporation Rate", "Land Transpiration", "Wind Advection Slope"],
+        expectedEvidence: ["Precipitation Grid Invariance", "Vegetation Cover Density"],
+        relatedExperiments: ["GEN-EXP-0001"],
+      },
+      {
+        id: "RQ-019",
+        title: "Disaster Bottlenecks and Lineage Extinctions",
+        question:
+          "What structural thresholds determine which lineages survive rapid environmental shocks vs. experiencing absolute demographic collapse?",
+        category: "Evolution & Genetics",
+        status: "Open",
+        statusNote: "Requires disaster stress testing in upcoming runs",
+        priority: "Critical",
+        variables: ["Disaster Frequency", "Genetic Diversity", "Habitat Range"],
+        expectedEvidence: ["Survivor Lineage Trees", "Allele Frequency Drift", "Extinction Timelines"],
+        relatedExperiments: ["GEN-EXP-0001"],
+      },
+      {
+        id: "RQ-040",
+        title: "Hierarchical Goal Abstraction & Specialized Altruism",
+        question:
+          "Do high-generation cognitive agents develop division of labor without explicit multi-agent coordination rewards?",
+        category: "Emergent Behavior",
+        status: "Open",
+        statusNote: "Unexplored - Planned for Generation 20+ runs",
+        priority: "High",
+        variables: ["Cognitive Depth", "Memory Importance", "Social Affinity"],
+        expectedEvidence: ["Specialized Action Logs", "Shared Food Deposits", "Task Distribution"],
+        relatedExperiments: ["GEN-EXP-0001"],
+      },
+    ];
     return questions;
   };
 
@@ -349,11 +383,22 @@ function CivilizationRecordPage() {
   const [newEventType, setNewEventType] = useState<string>("Environmental Anomaly");
   const [newEventDesc, setNewEventDesc] = useState<string>("");
 
-  // Editable Research Questions State
+  // Editable Research Questions State & Filters
   const [questionsList, setQuestionsList] = useState<any[]>([]);
   const [isAddingQuestion, setIsAddingQuestion] = useState<boolean>(false);
-  const [newQuestionTitle, setNewQuestionTitle] = useState<string>("");
-  const [newQuestionText, setNewQuestionText] = useState<string>("");
+  const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string>("All");
+  const [selectedStatusFilter, setSelectedStatusFilter] = useState<string>("All");
+
+  const [newQId, setNewQId] = useState<string>("RQ-005");
+  const [newQTitle, setNewQTitle] = useState<string>("");
+  const [newQCategory, setNewQCategory] = useState<string>("Population Dynamics");
+  const [newQStatus, setNewQStatus] = useState<string>("Open");
+  const [newQStatusNote, setNewQStatusNote] = useState<string>("");
+  const [newQPriority, setNewQPriority] = useState<string>("High");
+  const [newQText, setNewQText] = useState<string>("");
+  const [newQVariables, setNewQVariables] = useState<string>("");
+  const [newQEvidence, setNewQEvidence] = useState<string>("");
+  const [newQRelated, setNewQRelated] = useState<string>(record.id);
 
   // Comments / Open Questions State
   const [comments, setComments] = useState<any[]>([]);
@@ -459,16 +504,26 @@ function CivilizationRecordPage() {
   };
 
   const handleAddQuestion = () => {
-    if (!newQuestionTitle.trim() || !newQuestionText.trim()) return;
+    if (!newQTitle.trim() || !newQText.trim()) return;
     const newQ = {
-      id: `RQ-${Math.floor(100 + Math.random() * 900)}`,
-      title: newQuestionTitle.trim(),
-      question: newQuestionText.trim(),
+      id: newQId.trim() || `RQ-${Math.floor(100 + Math.random() * 900)}`,
+      title: newQTitle.trim(),
+      question: newQText.trim(),
+      category: newQCategory,
+      status: newQStatus,
+      statusNote: newQStatusNote.trim() || undefined,
+      priority: newQPriority,
+      variables: newQVariables ? newQVariables.split(",").map((s) => s.trim()).filter(Boolean) : [],
+      expectedEvidence: newQEvidence ? newQEvidence.split(",").map((s) => s.trim()).filter(Boolean) : [],
+      relatedExperiments: newQRelated ? newQRelated.split(",").map((s) => s.trim()).filter(Boolean) : [record.id],
     };
     const updated = [...questionsList, newQ];
     setQuestionsList(updated);
-    setNewQuestionTitle("");
-    setNewQuestionText("");
+    setNewQTitle("");
+    setNewQText("");
+    setNewQStatusNote("");
+    setNewQVariables("");
+    setNewQEvidence("");
     setIsAddingQuestion(false);
     persistEdits({ questions: updated });
   };
@@ -2336,21 +2391,34 @@ function CivilizationRecordPage() {
                       </div>
                     </div>
 
-                    {/* Research Questions Section (Editable) */}
+                    {/* Open Research Questions Section */}
                     <div
                       style={{ borderTop: "1px solid var(--border-default)", paddingTop: "1.5rem" }}
                     >
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
-                        <h3
-                          style={{
-                            fontFamily: "var(--font-display)",
-                            fontSize: "var(--text-lg)",
-                            fontWeight: 700,
-                            margin: 0,
-                          }}
-                        >
-                          Hypothesis Inquiry (Research Questions)
-                        </h3>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "1.2rem", flexWrap: "wrap", gap: "1rem" }}>
+                        <div>
+                          <h3
+                            style={{
+                              fontFamily: "var(--font-display)",
+                              fontSize: "var(--text-xl)",
+                              fontWeight: 800,
+                              color: "#fff",
+                              margin: 0,
+                            }}
+                          >
+                            Open Research Questions
+                          </h3>
+                          <p
+                            style={{
+                              fontSize: "var(--text-xs)",
+                              color: "var(--text-secondary)",
+                              marginTop: "0.2rem",
+                            }}
+                          >
+                            Scientific hypothesis agenda driving longitudinal experiments. Questions evolve from open inquiry to empirical validation.
+                          </p>
+                        </div>
+
                         {isAdmin && (
                           <button
                             onClick={() => setIsAddingQuestion(!isAddingQuestion)}
@@ -2358,59 +2426,221 @@ function CivilizationRecordPage() {
                               background: "rgba(0, 242, 254, 0.15)",
                               border: "1px solid rgba(0, 242, 254, 0.3)",
                               color: "#00f2fe",
-                              padding: "0.3rem 0.8rem",
+                              padding: "0.4rem 1rem",
                               borderRadius: "6px",
                               fontSize: "12px",
-                              fontWeight: 600,
+                              fontWeight: 700,
                               cursor: "pointer",
                             }}
                           >
-                            {isAddingQuestion ? "Cancel" : "+ Add Research Question"}
+                            {isAddingQuestion ? "Cancel" : "+ Add Open Research Question"}
                           </button>
                         )}
                       </div>
 
+                      {/* Filter Controls (Category Filter) */}
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem", marginBottom: "1.5rem", alignItems: "center" }}>
+                        <span style={{ fontSize: "11px", color: "var(--text-tertiary)", fontFamily: "var(--font-mono)", textTransform: "uppercase" }}>
+                          Category:
+                        </span>
+                        {["All", "Population Dynamics", "Evolution & Genetics", "Colony Organization", "Resource Ecology", "Emergent Behavior"].map((cat) => (
+                          <button
+                            key={cat}
+                            onClick={() => setSelectedCategoryFilter(cat)}
+                            style={{
+                              background: selectedCategoryFilter === cat ? "rgba(99, 102, 241, 0.2)" : "rgba(255,255,255,0.02)",
+                              border: `1px solid ${selectedCategoryFilter === cat ? "#6366f1" : "var(--border-default)"}`,
+                              color: selectedCategoryFilter === cat ? "#a5b4fc" : "var(--text-secondary)",
+                              padding: "0.25rem 0.65rem",
+                              borderRadius: "15px",
+                              fontSize: "11px",
+                              fontWeight: 600,
+                              cursor: "pointer",
+                            }}
+                          >
+                            {cat}
+                          </button>
+                        ))}
+                      </div>
+
+                      {/* Admin Add Form */}
                       {isAdmin && isAddingQuestion && (
                         <div
                           style={{
                             background: "#080b11",
-                            border: "1px solid var(--border-default)",
-                            borderRadius: "8px",
-                            padding: "1rem",
-                            marginBottom: "1rem",
+                            border: "1px solid rgba(0, 242, 254, 0.3)",
+                            borderRadius: "10px",
+                            padding: "1.25rem",
+                            marginBottom: "1.5rem",
                             display: "flex",
                             flexDirection: "column",
                             gap: "0.8rem",
                           }}
                         >
-                          <input
-                            type="text"
-                            placeholder="Question Title (e.g. Speciation on Island Archipelagos)"
-                            value={newQuestionTitle}
-                            onChange={(e) => setNewQuestionTitle(e.target.value)}
-                            style={{
-                              background: "rgba(255,255,255,0.03)",
-                              border: "1px solid var(--border-default)",
-                              borderRadius: "4px",
-                              padding: "0.5rem 0.8rem",
-                              color: "#fff",
-                              fontSize: "13px",
-                            }}
-                          />
+                          <h4 style={{ fontSize: "13px", fontWeight: 700, color: "#00f2fe", margin: 0 }}>
+                            Add New Open Research Question
+                          </h4>
+                          <div style={{ display: "grid", gridTemplateColumns: "100px 1fr 180px", gap: "0.75rem" }}>
+                            <input
+                              type="text"
+                              placeholder="ID (RQ-005)"
+                              value={newQId}
+                              onChange={(e) => setNewQId(e.target.value)}
+                              style={{
+                                background: "rgba(255,255,255,0.03)",
+                                border: "1px solid var(--border-default)",
+                                borderRadius: "4px",
+                                padding: "0.4rem 0.8rem",
+                                color: "#fff",
+                                fontSize: "12px",
+                                fontFamily: "var(--font-mono)",
+                              }}
+                            />
+                            <input
+                              type="text"
+                              placeholder="Question Title (e.g. Speciation on Island Archipelagos)"
+                              value={newQTitle}
+                              onChange={(e) => setNewQTitle(e.target.value)}
+                              style={{
+                                background: "rgba(255,255,255,0.03)",
+                                border: "1px solid var(--border-default)",
+                                borderRadius: "4px",
+                                padding: "0.4rem 0.8rem",
+                                color: "#fff",
+                                fontSize: "12px",
+                              }}
+                            />
+                            <select
+                              value={newQCategory}
+                              onChange={(e) => setNewQCategory(e.target.value)}
+                              style={{
+                                background: "#0d131f",
+                                border: "1px solid var(--border-default)",
+                                borderRadius: "4px",
+                                padding: "0.4rem 0.8rem",
+                                color: "#fff",
+                                fontSize: "12px",
+                              }}
+                            >
+                              <option value="Population Dynamics">Population Dynamics</option>
+                              <option value="Evolution & Genetics">Evolution & Genetics</option>
+                              <option value="Colony Organization">Colony Organization</option>
+                              <option value="Resource Ecology">Resource Ecology</option>
+                              <option value="Emergent Behavior">Emergent Behavior</option>
+                            </select>
+                          </div>
+
+                          <div style={{ display: "grid", gridTemplateColumns: "150px 1fr 120px", gap: "0.75rem" }}>
+                            <select
+                              value={newQStatus}
+                              onChange={(e) => setNewQStatus(e.target.value)}
+                              style={{
+                                background: "#0d131f",
+                                border: "1px solid var(--border-default)",
+                                borderRadius: "4px",
+                                padding: "0.4rem 0.8rem",
+                                color: "#fff",
+                                fontSize: "12px",
+                              }}
+                            >
+                              <option value="Open">⚪ Open</option>
+                              <option value="Partially Answered">🟡 Partially Answered</option>
+                              <option value="Answered">🟢 Answered</option>
+                              <option value="Rejected">🔴 Rejected</option>
+                            </select>
+                            <input
+                              type="text"
+                              placeholder="Status Note (e.g. Answered by GEN-EXP-0001)"
+                              value={newQStatusNote}
+                              onChange={(e) => setNewQStatusNote(e.target.value)}
+                              style={{
+                                background: "rgba(255,255,255,0.03)",
+                                border: "1px solid var(--border-default)",
+                                borderRadius: "4px",
+                                padding: "0.4rem 0.8rem",
+                                color: "#fff",
+                                fontSize: "12px",
+                              }}
+                            />
+                            <select
+                              value={newQPriority}
+                              onChange={(e) => setNewQPriority(e.target.value)}
+                              style={{
+                                background: "#0d131f",
+                                border: "1px solid var(--border-default)",
+                                borderRadius: "4px",
+                                padding: "0.4rem 0.8rem",
+                                color: "#fff",
+                                fontSize: "12px",
+                              }}
+                            >
+                              <option value="Critical">Critical</option>
+                              <option value="High">High</option>
+                              <option value="Medium">Medium</option>
+                              <option value="Low">Low</option>
+                            </select>
+                          </div>
+
                           <textarea
                             rows={2}
                             placeholder="Full Research Question Description..."
-                            value={newQuestionText}
-                            onChange={(e) => setNewQuestionText(e.target.value)}
+                            value={newQText}
+                            onChange={(e) => setNewQText(e.target.value)}
                             style={{
                               background: "rgba(255,255,255,0.03)",
                               border: "1px solid var(--border-default)",
                               borderRadius: "4px",
                               padding: "0.5rem 0.8rem",
                               color: "#fff",
-                              fontSize: "13px",
+                              fontSize: "12px",
                             }}
                           />
+
+                          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "0.75rem" }}>
+                            <input
+                              type="text"
+                              placeholder="Variables (comma separated: Scarcity, Healing)"
+                              value={newQVariables}
+                              onChange={(e) => setNewQVariables(e.target.value)}
+                              style={{
+                                background: "rgba(255,255,255,0.03)",
+                                border: "1px solid var(--border-default)",
+                                borderRadius: "4px",
+                                padding: "0.4rem 0.8rem",
+                                color: "#fff",
+                                fontSize: "12px",
+                              }}
+                            />
+                            <input
+                              type="text"
+                              placeholder="Expected Evidence (Birth Rate, Age Shift)"
+                              value={newQEvidence}
+                              onChange={(e) => setNewQEvidence(e.target.value)}
+                              style={{
+                                background: "rgba(255,255,255,0.03)",
+                                border: "1px solid var(--border-default)",
+                                borderRadius: "4px",
+                                padding: "0.4rem 0.8rem",
+                                color: "#fff",
+                                fontSize: "12px",
+                              }}
+                            />
+                            <input
+                              type="text"
+                              placeholder="Related Runs (GEN-EXP-0001, GEN-EXP-0004)"
+                              value={newQRelated}
+                              onChange={(e) => setNewQRelated(e.target.value)}
+                              style={{
+                                background: "rgba(255,255,255,0.03)",
+                                border: "1px solid var(--border-default)",
+                                borderRadius: "4px",
+                                padding: "0.4rem 0.8rem",
+                                color: "#fff",
+                                fontSize: "12px",
+                              }}
+                            />
+                          </div>
+
                           <button
                             onClick={handleAddQuestion}
                             style={{
@@ -2423,82 +2653,237 @@ function CivilizationRecordPage() {
                               fontSize: "12px",
                               fontWeight: 700,
                               cursor: "pointer",
+                              marginTop: "0.4rem",
                             }}
                           >
-                            Save Question
+                            Save Research Question
                           </button>
                         </div>
                       )}
 
-                      <div style={{ display: "grid", gap: "1rem" }}>
-                        {questionsList.map((rq, qIdx) => (
-                          <div
-                            key={rq.id || qIdx}
-                            style={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              alignItems: "flex-start",
-                              gap: "1.5rem",
-                              padding: "1.25rem",
-                              background: "rgba(255,255,255,0.01)",
-                              borderLeft: "4px solid #00f2fe",
-                              borderTop: "1px solid var(--border-default)",
-                              borderRight: "1px solid var(--border-default)",
-                              borderBottom: "1px solid var(--border-default)",
-                              borderRadius: "var(--radius-md)",
-                            }}
-                          >
-                            <div style={{ display: "flex", gap: "1.5rem", flex: 1 }}>
-                              <span
+                      {/* Question Cards List */}
+                      <div style={{ display: "grid", gap: "1.25rem" }}>
+                        {questionsList
+                          .filter((rq) => selectedCategoryFilter === "All" || (rq.category || "Population Dynamics") === selectedCategoryFilter)
+                          .map((rq, qIdx) => {
+                            const statusColor =
+                              rq.status === "Answered"
+                                ? "#10b981"
+                                : rq.status === "Partially Answered"
+                                ? "#f59e0b"
+                                : rq.status === "Rejected"
+                                ? "#ef4444"
+                                : "#94a3b8";
+
+                            const statusIcon =
+                              rq.status === "Answered"
+                                ? "🟢"
+                                : rq.status === "Partially Answered"
+                                ? "🟡"
+                                : rq.status === "Rejected"
+                                ? "🔴"
+                                : "⚪";
+
+                            return (
+                              <div
+                                key={rq.id || qIdx}
                                 style={{
-                                  fontFamily: "var(--font-mono)",
-                                  fontSize: "13px",
-                                  fontWeight: 700,
-                                  color: "#00f2fe",
+                                  position: "relative",
+                                  padding: "1.4rem",
+                                  background: "#0a0f19",
+                                  border: "1px solid var(--border-default)",
+                                  borderRadius: "var(--radius-lg)",
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  gap: "1rem",
                                 }}
                               >
-                                {rq.id}
-                              </span>
-                              <div>
-                                <p
+                                {/* Header Bar */}
+                                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.75rem" }}>
+                                  <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }}>
+                                    <span
+                                      style={{
+                                        fontFamily: "var(--font-mono)",
+                                        fontSize: "13px",
+                                        fontWeight: 800,
+                                        color: "#00f2fe",
+                                        background: "rgba(0,242,254,0.1)",
+                                        border: "1px solid rgba(0,242,254,0.3)",
+                                        padding: "0.2rem 0.5rem",
+                                        borderRadius: "4px",
+                                      }}
+                                    >
+                                      {rq.id}
+                                    </span>
+
+                                    <span
+                                      style={{
+                                        fontSize: "11px",
+                                        fontWeight: 600,
+                                        color: "#a5b4fc",
+                                        background: "rgba(99,102,241,0.15)",
+                                        border: "1px solid rgba(99,102,241,0.3)",
+                                        padding: "0.15rem 0.5rem",
+                                        borderRadius: "12px",
+                                      }}
+                                    >
+                                      {rq.category || "Population Dynamics"}
+                                    </span>
+
+                                    <span
+                                      style={{
+                                        fontSize: "11px",
+                                        fontWeight: 700,
+                                        color: statusColor,
+                                        background: `${statusColor}15`,
+                                        border: `1px solid ${statusColor}40`,
+                                        padding: "0.15rem 0.5rem",
+                                        borderRadius: "12px",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: "0.3rem",
+                                      }}
+                                    >
+                                      <span>{statusIcon}</span>
+                                      <span>{rq.status || "Open"}</span>
+                                    </span>
+
+                                    {rq.statusNote && (
+                                      <span style={{ fontSize: "11px", color: "var(--text-tertiary)", fontStyle: "italic" }}>
+                                        ({rq.statusNote})
+                                      </span>
+                                    )}
+                                  </div>
+
+                                  <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                                    {rq.priority && (
+                                      <span
+                                        style={{
+                                          fontSize: "10px",
+                                          fontFamily: "var(--font-mono)",
+                                          fontWeight: 700,
+                                          color: rq.priority === "Critical" ? "#ef4444" : rq.priority === "High" ? "#f97316" : "#64748b",
+                                          textTransform: "uppercase",
+                                          letterSpacing: "0.05em",
+                                        }}
+                                      >
+                                        Priority: {rq.priority}
+                                      </span>
+                                    )}
+
+                                    {/* Discreet Admin Trash Button */}
+                                    {isAdmin && (
+                                      <button
+                                        onClick={() => handleDeleteQuestion(qIdx)}
+                                        style={{
+                                          background: "rgba(255,255,255,0.03)",
+                                          border: "1px solid var(--border-default)",
+                                          color: "var(--text-tertiary)",
+                                          borderRadius: "4px",
+                                          padding: "0.2rem 0.5rem",
+                                          display: "flex",
+                                          alignItems: "center",
+                                          justifyContent: "center",
+                                          cursor: "pointer",
+                                          fontSize: "11px",
+                                          transition: "all 0.2s ease",
+                                        }}
+                                        title="Delete Question"
+                                      >
+                                        🗑️
+                                      </button>
+                                    )}
+                                  </div>
+                                </div>
+
+                                {/* Question Title & Text */}
+                                <div>
+                                  <h4 style={{ fontSize: "var(--text-md)", fontWeight: 700, color: "#fff", margin: "0 0 0.5rem 0" }}>
+                                    {rq.title}
+                                  </h4>
+                                  <div
+                                    style={{
+                                      background: "#05080f",
+                                      borderLeft: "3px solid #00f2fe",
+                                      borderTop: "1px solid rgba(255,255,255,0.03)",
+                                      borderRight: "1px solid rgba(255,255,255,0.03)",
+                                      borderBottom: "1px solid rgba(255,255,255,0.03)",
+                                      borderRadius: "6px",
+                                      padding: "0.8rem 1rem",
+                                      fontSize: "var(--text-xs)",
+                                      color: "#cbd5e1",
+                                      lineHeight: 1.5,
+                                    }}
+                                  >
+                                    <strong style={{ color: "#00f2fe" }}>Question: </strong>
+                                    {rq.question}
+                                  </div>
+                                </div>
+
+                                {/* Metadata Grid (Variables, Evidence, Related) */}
+                                <div
                                   style={{
-                                    fontWeight: 700,
-                                    fontSize: "var(--text-sm)",
-                                    color: "var(--text-primary)",
+                                    display: "grid",
+                                    gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+                                    gap: "0.8rem",
+                                    background: "rgba(255,255,255,0.01)",
+                                    border: "1px solid rgba(255,255,255,0.04)",
+                                    borderRadius: "6px",
+                                    padding: "0.75rem",
                                   }}
                                 >
-                                  {rq.title}
-                                </p>
-                                <p
-                                  style={{
-                                    fontSize: "var(--text-xs)",
-                                    color: "var(--text-secondary)",
-                                    marginTop: "0.3rem",
-                                    lineHeight: 1.4,
-                                  }}
-                                >
-                                  {rq.question}
-                                </p>
+                                  {rq.variables && rq.variables.length > 0 && (
+                                    <div>
+                                      <span style={{ fontSize: "10px", fontFamily: "var(--font-mono)", color: "var(--text-tertiary)", textTransform: "uppercase" }}>
+                                        Variables:
+                                      </span>
+                                      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.3rem", marginTop: "0.2rem" }}>
+                                        {rq.variables.map((v: string, vIdx: number) => (
+                                          <span key={vIdx} style={{ fontSize: "10px", background: "rgba(0,242,254,0.06)", color: "#00f2fe", border: "1px solid rgba(0,242,254,0.2)", padding: "0.1rem 0.4rem", borderRadius: "3px" }}>
+                                            {v}
+                                          </span>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  )}
+
+                                  {rq.expectedEvidence && rq.expectedEvidence.length > 0 && (
+                                    <div>
+                                      <span style={{ fontSize: "10px", fontFamily: "var(--font-mono)", color: "var(--text-tertiary)", textTransform: "uppercase" }}>
+                                        Expected Evidence:
+                                      </span>
+                                      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.3rem", marginTop: "0.2rem" }}>
+                                        {rq.expectedEvidence.map((ev: string, evIdx: number) => (
+                                          <span key={evIdx} style={{ fontSize: "10px", background: "rgba(16,185,129,0.06)", color: "#10b981", border: "1px solid rgba(16,185,129,0.2)", padding: "0.1rem 0.4rem", borderRadius: "3px" }}>
+                                            {ev}
+                                          </span>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  )}
+
+                                  {rq.relatedExperiments && rq.relatedExperiments.length > 0 && (
+                                    <div>
+                                      <span style={{ fontSize: "10px", fontFamily: "var(--font-mono)", color: "var(--text-tertiary)", textTransform: "uppercase" }}>
+                                        Investigated By:
+                                      </span>
+                                      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.3rem", marginTop: "0.2rem" }}>
+                                        {rq.relatedExperiments.map((exp: string, expIdx: number) => (
+                                          <a
+                                            key={expIdx}
+                                            href={`/archive/civilizations/${exp}`}
+                                            style={{ fontSize: "10px", background: "rgba(99,102,241,0.1)", color: "#a5b4fc", border: "1px solid rgba(99,102,241,0.3)", padding: "0.1rem 0.4rem", borderRadius: "3px", textDecoration: "none" }}
+                                          >
+                                            {exp}
+                                          </a>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  )}
+                                </div>
                               </div>
-                            </div>
-                            {isAdmin && (
-                              <button
-                                onClick={() => handleDeleteQuestion(qIdx)}
-                                style={{
-                                  background: "transparent",
-                                  border: "none",
-                                  color: "#ef4444",
-                                  cursor: "pointer",
-                                  fontSize: "12px",
-                                  padding: "0.2rem 0.4rem",
-                                }}
-                                title="Delete Question"
-                              >
-                                ✕ Delete
-                              </button>
-                            )}
-                          </div>
-                        ))}
+                            );
+                          })}
                       </div>
                     </div>
 
@@ -2743,18 +3128,21 @@ function CivilizationRecordPage() {
                               <button
                                 onClick={() => handleDeleteChronicleEvent(idx)}
                                 style={{
-                                  background: "rgba(239, 68, 68, 0.1)",
-                                  border: "1px solid rgba(239, 68, 68, 0.3)",
-                                  color: "#ef4444",
+                                  background: "rgba(255,255,255,0.03)",
+                                  border: "1px solid var(--border-default)",
+                                  color: "var(--text-tertiary)",
                                   borderRadius: "4px",
-                                  padding: "0.25rem 0.6rem",
-                                  fontSize: "11px",
-                                  fontWeight: 600,
+                                  padding: "0.2rem 0.5rem",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
                                   cursor: "pointer",
+                                  fontSize: "11px",
+                                  transition: "all 0.2s ease",
                                 }}
                                 title="Delete Observation"
                               >
-                                ✕ Delete
+                                🗑️
                               </button>
                             )}
                           </div>
