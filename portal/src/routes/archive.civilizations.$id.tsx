@@ -1050,6 +1050,24 @@ function CivilizationRecordPage() {
           0% { transform: scale(0.6); opacity: 0.9; }
           100% { transform: scale(2.4); opacity: 0; }
         }
+        .master-detail-grid {
+          display: grid;
+          grid-template-columns: 380px 1fr;
+          gap: 2rem;
+          align-items: start;
+        }
+        .tab-bar-container {
+          display: flex;
+          border-bottom: 1px solid var(--border-default);
+          background: rgba(255,255,255,0.01);
+          overflow-x: auto;
+          white-space: nowrap;
+          -webkit-overflow-scrolling: touch;
+          scrollbar-width: none;
+        }
+        .tab-bar-container::-webkit-scrollbar {
+          display: none;
+        }
         .tab-button {
           padding: 0.75rem 1.5rem;
           background: transparent;
@@ -1061,6 +1079,7 @@ function CivilizationRecordPage() {
           font-size: var(--text-sm);
           cursor: pointer;
           transition: all 0.2s ease;
+          flex-shrink: 0;
         }
         .tab-button:hover {
           color: var(--text-primary);
@@ -1068,6 +1087,81 @@ function CivilizationRecordPage() {
         .tab-button.active {
           border-bottom-color: #00f2fe;
           color: #00f2fe;
+        }
+
+        .exp-highlights-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 1rem;
+        }
+        .rq-form-grid-3 {
+          display: grid;
+          grid-template-columns: 150px 1fr 120px;
+          gap: 0.75rem;
+        }
+        .rq-form-design-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr 120px;
+          gap: 0.75rem;
+        }
+        .rq-metadata-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+          gap: 0.8rem;
+        }
+
+        @media (max-width: 992px) {
+          .master-detail-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .telemetry-banner {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 0.75rem !important;
+          }
+          .seed-info-ribbon {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 1rem !important;
+            padding: 1.25rem !important;
+          }
+          .seed-info-metrics {
+            width: 100% !important;
+            justify-content: space-between !important;
+            flex-wrap: wrap !important;
+            gap: 1rem !important;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .detail-page-container {
+            padding: 1rem 0.75rem !important;
+          }
+          .exp-highlights-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 0.6rem !important;
+          }
+          .rq-form-grid-3 {
+            grid-template-columns: 1fr !important;
+          }
+          .rq-form-design-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .rq-card-header {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 0.5rem !important;
+          }
+          .rq-metadata-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .simulation-console-iframe {
+            height: 480px !important;
+          }
+          .tab-button {
+            padding: 0.65rem 1rem !important;
+            font-size: 13px !important;
+          }
         }
       `}</style>
 
@@ -1105,7 +1199,7 @@ function CivilizationRecordPage() {
             flexWrap: "wrap",
             gap: "0.75rem",
           }}
-          className="glass"
+          className="glass telemetry-banner"
         >
           <div style={{ display: "flex", alignItems: "center", gap: "0.85rem" }}>
             <span
@@ -1200,7 +1294,7 @@ function CivilizationRecordPage() {
             padding: "1.25rem 2rem",
             marginBottom: "2rem",
           }}
-          className="glass"
+          className="glass seed-info-ribbon"
         >
           <div>
             <p
@@ -1224,7 +1318,7 @@ function CivilizationRecordPage() {
               {record.title}
             </h1>
           </div>
-          <div style={{ display: "flex", gap: "2.5rem", alignItems: "center" }}>
+          <div className="seed-info-metrics" style={{ display: "flex", gap: "2.5rem", alignItems: "center" }}>
             <div>
               <p
                 style={{
@@ -1297,12 +1391,7 @@ function CivilizationRecordPage() {
 
         {/* Master Dual Column Grid */}
         <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "400px 1fr",
-            gap: "2rem",
-            alignItems: "start",
-          }}
+          className="master-detail-grid"
         >
           {/* LEFT SIDEBAR COLUMN: ATLAS, CONFIG, DOWNLOADS */}
           <aside style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
@@ -1944,6 +2033,11 @@ function CivilizationRecordPage() {
                     0% { opacity: 0.3; transform: scale(1.02); }
                     100% { opacity: 1; transform: scale(1); }
                   }
+                  @media (max-width: 640px) {
+                    .derived-metrics-grid {
+                      grid-template-columns: 1fr !important;
+                    }
+                  }
                 `}</style>
 
                 {/* COLONY LOCATION MARKERS OVERLAY */}
@@ -2181,10 +2275,11 @@ function CivilizationRecordPage() {
                 borderRadius: "var(--radius-xl)",
                 overflow: "hidden",
               }}
-              className="glass"
+              className="tab-container"
             >
               {/* Tab button row */}
               <div
+                className="tab-bar-container"
                 style={{
                   display: "flex",
                   borderBottom: "1px solid var(--border-default)",
@@ -2259,30 +2354,21 @@ function CivilizationRecordPage() {
                       </div>
                     )}
 
-                    {/* Key Findings (Editable) */}
-                    <div
-                      style={{
-                        padding: "1.25rem 1.5rem",
-                        background: "rgba(255,255,255,0.01)",
-                        border: "1px solid var(--border-default)",
-                        borderRadius: "var(--radius-lg)",
-                        marginBottom: "1rem",
-                      }}
-                    >
+                    {/* Key Findings List (Editable for Admin) */}
+                    <div>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" }}>
-                        <h3
+                        <span
                           style={{
-                            fontFamily: "var(--font-display)",
-                            fontSize: "var(--text-xs)",
+                            fontFamily: "var(--font-mono)",
+                            fontSize: "10px",
                             fontWeight: 700,
-                            color: "var(--text-primary)",
+                            color: "#a5b4fc",
                             textTransform: "uppercase",
-                            letterSpacing: "0.05em",
-                            margin: 0,
+                            letterSpacing: "0.06em",
                           }}
                         >
-                          Key Findings
-                        </h3>
+                          KEY FINDINGS
+                        </span>
                         {isAdmin && (
                           <button
                             onClick={() => setIsEditingFindings(!isEditingFindings)}
@@ -2293,20 +2379,19 @@ function CivilizationRecordPage() {
                               padding: "0.2rem 0.6rem",
                               borderRadius: "4px",
                               fontSize: "11px",
-                              fontWeight: 600,
                               cursor: "pointer",
                             }}
                           >
-                            {isEditingFindings ? "Done" : "+ Add / Edit Findings"}
+                            {isEditingFindings ? "Done Editing" : "+ Add / Edit Findings"}
                           </button>
                         )}
                       </div>
 
                       {isAdmin && isEditingFindings && (
-                        <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1rem" }}>
+                        <div style={{ display: "flex", gap: "0.5rem", marginBottom: "0.75rem" }}>
                           <input
                             type="text"
-                            placeholder="Type a new key finding..."
+                            placeholder="Add new scientific finding..."
                             value={newFindingInput}
                             onChange={(e) => setNewFindingInput(e.target.value)}
                             style={{
@@ -2459,6 +2544,7 @@ function CivilizationRecordPage() {
                         Experiment Highlights
                       </h3>
                       <div
+                        className="exp-highlights-grid"
                         style={{
                           display: "grid",
                           gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
@@ -2774,7 +2860,7 @@ function CivilizationRecordPage() {
                             }}
                           />
 
-                          <div style={{ display: "grid", gridTemplateColumns: "150px 1fr 120px", gap: "0.75rem" }}>
+                          <div className="rq-form-grid-3" style={{ display: "grid", gridTemplateColumns: "150px 1fr 120px", gap: "0.75rem" }}>
                             <select
                               value={newQStatus}
                               onChange={(e) => setNewQStatus(e.target.value)}
@@ -2888,7 +2974,7 @@ function CivilizationRecordPage() {
                           </div>
 
                           {/* Proposed Experimental Design Inputs */}
-                          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 120px", gap: "0.75rem", background: "rgba(255,255,255,0.01)", padding: "0.75rem", borderRadius: "6px", border: "1px solid var(--border-default)" }}>
+                          <div className="rq-form-design-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 120px", gap: "0.75rem", background: "rgba(255,255,255,0.01)", padding: "0.75rem", borderRadius: "6px", border: "1px solid var(--border-default)" }}>
                             <input
                               type="text"
                               placeholder="Proposed Ind. Variables (Scarcity = 5.0)"
@@ -2966,7 +3052,7 @@ function CivilizationRecordPage() {
                                 }}
                               >
                                 {/* Header Bar */}
-                                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.75rem" }}>
+                                <div className="rq-card-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.75rem" }}>
                                   <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }}>
                                     <span
                                       style={{
@@ -3104,6 +3190,7 @@ function CivilizationRecordPage() {
 
                                 {/* Metadata Grid & Evidence Trail */}
                                 <div
+                                  className="rq-metadata-grid"
                                   style={{
                                     display: "grid",
                                     gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
@@ -3466,6 +3553,7 @@ function CivilizationRecordPage() {
                       </h3>
                       {Object.keys(derivedMetrics).length > 0 ? (
                         <div
+                          className="derived-metrics-grid"
                           style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}
                         >
                           <table

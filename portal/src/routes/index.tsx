@@ -70,8 +70,10 @@ function Hero({ onEnter }: { onEnter: () => void }) {
 
   useEffect(() => {
     const onMove = (e: PointerEvent) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 40;
-      const y = (e.clientY / window.innerHeight - 0.5) * 40;
+      // Only enable parallax on desktop mouse input to prevent touch offset on mobile
+      if (e.pointerType !== "mouse") return;
+      const x = (e.clientX / window.innerWidth - 0.5) * 25;
+      const y = (e.clientY / window.innerHeight - 0.5) * 25;
       mx.set(x);
       my.set(y);
     };
@@ -90,28 +92,24 @@ function Hero({ onEnter }: { onEnter: () => void }) {
       <StarField />
 
       {/* Orbital geometry */}
-      <div className="pointer-events-none absolute inset-0 grid place-items-center">
+      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
         <motion.div
-          style={{ x: useTransform(sx, (v) => v * 0.15), y: useTransform(sy, (v) => v * 0.15) }}
-          animate={ctaHover ? { scale: 1.08 } : { scale: 1 }}
+          style={{ x: useTransform(sx, (v) => v * 0.05), y: useTransform(sy, (v) => v * 0.05) }}
+          animate={ctaHover ? { scale: 1.05 } : { scale: 1 }}
           transition={{ type: "spring", stiffness: 60, damping: 18 }}
-          className="relative h-[min(140vmin,1600px)] w-[min(140vmin,1600px)]"
+          className="relative h-[min(85vw,85vh,700px)] w-[min(85vw,85vh,700px)] sm:h-[min(110vmin,1200px)] sm:w-[min(110vmin,1200px)] flex items-center justify-center"
         >
-          <div className="absolute inset-0 grid place-items-center">
+          <div className="absolute inset-0 flex items-center justify-center">
             <style
               dangerouslySetInnerHTML={{
                 __html: `
-              @keyframes orbit-spin {
+              @keyframes orbit-spin-cw {
                 from { transform: rotate(0deg); }
                 to { transform: rotate(360deg); }
               }
-              @keyframes precess-clockwise {
-                from { transform: rotate(0deg) scaleY(0.18); }
-                to { transform: rotate(360deg) scaleY(0.18); }
-              }
-              @keyframes precess-counter {
-                from { transform: rotate(360deg) scaleY(0.18); }
-                to { transform: rotate(0deg) scaleY(0.18); }
+              @keyframes orbit-spin-ccw {
+                from { transform: rotate(360deg); }
+                to { transform: rotate(0deg); }
               }
             `,
               }}
@@ -120,33 +118,33 @@ function Hero({ onEnter }: { onEnter: () => void }) {
             {[
               {
                 w: 80,
-                o: 0.06,
+                o: 0.08,
                 speed: 38,
                 delay: -19,
                 color: "oklch(0.78 0.11 195)",
-                size: 4.5,
-                precessDir: "precess-clockwise",
-                precessSpeed: 160,
+                size: 4,
+                tilt: 35,
+                spinDir: "orbit-spin-cw",
               },
               {
                 w: 66,
-                o: 0.12,
+                o: 0.14,
                 speed: 28,
                 delay: -10,
                 color: "#ffffff",
                 size: 3.5,
-                precessDir: "precess-counter",
-                precessSpeed: 120,
+                tilt: -45,
+                spinDir: "orbit-spin-ccw",
               },
               {
                 w: 52,
-                o: 0.18,
+                o: 0.20,
                 speed: 20,
                 delay: -6,
                 color: "oklch(0.85 0.08 210)",
-                size: 5,
-                precessDir: "precess-clockwise",
-                precessSpeed: 90,
+                size: 4.5,
+                tilt: 60,
+                spinDir: "orbit-spin-cw",
               },
               {
                 w: 38,
@@ -155,8 +153,8 @@ function Hero({ onEnter }: { onEnter: () => void }) {
                 delay: -3,
                 color: "oklch(0.9 0.05 180)",
                 size: 4,
-                precessDir: "precess-counter",
-                precessSpeed: 70,
+                tilt: -20,
+                spinDir: "orbit-spin-ccw",
               },
               {
                 w: 24,
@@ -165,15 +163,15 @@ function Hero({ onEnter }: { onEnter: () => void }) {
                 delay: 0,
                 color: "oklch(0.78 0.11 195)",
                 size: 3,
-                precessDir: "precess-clockwise",
-                precessSpeed: 45,
+                tilt: 15,
+                spinDir: "orbit-spin-cw",
               },
             ].map((r, i) => (
               <div
                 key={i}
-                className="absolute inset-0 grid place-items-center pointer-events-none"
+                className="absolute inset-0 flex items-center justify-center pointer-events-none"
                 style={{
-                  animation: `${r.precessDir} ${r.precessSpeed}s linear infinite`,
+                  transform: `rotate(${r.tilt}deg)`,
                 }}
               >
                 <div
@@ -182,18 +180,19 @@ function Hero({ onEnter }: { onEnter: () => void }) {
                     width: `${r.w}%`,
                     height: `${r.w}%`,
                     borderColor: `oklch(0.78 0.11 195 / ${r.o})`,
-                    boxShadow: `0 0 40px oklch(0.78 0.11 195 / ${r.o * 0.35})`,
+                    boxShadow: `0 0 30px oklch(0.78 0.11 195 / ${r.o * 0.3})`,
                   }}
                 />
                 <div
-                  className="absolute rounded-full"
+                  className="absolute rounded-full flex items-center justify-center"
                   style={{
                     width: `${r.w}%`,
                     height: `${r.w}%`,
-                    animation: `orbit-spin ${r.speed}s linear infinite`,
+                    animation: `${r.spinDir} ${r.speed}s linear infinite`,
                     animationDelay: `${r.delay}s`,
                   }}
                 >
+                  {/* Clean un-distorted orbital dots */}
                   <div
                     style={{
                       position: "absolute",
@@ -204,24 +203,37 @@ function Hero({ onEnter }: { onEnter: () => void }) {
                       borderRadius: "50%",
                       backgroundColor: r.color,
                       boxShadow: `0 0 10px ${r.color}, 0 0 4px #ffffff`,
-                      transform: "translate(-50%, -50%) scaleY(5.556)",
+                      transform: "translate(-50%, -50%)",
+                    }}
+                  />
+                  <div
+                    style={{
+                      position: "absolute",
+                      bottom: "0",
+                      left: "50%",
+                      width: `${r.size}px`,
+                      height: `${r.size}px`,
+                      borderRadius: "50%",
+                      backgroundColor: r.color,
+                      boxShadow: `0 0 10px ${r.color}, 0 0 4px #ffffff`,
+                      transform: "translate(-50%, 50%)",
                     }}
                   />
                 </div>
               </div>
             ))}
 
-            {/* Central luminous core */}
+            {/* Central luminous core - Perfectly Centered */}
             <motion.div
-              animate={{ opacity: [0.75, 1, 0.75] }}
+              animate={{ scale: [1, 1.2, 1], opacity: [0.8, 1, 0.8] }}
               transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute h-2.5 w-2.5 rounded-full bg-teal"
+              className="absolute h-5 w-5 rounded-full bg-teal z-10"
               style={{
                 boxShadow:
-                  "0 0 24px 6px oklch(0.78 0.11 195 / 0.65), 0 0 60px 14px oklch(0.78 0.11 195 / 0.35)",
+                  "0 0 30px 10px oklch(0.78 0.11 195 / 0.85), 0 0 90px 24px oklch(0.78 0.11 195 / 0.5)",
               }}
             />
-            <div className="absolute h-[28%] w-[42%] rounded-full bg-[radial-gradient(ellipse,oklch(0.78_0.11_195/0.18),transparent_65%)] blur-2xl" />
+            <div className="absolute h-[35vmin] w-[35vmin] max-w-[320px] max-h-[320px] rounded-full bg-[radial-gradient(circle,oklch(0.78_0.11_195/0.25),transparent_70%)] blur-3xl" />
           </div>
         </motion.div>
       </div>
@@ -249,10 +261,10 @@ function Hero({ onEnter }: { onEnter: () => void }) {
           <span>Engine v9.2</span>
           <span className="hidden sm:inline">Schema v1.0.0</span>
         </div>
-        <div className="absolute bottom-8 left-8 font-mono-tight text-[0.7rem] uppercase tracking-[0.24em] text-muted-foreground">
+        <div className="hidden sm:block absolute bottom-8 left-8 font-mono-tight text-[0.7rem] uppercase tracking-[0.24em] text-muted-foreground">
           Artificial Life Simulator
         </div>
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 font-mono-tight text-[0.7rem] uppercase tracking-[0.24em] text-muted-foreground whitespace-nowrap">
+        <div className="hidden md:block absolute bottom-8 left-1/2 -translate-x-1/2 font-mono-tight text-[0.7rem] uppercase tracking-[0.24em] text-muted-foreground whitespace-nowrap">
           Reproducibility · Deterministic RNG · Open Archive
         </div>
         <motion.div

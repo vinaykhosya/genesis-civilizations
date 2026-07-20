@@ -897,21 +897,23 @@
             <h2 class="analysis-heading">🧬 Trait Evolution &amp; Genetics</h2><div id="tabContent-evolution" class="tab-content">
                 <div class="card">
                     <h2>Per-Generation Statistics Summary</h2>
-                    <table id="generationTable">
-                        <thead>
-                            <tr>
-                                <th>Generation</th>
-                                <th>Total Ever Born</th>
-                                <th>Births (Asexual/Sexual)</th>
-                                <th>Deaths</th>
-                                <th>Avg Lifespan</th>
-                                <th>Genetic Diversity</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Dynamically populated -->
-                        </tbody>
-                    </table>
+                    <div class="table-wrapper" style="width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 0.5rem;">
+                        <table id="generationTable">
+                            <thead>
+                                <tr>
+                                    <th>Generation</th>
+                                    <th>Total Ever Born</th>
+                                    <th>Births (Asexual/Sexual)</th>
+                                    <th>Deaths</th>
+                                    <th>Avg Lifespan</th>
+                                    <th>Genetic Diversity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dynamically populated -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="card">
                     <h2>Trait Evolution (Mean drift across generations)</h2>

@@ -196,6 +196,47 @@
             align-items: center;
         }
 
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 900px) {
+            body {
+                height: auto;
+                min-height: 100vh;
+                overflow-y: auto;
+            }
+            header {
+                padding: 0.85rem 1rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            .main-container {
+                flex-direction: column;
+                overflow: visible;
+            }
+            .left-panel {
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                padding: 1rem;
+            }
+            .right-panel {
+                overflow-y: visible;
+                padding: 1rem;
+            }
+            .canvas-container {
+                max-width: 100%;
+            }
+            .controls-panel {
+                max-width: 100%;
+            }
+        }
+
         /* Agent Selection list */
         .agent-grid {
             display: grid;
@@ -848,21 +889,23 @@
             <div id="tabContent-evolution" class="tab-content">
                 <div class="card">
                     <h2>Per-Generation Statistics Summary</h2>
-                    <table id="generationTable">
-                        <thead>
-                            <tr>
-                                <th>Generation</th>
-                                <th>Total Ever Born</th>
-                                <th>Births (Asexual/Sexual)</th>
-                                <th>Deaths</th>
-                                <th>Avg Lifespan</th>
-                                <th>Genetic Diversity</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Dynamically populated -->
-                        </tbody>
-                    </table>
+                    <div class="table-wrapper">
+                        <table id="generationTable">
+                            <thead>
+                                <tr>
+                                    <th>Generation</th>
+                                    <th>Total Ever Born</th>
+                                    <th>Births (Asexual/Sexual)</th>
+                                    <th>Deaths</th>
+                                    <th>Avg Lifespan</th>
+                                    <th>Genetic Diversity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dynamically populated -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="card">
                     <h2>Trait Evolution (Mean drift across generations)</h2>
