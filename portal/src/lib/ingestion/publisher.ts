@@ -76,7 +76,7 @@ export async function publishExperiment(
     total_agents: totalAgents,
     survivors_count: survivorsCount,
     max_generation: summary.max_generation,
-    avg_genetic_diversity: summary.derived_metrics.avg_genetic_diversity,
+    avg_genetic_diversity: summary.avg_genetic_diversity ?? summary.derived_metrics?.avg_genetic_diversity ?? 0.0,
     config_json: config,
     summary_json: summaryWithMaps,
     storage_path: `${id}/`,
