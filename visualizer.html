@@ -6,17 +6,17 @@
     <title>Genesis Emergence Validation Dashboard</title>
     <style>
         :root {
-            --bg-color: #0b0f19;
-            --card-bg: #151c2c;
-            --border-color: rgba(255, 255, 255, 0.08);
+            --bg-color: #080c14;
+            --card-bg: #0f172a;
+            --border-color: rgba(255, 255, 255, 0.07);
             --text-main: #f3f4f6;
             --text-muted: #9ca3af;
             --accent-green: #10b981;
             --accent-blue: #3b82f6;
             --accent-orange: #f59e0b;
             --accent-red: #ef4444;
-            --accent-pink: #ec4899;
-            --accent-purple: #8b5cf6;
+            --accent-pink: #818cf8;
+            --accent-purple: #6366f1;
         }
 
         * {
@@ -47,7 +47,7 @@
         header h1 {
             font-size: 1.4rem;
             font-weight: 700;
-            background: linear-gradient(to right, #6366f1, #a855f7, #ec4899);
+            background: linear-gradient(to right, #6366f1, #10b981);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -124,7 +124,7 @@
 
         input[type="range"] {
             flex: 1;
-            accent-color: var(--accent-purple);
+            accent-color: #6366f1;
             cursor: pointer;
         }
 
@@ -391,7 +391,7 @@
     <header>
         <div style="display: flex; align-items: center; gap: 2rem;">
             <div>
-                <h1 style="font-size: 1.5rem; font-weight: 800; background: linear-gradient(to right, #6366f1, #a855f7, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Project Genesis</h1>
+                <h1 style="font-size: 1.5rem; font-weight: 800; background: linear-gradient(to right, #6366f1, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Project Genesis</h1>
                 <p style="font-size: 0.85rem; color: var(--text-muted);">Emergence Validation & Telemetry Console</p>
             </div>
             
@@ -400,7 +400,7 @@
                 <button class="nav-btn active" id="navBtn-telemetry" onclick="switchPage('telemetry')" style="background: var(--accent-purple); border: none; color: white; padding: 0.45rem 1.1rem; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.25s;">Telemetry Board</button>
                 <button class="nav-btn" id="navBtn-research" onclick="switchPage('research')" style="background: transparent; border: none; color: var(--text-muted); padding: 0.45rem 1.1rem; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.25s;">Civilization Research Center</button>
                 <button class="nav-btn" id="navBtn-timeline" onclick="switchPage('timeline')" style="background: transparent; border: none; color: var(--text-muted); padding: 0.45rem 1.1rem; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.25s;">Timeline Explorer</button>
-                <button class="nav-btn" id="navBtn-compare" onclick="switchPage('compare')" style="background: transparent; border: none; color: var(--text-muted); padding: 0.45rem 1.1rem; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.25s;">Compare Runs</button>
+                
                 <a href="agent_analysis.html" style="background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3); color: #6ee7b7; padding: 0.45rem 1.1rem; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.25s; text-decoration: none; display: flex; align-items: center; gap: 0.35rem;" title="Open standalone Agents Analysis &amp; Research Centre page">🔬 Agents Analysis</a>
             </div>
         </div>
@@ -887,7 +887,7 @@
                         <span>Interactive Lineage Tree</span>
                         <div style="display: flex; align-items: center; gap: 0.6rem; background: rgba(139, 92, 246, 0.18); border: 1px solid rgba(139, 92, 246, 0.35); padding: 0.45rem 1rem; border-radius: 8px; box-shadow: 0 0 12px rgba(139, 92, 246, 0.15);">
                             <label for="treeCompactToggle" style="font-size: 0.92rem; font-weight: 700; cursor: pointer; user-select: none; color: #c4b5fd; display: flex; align-items: center; gap: 0.35rem;">🧬 Compact Mode (&gt;100 agents)</label>
-                            <input type="checkbox" id="treeCompactToggle" style="cursor: pointer; accent-color: var(--accent-purple); transform: scale(1.35); width: 16px; height: 16px;">
+                            <input type="checkbox" id="treeCompactToggle" style="cursor: pointer; accent-color: #6366f1; transform: scale(1.35); width: 16px; height: 16px;">
                         </div>
                     </h2>
                     <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Click nodes to inspect lineages. Circular nodes represent agents colored by colony. Solid = Alive, Hollow = Dead.</p>
@@ -1805,7 +1805,7 @@
     <!-- Timeline Explorer Container -->
     <div class="research-container" id="timelineContainer" style="display: none; flex: 1; overflow-y: auto; background: var(--bg-color); padding: 2rem; flex-direction: column; gap: 2rem;">
         <section class="research-section">
-            <h1 style="display: flex; align-items: center; gap: 0.6rem; font-size: 1.6rem; font-weight: 800; background: linear-gradient(to right, #8b5cf6, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"><span>⏳</span> Timeline Explorer & History Scrubber</h1>
+            <h1 style="display: flex; align-items: center; gap: 0.6rem; font-size: 1.6rem; font-weight: 800; background: linear-gradient(to right, #6366f1, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"><span>⏳</span> Timeline Explorer & History Scrubber</h1>
             
             <div class="card" style="margin-bottom: 0;">
                 <h2>Civilization Time Machine</h2>
@@ -1816,7 +1816,7 @@
                 <!-- Time Machine Scrubber Slider -->
                 <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; background: rgba(0,0,0,0.25); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
                     <span style="font-family: monospace; font-size: 0.85rem; color: var(--text-muted); font-weight: bold;">TIMELINE PLAYHEAD:</span>
-                    <input type="range" id="explorerScrubber" min="0" max="100" value="0" style="flex: 1; accent-color: var(--accent-purple);" oninput="updateExplorerTick(this.value)">
+                    <input type="range" id="explorerScrubber" min="0" max="100" value="0" style="flex: 1; accent-color: #6366f1;" oninput="updateExplorerTick(this.value)">
                     <span id="explorerTickLabel" style="font-family: monospace; font-size: 0.95rem; font-weight: 700; color: #c084fc; min-width: 100px; text-align: right;">Tick 0</span>
                 </div>
 
@@ -1864,121 +1864,13 @@
 
                 <!-- Right Column: Comparative Overlay and Hypotheses -->
                 <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                    <!-- Dual Point Compare -->
-                    <div class="card" style="margin-bottom: 0;">
-                        <h2>Dual Point Compare (Overlay Mode)</h2>
-                        <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.8rem;">Select a historical compare target point to calculate relative delta changes.</p>
-                        <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem;">
-                            <label style="font-size: 0.85rem; color: var(--text-muted); font-weight: bold;">Compare Current with Tick:</label>
-                            <select id="compareTickSelect" class="scientist-label-input" style="width: auto; flex: 1;" onchange="updateExplorerCompare()"></select>
-                        </div>
-                        <div id="compareResultTableContainer" style="overflow-x: auto; border: 1px solid var(--border-color); border-radius: 6px; background: #0b0f19;">
-                            <table class="research-table">
-                                <thead>
-                                    <tr>
-                                        <th>Metric</th>
-                                        <th>Current (Base)</th>
-                                        <th>Target (Compare)</th>
-                                        <th>Delta change</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="compareResultBody">
-                                    <!-- Populated dynamically -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
                     <!-- Scientific Hypotheses -->
-                    <div class="card" id="hypothesisCard" style="margin-bottom: 0;">
-                        <h2>Layer 3 — Scientific Hypotheses (Auto-Generated)</h2>
-                        <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1rem;">
-                            Statistical causal hypotheses generated by comparing consecutive climate transitions. Click a card to expand and highlight affected metrics on charts.
-                        </p>
-                        <div id="hypothesisContainer" style="display: flex; flex-direction: column; gap: 1rem;">
-                            <!-- Populated dynamically -->
-                        </div>
                     </div>
-                </div>
-            </div>
-        </section>
+</div>
+</section>
     </div>
 
-    <!-- Experiment Compare Container -->
-    <div class="research-container" id="compareContainer" style="display: none; flex: 1; overflow-y: auto; background: var(--bg-color); padding: 2rem; flex-direction: column; gap: 2rem;">
-        <section class="research-section">
-            <h1 style="display: flex; align-items: center; gap: 0.6rem; font-size: 1.6rem; font-weight: 800; background: linear-gradient(to right, #10b981, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"><span>⚖️</span> Experiment Comparison Workbench</h1>
-            
-            <div class="card" style="margin-bottom: 0;">
-                <h2>Load Secondary Experiment</h2>
-                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.2rem; line-height: 1.4;">
-                    Compare the current simulation run side-by-side with a secondary experiment run. Select a run from the history catalog dropdown or load a local file.
-                </p>
-                <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;">
-                    <button class="nav-btn" onclick="document.getElementById('compareFileUpload').click()" style="background: var(--accent-purple); border: none; color: white; padding: 0.5rem 1.2rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 0.35rem;">
-                        📂 Load Secondary JSON
-                    </button>
-                    <input type="file" id="compareFileUpload" accept=".json,.js" style="display: none;" onchange="handleCompareFileSelect(event)">
-                    
-                    <span style="font-size: 0.85rem; color: var(--text-muted);">or select from history:</span>
-                    <select id="historyCompareSelect" class="scientist-label-input" style="width: auto;" onchange="handleHistoryCompareSelect(this.value)">
-                        <option value="">-- No Run Selected --</option>
-                    </select>
-
-                    <span id="compareStatusLabel" style="font-size: 0.85rem; font-weight: 600; color: var(--accent-green);"></span>
-                </div>
-            </div>
-
-            <!-- Comparison Dashboard Cards -->
-            <div id="comparisonDashboard" style="display: none; flex-direction: column; gap: 1.5rem;">
-                <div class="card" style="margin-bottom: 0;">
-                    <h2>Executive Comparative Metrics Matrix (Delta-First)</h2>
-                    <div style="overflow-x: auto; border: 1px solid var(--border-color); border-radius: 6px; background: #0b0f19;">
-                        <table class="research-table">
-                            <thead>
-                                <tr>
-                                    <th>Metric Property</th>
-                                    <th>Relative Change</th>
-                                    <th id="compareLabelRun1" style="color: var(--accent-blue);">Primary Run</th>
-                                    <th id="compareLabelRun2" style="color: var(--accent-pink);">Secondary Run</th>
-                                </tr>
-                            </thead>
-                            <tbody id="compareMetricsBody">
-                                <!-- Populated dynamically -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 1.5rem; align-items: start;">
-                    <div class="card" style="margin-bottom: 0;">
-                        <h2>Dual Trajectory History Plot</h2>
-                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Population comparison plotted across the entire simulation time.</p>
-                        <div style="position: relative; height: 320px; width: 100%;"><canvas id="comparePopChart"></canvas></div>
-                    </div>
-                    <div class="card" style="margin-bottom: 0;">
-                        <h2>End-State Genotype Comparison</h2>
-                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Average gene pool parameters comparison at the final tick.</p>
-                        <div style="overflow-x: auto; border: 1px solid var(--border-color); border-radius: 6px; background: #0b0f19;">
-                            <table class="research-table">
-                                <thead>
-                                    <tr>
-                                        <th>Gene Name</th>
-                                        <th>Delta change</th>
-                                        <th style="color: var(--accent-blue);">Primary End Mean</th>
-                                        <th style="color: var(--accent-pink);">Secondary End Mean</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="compareGenesBody">
-                                    <!-- Populated dynamically -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
+    
 
     <style>
         /* CSS Overrides for Page Nav and Category Buttons */
@@ -2901,7 +2793,9 @@
             if (!mapImage.complete) return;
             
             const idx = parseInt(slider.value);
-            const currentTick = (isLiveStream && window.liveTicks) ? (window.liveTicks[idx] || 0) : idx * 10;
+            const maxTicks = (SIMULATION_DATA.metadata && SIMULATION_DATA.metadata.ticks) || 100228;
+            const maxSlider = parseInt(slider.max) || 1;
+            const currentTick = (isLiveStream && window.liveTicks) ? (window.liveTicks[idx] || 0) : Math.round((idx / maxSlider) * maxTicks);
 
             // --- Camera Auto-Follow Logic ---
             if (isAutoFollow && selectedAgentId !== undefined && selectedAgentId !== null) {
@@ -4959,17 +4853,29 @@
         window.drawGeneHeatmap = drawGeneHeatmap;
 
         function initTimelineExplorer() {
-            const timeline = SIMULATION_DATA.telemetry ? SIMULATION_DATA.telemetry.resource_timeline : [];
+            let timeline = SIMULATION_DATA.telemetry ? SIMULATION_DATA.telemetry.resource_timeline : [];
             const scrubber = document.getElementById('explorerScrubber');
             const tickLabel = document.getElementById('explorerTickLabel');
             
             if (!timeline || timeline.length === 0) {
                 tickLabel.innerText = "No data available";
-                scrubber.max = 0;
+                if (scrubber) scrubber.max = 0;
                 return;
             }
 
-            scrubber.max = timeline.length - 1;
+            // Ensure timeline starts at tick 0 for smooth playhead scrubbing
+            if (timeline.length > 0 && timeline[0].tick > 0) {
+                const firstSnap = timeline[0];
+                const zeroSnap = Object.assign({}, firstSnap, { tick: 0, year: 0, births: 0, deaths: 0 });
+                timeline = [zeroSnap, ...timeline];
+                if (SIMULATION_DATA.telemetry) SIMULATION_DATA.telemetry.resource_timeline = timeline;
+            }
+
+            if (scrubber) {
+                scrubber.min = 0;
+                scrubber.max = timeline.length - 1;
+                scrubber.value = 0;
+            }
             
             // Populate Milestone list
             const milestonesList = document.getElementById('milestoneJumpsList');
@@ -5029,7 +4935,7 @@
             }, 100);
             
             // Render hypotheses
-            renderHypothesesPanel();
+            // Hypotheses disabled
         }
         window.initTimelineExplorer = initTimelineExplorer;
 
@@ -6084,12 +5990,15 @@
                 avgF = living.reduce((s,a) => s + (a.fat_reserves || 0), 0) / living.length;
                 avgM = living.reduce((s,a) => s + (a.muscle_mass || 0), 0) / living.length;
             }
-            const scale = (avgH > 1 || avgT > 1) ? 1.0 : 100.0;
+            const scaleH = (avgH > 1.0) ? 1.0 : 100.0;
+            const scaleT = (avgT > 1.0) ? 1.0 : 100.0;
+            const scaleF = (avgF > 1.0) ? 1.0 : 100.0;
+            const scaleM = (avgM > 1.0) ? 1.0 : 100.0;
             
-            document.getElementById('ecoAvgHunger').innerText = `${(avgH * scale).toFixed(1)}%`;
-            document.getElementById('ecoAvgThirst').innerText = `${(avgT * scale).toFixed(1)}%`;
-            document.getElementById('ecoAvgFat').innerText = `${(avgF * scale).toFixed(1)}%`;
-            document.getElementById('ecoAvgMuscle').innerText = `${(avgM * scale).toFixed(1)}%`;
+            document.getElementById('ecoAvgHunger').innerText = `${(avgH * scaleH).toFixed(1)}%`;
+            document.getElementById('ecoAvgThirst').innerText = `${(avgT * scaleT).toFixed(1)}%`;
+            document.getElementById('ecoAvgFat').innerText = `${(avgF * scaleF).toFixed(1)}%`;
+            document.getElementById('ecoAvgMuscle').innerText = `${(avgM * scaleM).toFixed(1)}%`;
             
             // Fill Phase 10 Water Audit Metrics
             const tel = SIMULATION_DATA.telemetry || {};
