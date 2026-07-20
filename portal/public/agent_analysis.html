@@ -2134,6 +2134,23 @@
             }
         }
 
+        function showToast(msg) {
+            let toast = document.getElementById('genesis-toast-notification');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'genesis-toast-notification';
+                toast.style.cssText = 'position:fixed; bottom:24px; right:24px; background:rgba(15, 23, 42, 0.95); border:1px solid rgba(0, 242, 254, 0.4); color:#00f2fe; padding:0.65rem 1.25rem; border-radius:8px; font-size:12px; font-family:monospace; font-weight:600; box-shadow:0 10px 25px rgba(0,0,0,0.5); z-index:999999; transition:all 0.3s cubic-bezier(0.16, 1, 0.3, 1); pointer-events:none; backdrop-filter:blur(8px); display:flex; align-items:center; gap:0.5rem;';
+                document.body.appendChild(toast);
+            }
+            toast.innerHTML = `<span style="font-size:14px;">⚡</span> ${msg}`;
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateY(0) scale(1)';
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(12px) scale(0.95)';
+            }, 2000);
+        }
+
         const canvas = document.getElementById('mapCanvas');
         const ctx = canvas.getContext('2d');
         const slider = document.getElementById('timelineSlider');
@@ -7238,7 +7255,7 @@
                     switchPage('telemetry');
                 }
                 
-                alert(`Experiment run "${SIMULATION_DATA.experiment || 'Loaded Run'}" successfully loaded from ${fileName}!`);
+                showToast(`Experiment "${SIMULATION_DATA.experiment || 'Loaded Run'}" loaded successfully from ${fileName}`);
             } else {
                 throw new Error("File does not contain valid agent simulation data.");
             }

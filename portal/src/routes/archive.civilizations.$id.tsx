@@ -487,6 +487,18 @@ function CivilizationRecordPage() {
     persistEdits({ chronicleEvents: updated });
   };
 
+  const handleDeleteChronicleEvent = (index: number) => {
+    const updated = chronicleEvents.filter((_, i) => i !== index);
+    setChronicleEvents(updated);
+    persistEdits({ chronicleEvents: updated });
+  };
+
+  const handleDeleteQuestion = (index: number) => {
+    const updated = questionsList.filter((_, i) => i !== index);
+    setQuestionsList(updated);
+    persistEdits({ questions: updated });
+  };
+
   const handlePostComment = async () => {
     if (!newCommentText.trim()) return;
     const postAsAuthor = isAdmin && isAuthorMode;
@@ -2419,11 +2431,13 @@ function CivilizationRecordPage() {
                       )}
 
                       <div style={{ display: "grid", gap: "1rem" }}>
-                        {questionsList.map((rq) => (
+                        {questionsList.map((rq, qIdx) => (
                           <div
-                            key={rq.id}
+                            key={rq.id || qIdx}
                             style={{
                               display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "flex-start",
                               gap: "1.5rem",
                               padding: "1.25rem",
                               background: "rgba(255,255,255,0.01)",
@@ -2434,37 +2448,55 @@ function CivilizationRecordPage() {
                               borderRadius: "var(--radius-md)",
                             }}
                           >
-                            <span
-                              style={{
-                                fontFamily: "var(--font-mono)",
-                                fontSize: "13px",
-                                fontWeight: 700,
-                                color: "#00f2fe",
-                              }}
-                            >
-                              {rq.id}
-                            </span>
-                            <div>
-                              <p
+                            <div style={{ display: "flex", gap: "1.5rem", flex: 1 }}>
+                              <span
                                 style={{
+                                  fontFamily: "var(--font-mono)",
+                                  fontSize: "13px",
                                   fontWeight: 700,
-                                  fontSize: "var(--text-sm)",
-                                  color: "var(--text-primary)",
+                                  color: "#00f2fe",
                                 }}
                               >
-                                {rq.title}
-                              </p>
-                              <p
-                                style={{
-                                  fontSize: "var(--text-xs)",
-                                  color: "var(--text-secondary)",
-                                  marginTop: "0.3rem",
-                                  lineHeight: 1.4,
-                                }}
-                              >
-                                {rq.question}
-                              </p>
+                                {rq.id}
+                              </span>
+                              <div>
+                                <p
+                                  style={{
+                                    fontWeight: 700,
+                                    fontSize: "var(--text-sm)",
+                                    color: "var(--text-primary)",
+                                  }}
+                                >
+                                  {rq.title}
+                                </p>
+                                <p
+                                  style={{
+                                    fontSize: "var(--text-xs)",
+                                    color: "var(--text-secondary)",
+                                    marginTop: "0.3rem",
+                                    lineHeight: 1.4,
+                                  }}
+                                >
+                                  {rq.question}
+                                </p>
+                              </div>
                             </div>
+                            {isAdmin && (
+                              <button
+                                onClick={() => handleDeleteQuestion(qIdx)}
+                                style={{
+                                  background: "transparent",
+                                  border: "none",
+                                  color: "#ef4444",
+                                  cursor: "pointer",
+                                  fontSize: "12px",
+                                  padding: "0.2rem 0.4rem",
+                                }}
+                                title="Delete Question"
+                              >
+                                ✕ Delete
+                              </button>
+                            )}
                           </div>
                         ))}
                       </div>
@@ -2648,6 +2680,7 @@ function CivilizationRecordPage() {
                             key={idx}
                             style={{
                               display: "flex",
+                              justifyContent: "space-between",
                               gap: "1.5rem",
                               padding: "1rem",
                               border: "1px solid var(--border-default)",
@@ -2656,54 +2689,74 @@ function CivilizationRecordPage() {
                               alignItems: "center",
                             }}
                           >
-                            <div style={{ textAlign: "center", minWidth: "90px" }}>
-                              <span
-                                style={{
-                                  fontSize: "11px",
-                                  fontFamily: "var(--font-mono)",
-                                  color: "#00f2fe",
-                                }}
-                              >
-                                Tick {ev.tick}
-                              </span>
-                              <div
-                                style={{
-                                  fontSize: "9px",
-                                  fontFamily: "var(--font-mono)",
-                                  color: "var(--text-tertiary)",
-                                  textTransform: "uppercase",
-                                  marginTop: "0.15rem",
-                                }}
-                              >
-                                Year {Math.floor(ev.tick / 360)}
+                            <div style={{ display: "flex", gap: "1.5rem", alignItems: "center", flex: 1 }}>
+                              <div style={{ textAlign: "center", minWidth: "90px" }}>
+                                <span
+                                  style={{
+                                    fontSize: "11px",
+                                    fontFamily: "var(--font-mono)",
+                                    color: "#00f2fe",
+                                  }}
+                                >
+                                  Tick {ev.tick}
+                                </span>
+                                <div
+                                  style={{
+                                    fontSize: "9px",
+                                    fontFamily: "var(--font-mono)",
+                                    color: "var(--text-tertiary)",
+                                    textTransform: "uppercase",
+                                    marginTop: "0.15rem",
+                                  }}
+                                >
+                                  Year {Math.floor(ev.tick / 360)}
+                                </div>
+                              </div>
+                              <div>
+                                <span
+                                  style={{
+                                    fontSize: "12px",
+                                    fontFamily: "var(--font-mono)",
+                                    background: "rgba(0,242,254,0.05)",
+                                    border: "1px solid rgba(0,242,254,0.15)",
+                                    color: "#00f2fe",
+                                    padding: "0.15rem 0.4rem",
+                                    borderRadius: "3px",
+                                    fontWeight: 700,
+                                  }}
+                                >
+                                  {ev.type || "Global Event"}
+                                </span>
+                                <p
+                                  style={{
+                                    fontSize: "var(--text-sm)",
+                                    color: "var(--text-secondary)",
+                                    marginTop: "0.5rem",
+                                    lineHeight: 1.4,
+                                  }}
+                                >
+                                  {ev.description}
+                                </p>
                               </div>
                             </div>
-                            <div>
-                              <span
+                            {isAdmin && (
+                              <button
+                                onClick={() => handleDeleteChronicleEvent(idx)}
                                 style={{
-                                  fontSize: "12px",
-                                  fontFamily: "var(--font-mono)",
-                                  background: "rgba(0,242,254,0.05)",
-                                  border: "1px solid rgba(0,242,254,0.15)",
-                                  color: "#00f2fe",
-                                  padding: "0.15rem 0.4rem",
-                                  borderRadius: "3px",
-                                  fontWeight: 700,
+                                  background: "rgba(239, 68, 68, 0.1)",
+                                  border: "1px solid rgba(239, 68, 68, 0.3)",
+                                  color: "#ef4444",
+                                  borderRadius: "4px",
+                                  padding: "0.25rem 0.6rem",
+                                  fontSize: "11px",
+                                  fontWeight: 600,
+                                  cursor: "pointer",
                                 }}
+                                title="Delete Observation"
                               >
-                                {ev.type || "Global Event"}
-                              </span>
-                              <p
-                                style={{
-                                  fontSize: "var(--text-sm)",
-                                  color: "var(--text-secondary)",
-                                  marginTop: "0.5rem",
-                                  lineHeight: 1.4,
-                                }}
-                              >
-                                {ev.description}
-                              </p>
-                            </div>
+                                ✕ Delete
+                              </button>
+                            )}
                           </div>
                         ))
                       ) : (
