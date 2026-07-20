@@ -407,7 +407,7 @@ function CivilizationRecordPage() {
 
   // Editable Key Findings State
   const [findingsList, setFindingsList] = useState<string[]>(
-    meta?.findings || [
+    record.summary_json?.custom_findings || summary.custom_findings || meta?.findings || [
       "Speciation occurred naturally along continental geographical barriers.",
       "High scarcity index directly accelerated shelter construction priority.",
     ]
@@ -417,7 +417,7 @@ function CivilizationRecordPage() {
 
   // Editable Chronicle Events State
   const [chronicleEvents, setChronicleEvents] = useState<any[]>(
-    summary.events || record.summary_json?.events || []
+    record.summary_json?.custom_events || summary.custom_events || summary.events || record.summary_json?.events || []
   );
   const [isAddingEvent, setIsAddingEvent] = useState<boolean>(false);
   const [newEventTick, setNewEventTick] = useState<number>(1000);
@@ -425,7 +425,9 @@ function CivilizationRecordPage() {
   const [newEventDesc, setNewEventDesc] = useState<string>("");
 
   // Editable Research Questions State & Filters
-  const [questionsList, setQuestionsList] = useState<any[]>([]);
+  const [questionsList, setQuestionsList] = useState<any[]>(
+    record.summary_json?.custom_questions || summary.custom_questions || getResearchQuestions()
+  );
   const [isAddingQuestion, setIsAddingQuestion] = useState<boolean>(false);
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string>("All");
   const [selectedStatusFilter, setSelectedStatusFilter] = useState<string>("All");
@@ -453,7 +455,9 @@ function CivilizationRecordPage() {
   const [proposedDuration, setProposedDuration] = useState<string>("100k ticks");
 
   // Comments / Open Questions State
-  const [comments, setComments] = useState<any[]>([]);
+  const [comments, setComments] = useState<any[]>(
+    record.summary_json?.user_comments || summary.user_comments || []
+  );
   const [newCommentText, setNewCommentText] = useState<string>("");
   const [newCommentCategory, setNewCommentCategory] = useState<string>("Question");
   const [isSyncing, setIsSyncing] = useState<boolean>(false);
@@ -477,10 +481,19 @@ function CivilizationRecordPage() {
       })
       .catch(() => {});
 
-    // Initial questions setup
-    const defaultQs = getResearchQuestions();
+    // Sync database state from record.summary_json / summary FIRST
+    const dbSummary = record.summary_json || summary || {};
+    const dbQuestions = dbSummary.custom_questions;
+    const dbFindings = dbSummary.custom_findings;
+    const dbEvents = dbSummary.custom_events;
+    const dbComments = dbSummary.user_comments;
 
-    // Load saved edits from localStorage if available
+    if (dbFindings && dbFindings.length > 0) setFindingsList(dbFindings);
+    if (dbQuestions && dbQuestions.length > 0) setQuestionsList(dbQuestions);
+    if (dbEvents && dbEvents.length > 0) setChronicleEvents(dbEvents);
+    if (dbComments && dbComments.length > 0) setComments(dbComments);
+
+    // Apply local storage draft overrides if present on this device
     const savedEdits = localStorage.getItem(`genesis_edits_${record.id}`);
     if (savedEdits) {
       try {
@@ -488,25 +501,17 @@ function CivilizationRecordPage() {
         if (parsed.abstract !== undefined) setAbstractText(parsed.abstract);
         if (parsed.findings) setFindingsList(parsed.findings);
         if (parsed.questions) setQuestionsList(parsed.questions);
-        else setQuestionsList(defaultQs);
         if (parsed.chronicleEvents) setChronicleEvents(parsed.chronicleEvents);
-      } catch (e) {
-        setQuestionsList(defaultQs);
-      }
-    } else {
-      setQuestionsList(defaultQs);
+      } catch (e) {}
     }
 
-    // Load saved comments
     const savedComments = localStorage.getItem(`genesis_comments_${record.id}`);
     if (savedComments) {
       try {
         setComments(JSON.parse(savedComments));
       } catch (e) {}
-    } else if (summary.user_comments) {
-      setComments(summary.user_comments);
     }
-  }, [record.id]);
+  }, [record.id, record.summary_json]);
 
   // Persist edits to localStorage & Supabase
   const persistEdits = async (newEdits: any) => {
@@ -515,16 +520,23 @@ function CivilizationRecordPage() {
     const merged = { ...existingEdits, ...newEdits };
     localStorage.setItem(`genesis_edits_${record.id}`, JSON.stringify(merged));
 
+    const updatedAbstract = merged.abstract !== undefined ? merged.abstract : abstractText;
+    const updatedFindings = merged.findings || findingsList;
+    const updatedQuestions = merged.questions || questionsList;
+    const updatedEvents = merged.chronicleEvents || chronicleEvents;
+
     try {
       await updateExperimentData({
         data: {
           id: record.id,
-          abstract: merged.abstract !== undefined ? merged.abstract : abstractText,
+          abstract: updatedAbstract,
           summary_json: {
             ...summary,
-            custom_findings: merged.findings || findingsList,
-            custom_questions: merged.questions || questionsList,
-            custom_events: merged.chronicleEvents || chronicleEvents,
+            ...record.summary_json,
+            custom_findings: updatedFindings,
+            custom_questions: updatedQuestions,
+            custom_events: updatedEvents,
+            user_comments: comments,
           },
         },
       });
