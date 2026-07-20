@@ -72,7 +72,7 @@ export const fetchCivilizations = createServerFn({ method: "GET" }).handler(asyn
   const { data: civilizations, error } = await supabaseServer
     .from("experiments")
     .select(
-      "id, slug, title, seed, world_preset, scarcity, ticks, total_agents, survivors_count, max_generation, published_at, thumbnail_url, cover_url, is_featured, tags, abstract, engine_version",
+      "id, slug, title, seed, world_preset, scarcity, ticks, total_agents, survivors_count, max_generation, published_at, thumbnail_url, cover_url, is_featured, tags, abstract, engine_version, summary_json",
     )
     .eq("is_published", true)
     .order("published_at", { ascending: false });

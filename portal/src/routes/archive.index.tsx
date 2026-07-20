@@ -34,15 +34,22 @@ function ArchivePage() {
   const biologicalCards = cards.filter(
     (c) =>
       c.researchTheme === "Biological Parameters" ||
-      (c.tags.includes("biology") && !c.tags.includes("validation")),
+      (c.tags && (c.tags.includes("biology") || c.tags.includes("biological")) && !c.tags.includes("validation")),
   );
   const environmentalCards = cards.filter(
     (c) =>
       c.researchTheme === "Environmental Constraints" ||
-      (c.tags.includes("environment") && !c.tags.includes("validation")),
+      (c.tags && (c.tags.includes("environment") || c.tags.includes("scarcity")) && !c.tags.includes("validation")),
   );
   const validationCards = cards.filter(
-    (c) => c.tags.includes("validation") || c.researchTheme === "Engineering Validation",
+    (c) => c.tags && (c.tags.includes("validation") || c.researchTheme === "Engineering Validation"),
+  );
+
+  const uncategorizedCards = cards.filter(
+    (c) =>
+      !biologicalCards.some((b) => b.id === c.id) &&
+      !environmentalCards.some((e) => e.id === c.id) &&
+      !validationCards.some((v) => v.id === c.id),
   );
 
   return (
@@ -263,6 +270,50 @@ function ArchivePage() {
                   }}
                 >
                   {validationCards.map((card) => (
+                    <Link
+                      key={card.id}
+                      to={`/archive/civilizations/${card.id}`}
+                      style={{ textDecoration: "none", color: "inherit" }}
+                    >
+                      <CivilizationCard card={card} />
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Fallback Theme: General & Baseline Longitudinal Runs */}
+            {(uncategorizedCards.length > 0 || (biologicalCards.length === 0 && environmentalCards.length === 0 && validationCards.length === 0)) && (
+              <section>
+                <div style={{ marginBottom: "1.5rem" }}>
+                  <h2
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontSize: "var(--text-md)",
+                      fontWeight: 700,
+                      color: "#60a5fa",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.05em",
+                      margin: "0 0 0.5rem 0",
+                    }}
+                  >
+                    Primary Scientific Records & Baseline Runs
+                  </h2>
+                  <div
+                    style={{
+                      height: "1px",
+                      background: "linear-gradient(to right, #60a5fa, rgba(255,255,255,0.05))",
+                    }}
+                  ></div>
+                </div>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+                    gap: "var(--grid-gap)",
+                  }}
+                >
+                  {(uncategorizedCards.length > 0 ? uncategorizedCards : cards).map((card) => (
                     <Link
                       key={card.id}
                       to={`/archive/civilizations/${card.id}`}
