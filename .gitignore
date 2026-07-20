@@ -56,6 +56,7 @@ dist/
 .nitro/
 .vercel/
 .wrangler/
+.env
 .env.local
 .env.*.local
 *.local
