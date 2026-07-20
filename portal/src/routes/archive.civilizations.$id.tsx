@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { fetchCivilizationData } from "@/lib/server-fns";
+import { fetchCivilizationData, fetchExperimentReplay } from "@/lib/server-fns";
 import CivilizationCard, { ExperimentCardProps } from "@/components/civilization/CivilizationCard";
 import { BIOME_COLORS } from "@/lib/biome-palette";
+import ExperimentExplorer, { ReplayData } from "@/components/civilization/ExperimentExplorer";
 
 export const Route = createFileRoute("/archive/civilizations/$id")({
   loader: async ({ params }) => {
@@ -271,6 +272,19 @@ function CivilizationRecordPage() {
     "research" | "chronicle" | "observatory" | "technical"
   >("research");
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+  const [replayData, setReplayData] = useState<ReplayData | null>(null);
+  const [replayLoading, setReplayLoading] = useState(false);
+
+  // Load replay.json from Supabase Storage on mount
+  useEffect(() => {
+    setReplayLoading(true);
+    fetchExperimentReplay({ data: record.id })
+      .then((data: ReplayData | null) => {
+        setReplayData(data);
+      })
+      .catch(() => setReplayData(null))
+      .finally(() => setReplayLoading(false));
+  }, [record.id]);
 
   const relatedCards: ExperimentCardProps[] = related.map((row: any) => ({
     id: row.id,
@@ -2416,6 +2430,43 @@ function CivilizationRecordPage() {
             </article>
           </section>
         </div>
+
+        {/* ═══ Experiment Explorer ═══════════════════════════════════════════ */}
+        <section
+          style={{
+            marginTop: "4rem",
+            borderTop: "1px solid rgba(255,255,255,0.08)",
+          }}
+        >
+          {replayLoading && (
+            <div style={{
+              display: "flex", alignItems: "center", justifyContent: "center",
+              padding: "4rem", color: "rgba(255,255,255,0.3)", fontSize: 14,
+            }}>
+              <div style={{ textAlign: "center" }}>
+                <div style={{ fontSize: 32, marginBottom: 12 }}>⚙️</div>
+                <div>Loading Experiment Explorer…</div>
+                <div style={{ fontSize: 11, marginTop: 6, color: "rgba(255,255,255,0.2)" }}>Fetching replay data</div>
+              </div>
+            </div>
+          )}
+          {!replayLoading && replayData && (
+            <ExperimentExplorer
+              replay={replayData}
+              coverUrl={record.cover_url || record.previewUrl || ""}
+              experimentId={record.id}
+              experimentTitle={record.title}
+            />
+          )}
+          {!replayLoading && !replayData && (
+            <div style={{
+              display: "flex", alignItems: "center", justifyContent: "center",
+              padding: "3rem", color: "rgba(255,255,255,0.2)", fontSize: 13,
+            }}>
+              Experiment Explorer not available for this record.
+            </div>
+          )}
+        </section>
 
         {/* Dynamic Related Experiments Grid */}
         {relatedCards.length > 0 && (

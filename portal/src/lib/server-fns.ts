@@ -123,3 +123,19 @@ export const fetchCivilizationData = createServerFn({ method: "GET" })
       })),
     };
   });
+
+// 5. Fetch pre-computed replay.json from Supabase Storage
+export const fetchExperimentReplay = createServerFn({ method: "GET" })
+  .validator((id: string) => id)
+  .handler(async ({ data: id }) => {
+    const replayUrl = `${SUPABASE_STORAGE_BASE}/${id}/replay/replay.json`;
+    try {
+      const res = await fetch(replayUrl);
+      if (!res.ok) return null;
+      const data = await res.json();
+      return data;
+    } catch {
+      return null;
+    }
+  });
+

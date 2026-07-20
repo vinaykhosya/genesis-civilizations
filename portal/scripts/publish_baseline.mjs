@@ -1,8 +1,4 @@
-﻿/**
- * One-shot CLI publisher for:
- *   GEN-EXP-0001: Baseline Civilization Emergence under Ideal Conditions
- */
-import { createClient } from "@supabase/supabase-js";
+﻿import { createClient } from "@supabase/supabase-js";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -19,7 +15,6 @@ const FOLDER_NAME = "emergence_social_bonds_accelerated_COMPLETE";
 const TITLE = "GEN-EXP-0001: Baseline Civilization Emergence under Ideal Conditions";
 const ABSTRACT = "Baseline longitudinal experiment evaluating the stability of Project Genesis under ideal environmental conditions. The world was simulated for 100,228 ticks (~300 simulated years) using seed 1720 with instant healing enabled and disputes disabled. The objective was to validate long-term ecological stability, multi-generational reproduction, colony persistence, and emergent behavioral diversity before introducing additional environmental stressors.";
 const TAGS = ["baseline","longitudinal","100k-ticks","seed-1720","ideal-conditions","civilization-emergence","agent-based","social-bonds"];
-const IS_FEATURED = true;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const WORKSPACE = path.resolve(__dirname, "..", "..");
@@ -28,8 +23,11 @@ const ZIP_PATH = path.join(WORKSPACE, "experiments", FOLDER_NAME + ".zip");
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
 const STORAGE_PREFIX = SUPABASE_URL + "/storage/v1/object/public/experiments";
 
+// Colony name -> numeric id mapping
+const COLONY_NAME_MAP = { "Alpha": 1, "Beta": 2, "Gamma": 3, "Delta": 4 };
+
 async function upload(storagePath, body, contentType) {
-  console.log("  up: experiments/" + storagePath);
+  console.log("  up: " + storagePath);
   const { error } = await supabase.storage.from("experiments").upload(storagePath, body, { contentType, upsert: true });
   if (error) throw new Error("Upload failed for " + storagePath + ": " + error.message);
 }
@@ -38,7 +36,7 @@ async function chunkInsert(table, rows) {
   const CHUNK = 500;
   for (let i = 0; i < rows.length; i += CHUNK) {
     const { error } = await supabase.from(table).insert(rows.slice(i, i + CHUNK));
-    if (error) throw new Error("Insert failed in " + table + ": " + error.message);
+    if (error) throw new Error("Insert failed in " + table + " at chunk " + Math.floor(i/CHUNK) + ": " + error.message);
   }
   console.log("  inserted " + rows.length + " rows into " + table);
 }
@@ -96,6 +94,7 @@ async function run() {
       availableMaps.push(mf.replace(".png",""));
     }
   }
+  console.log("  maps: [" + availableMaps.join(", ") + "]");
 
   const survivorsRaw = summary.survivors;
   let survivorsCount, totalAgents;
@@ -110,8 +109,7 @@ async function run() {
   const avgGeneticDiversity = summary.avg_genetic_diversity ?? summary.derived_metrics?.avg_genetic_diversity ?? 0.0;
   const actualTicks = config.ticks || summary.actual_ticks || summary.ticks;
   const summaryWithMaps = { ...summary, available_maps: availableMaps };
-
-  console.log("survivors="+survivorsCount+" total="+totalAgents+" diversity="+avgGeneticDiversity+" ticks="+actualTicks);
+  console.log("survivors=" + survivorsCount + " total=" + totalAgents + " diversity=" + avgGeneticDiversity + " ticks=" + actualTicks);
 
   console.log("Inserting experiment record...");
   const { error: expError } = await supabase.from("experiments").insert({
@@ -127,10 +125,11 @@ async function run() {
     thumbnail_url: STORAGE_PREFIX+"/"+EXPERIMENT_ID+"/preview/thumbnail.webp",
     cover_url: STORAGE_PREFIX+"/"+EXPERIMENT_ID+"/preview/world.png",
     og_url: STORAGE_PREFIX+"/"+EXPERIMENT_ID+"/preview/og.webp",
-    has_replay: replayExists, is_published: true, is_featured: IS_FEATURED,
+    has_replay: replayExists, is_published: true, is_featured: true,
     published_at: new Date().toISOString(),
   });
   if (expError) throw new Error("Failed to insert experiment record: " + expError.message);
+  console.log("  experiment record inserted");
 
   console.log("Inserting events...");
   await chunkInsert("experiment_events", events.map(evt => ({
@@ -138,34 +137,54 @@ async function run() {
     event_type: evt.type, description: evt.description, metadata: evt.metadata ?? null,
   })));
 
+  // Agent census: columns are snapshot_tick,id,generation,colony,age_ticks,health,children,
+  //   concept_count,procedure_count,pred_accuracy,max_radius,shelter_level,alive,cause_of_death
+  // DB table needs: agent_id, colony_id, colony_name, generation, age_ticks, lifespan_ticks,
+  //   health_at_death, children_count, shelter_level, cause_of_death, exploration_radius, genes
   console.log("Inserting agent census...");
   const rawAgents = Papa.parse(agentCensusCsv, { header: true, skipEmptyLines: true }).data;
-  await chunkInsert("experiment_agents", rawAgents.map(a => ({
+  // Deduplicate: keep only the last snapshot per agent id
+  const agentMap = new Map();
+  for (const a of rawAgents) {
+    const agentId = parseInt(a.id, 10);
+    if (!isNaN(agentId)) {
+      agentMap.set(agentId, a);
+    }
+  }
+  const uniqueAgents = Array.from(agentMap.values());
+  console.log("  unique agents: " + uniqueAgents.length + " (from " + rawAgents.length + " rows)");
+  await chunkInsert("experiment_agents", uniqueAgents.map(a => ({
     experiment_id: EXPERIMENT_ID,
-    agent_id: parseInt(a.agent_id,10), colony_id: parseInt(a.colony_id,10),
-    colony_name: a.colony_name || "Unknown", generation: parseInt(a.generation,10)||0,
-    age_ticks: parseInt(a.age_ticks,10)||0, lifespan_ticks: parseInt(a.lifespan_ticks,10)||0,
-    health_at_death: parseFloat(a.health_at_death)||0.0, children_count: parseInt(a.children_count,10)||0,
-    shelter_level: parseInt(a.shelter_level,10)||0, cause_of_death: a.cause_of_death||"unknown",
-    birth_location: { y: parseFloat(a.birth_location_y)||0, x: parseFloat(a.birth_location_x)||0 },
-    death_location: { y: parseFloat(a.death_location_y)||0, x: parseFloat(a.death_location_x)||0 },
-    exploration_radius: parseFloat(a.exploration_radius)||0.0, genes: {},
+    agent_id: parseInt(a.id, 10),
+    colony_id: COLONY_NAME_MAP[a.colony] ?? 0,
+    colony_name: a.colony || "Unknown",
+    generation: parseInt(a.generation, 10) || 0,
+    age_ticks: parseInt(a.age_ticks, 10) || 0,
+    lifespan_ticks: parseInt(a.age_ticks, 10) || 0,
+    health_at_death: parseFloat(a.health) || 0.0,
+    children_count: parseInt(a.children, 10) || 0,
+    shelter_level: parseInt(a.shelter_level, 10) || 0,
+    cause_of_death: (a.cause_of_death && a.cause_of_death !== "None") ? a.cause_of_death : "none",
+    birth_location: { x: 0, y: 0 },
+    death_location: { x: 0, y: 0 },
+    exploration_radius: parseFloat(a.max_radius) || 0.0,
+    genes: {},
   })));
 
   console.log("Inserting population history...");
   const rawPop = Papa.parse(populationCsv, { header: true, skipEmptyLines: true }).data;
   await chunkInsert("experiment_population", rawPop.map(r => ({
     experiment_id: EXPERIMENT_ID,
-    tick: parseInt(r.tick,10),
-    total: parseInt(r.total_alive ?? r.total,10)||0,
-    alpha: parseInt(r.colony_alpha ?? r.alpha,10)||0,
-    beta: parseInt(r.colony_beta ?? r.beta,10)||0,
-    gamma: parseInt(r.colony_gamma ?? r.gamma,10)||0,
-    delta: parseInt(r.colony_delta ?? r.delta,10)||0,
+    tick: parseInt(r.tick, 10),
+    total: parseInt(r.total_alive ?? r.total, 10) || 0,
+    alpha: parseInt(r.colony_alpha ?? r.alpha, 10) || 0,
+    beta: parseInt(r.colony_beta ?? r.beta, 10) || 0,
+    gamma: parseInt(r.colony_gamma ?? r.gamma, 10) || 0,
+    delta: parseInt(r.colony_delta ?? r.delta, 10) || 0,
   })));
 
   console.log("\n===================================================");
-  console.log("SUCCESS: " + EXPERIMENT_ID + " is LIVE on the portal!");
+  console.log("SUCCESS: " + EXPERIMENT_ID + " is LIVE!");
   console.log("URL: https://genesis.vinaykhosya.com/archive/" + EXPERIMENT_SLUG);
   console.log("===================================================\n");
 }
