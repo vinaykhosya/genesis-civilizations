@@ -1079,51 +1079,50 @@ function CivilizationRecordPage() {
           </Link>
         </header>
 
-        {/* 🚀 TOP VISITOR RAW DASHBOARD LAUNCHER RIBBON */}
+        {/* TOP VISITOR DASHBOARD LAUNCHER RIBBON - Clean Institutional Research Style */}
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            background: "linear-gradient(90deg, rgba(0, 242, 254, 0.08) 0%, rgba(99, 102, 241, 0.12) 100%)",
-            border: "1px solid rgba(0, 242, 254, 0.3)",
+            background: "#090d16",
+            border: "1px solid var(--border-default)",
             borderRadius: "var(--radius-lg)",
-            padding: "1rem 1.5rem",
-            marginBottom: "1.5rem",
-            boxShadow: "0 4px 20px rgba(0, 242, 254, 0.08)",
+            padding: "0.85rem 1.25rem",
+            marginBottom: "1.25rem",
             flexWrap: "wrap",
-            gap: "1rem",
+            gap: "0.75rem",
           }}
           className="glass"
         >
-          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-            <div
+          <div style={{ display: "flex", alignItems: "center", gap: "0.85rem" }}>
+            <span
               style={{
-                width: "42px",
-                height: "42px",
-                borderRadius: "10px",
-                background: "rgba(0, 242, 254, 0.15)",
-                border: "1px solid rgba(0, 242, 254, 0.4)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "20px",
-                boxShadow: "0 0 15px rgba(0,242,254,0.2)",
+                fontFamily: "var(--font-mono)",
+                fontSize: "10px",
+                fontWeight: 700,
+                color: "#a5b4fc",
+                background: "rgba(99, 102, 241, 0.1)",
+                border: "1px solid rgba(99, 102, 241, 0.25)",
+                padding: "0.2rem 0.55rem",
+                borderRadius: "4px",
+                textTransform: "uppercase",
+                letterSpacing: "0.06em",
               }}
             >
-              ⚡
-            </div>
+              Telemetry Board
+            </span>
             <div>
-              <h3 style={{ fontSize: "14px", fontWeight: 800, color: "#fff", margin: 0, fontFamily: "var(--font-display)", letterSpacing: "0.02em" }}>
-                Interactive Simulation & Visitor Raw Dashboard
+              <h3 style={{ fontSize: "13px", fontWeight: 700, color: "#f8fafc", margin: 0, fontFamily: "var(--font-display)" }}>
+                Simulation Visualizer & Raw Telemetry Dashboard
               </h3>
-              <p style={{ fontSize: "12px", color: "#a5b4fc", margin: "0.2rem 0 0 0" }}>
-                Live agent telemetry, replay timeline, ecosystem charts, and lineage family tree visualizer.
+              <p style={{ fontSize: "11px", color: "var(--text-tertiary)", margin: "0.15rem 0 0 0" }}>
+                Longitudinal agent telemetry, replay timeline, ecosystem metrics, and lineage tree.
               </p>
             </div>
           </div>
 
-          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap" }}>
             <button
               onClick={() => {
                 const el = document.getElementById("interactive-dashboard-console");
@@ -1132,24 +1131,23 @@ function CivilizationRecordPage() {
                 }
               }}
               style={{
-                background: "linear-gradient(135deg, #00f2fe 0%, #4facfe 100%)",
-                border: "none",
-                color: "#020617",
-                padding: "0.55rem 1.25rem",
-                borderRadius: "8px",
-                fontSize: "12px",
-                fontWeight: 800,
-                fontFamily: "var(--font-display)",
+                background: "rgba(255, 255, 255, 0.04)",
+                border: "1px solid rgba(255, 255, 255, 0.12)",
+                color: "#e2e8f0",
+                padding: "0.45rem 0.85rem",
+                borderRadius: "6px",
+                fontSize: "11px",
+                fontWeight: 600,
+                fontFamily: "var(--font-mono)",
                 cursor: "pointer",
                 display: "inline-flex",
                 alignItems: "center",
-                gap: "0.5rem",
-                boxShadow: "0 4px 15px rgba(0, 242, 254, 0.3)",
+                gap: "0.4rem",
                 transition: "all 0.2s ease",
               }}
             >
-              <span>🖥️ Launch Visitor Raw Dashboard</span>
-              <span style={{ fontSize: "14px" }}>↓</span>
+              <span>Scroll to Dashboard</span>
+              <span style={{ fontSize: "11px", color: "#60a5fa" }}>↓</span>
             </button>
 
             <a
@@ -1157,22 +1155,23 @@ function CivilizationRecordPage() {
               target="_blank"
               rel="noopener noreferrer"
               style={{
-                background: "rgba(255,255,255,0.04)",
-                border: "1px solid rgba(255,255,255,0.15)",
-                color: "#fff",
-                padding: "0.55rem 1rem",
-                borderRadius: "8px",
-                fontSize: "12px",
+                background: "rgba(59, 130, 246, 0.08)",
+                border: "1px solid rgba(59, 130, 246, 0.25)",
+                color: "#93c5fd",
+                padding: "0.45rem 0.85rem",
+                borderRadius: "6px",
+                fontSize: "11px",
                 fontWeight: 600,
-                fontFamily: "var(--font-display)",
+                fontFamily: "var(--font-mono)",
                 textDecoration: "none",
                 display: "inline-flex",
                 alignItems: "center",
-                gap: "0.4rem",
+                gap: "0.3rem",
                 transition: "all 0.2s ease",
               }}
             >
-              <span>↗ Fullscreen Tab</span>
+              <span>Fullscreen Tab</span>
+              <span style={{ fontSize: "11px" }}>↗</span>
             </a>
           </div>
         </div>
@@ -1700,7 +1699,7 @@ function CivilizationRecordPage() {
                     e.currentTarget.style.borderColor = "var(--border-default)";
                   }}
                 >
-                  <span>📦 Full Research Package (ZIP)</span>
+                  <span>Full Research Package (.zip)</span>
                   <span style={{ color: "#00f2fe" }}>Download</span>
                 </a>
 
@@ -1732,7 +1731,7 @@ function CivilizationRecordPage() {
                       e.currentTarget.style.borderColor = "var(--border-default)";
                     }}
                   >
-                    <span>🎬 Historical Playback (JSON)</span>
+                    <span>Historical Playback (.json)</span>
                     <span style={{ color: "var(--accent-purple)" }}>Download</span>
                   </a>
                 )}
@@ -2776,12 +2775,12 @@ function CivilizationRecordPage() {
                                 fontSize: "12px",
                               }}
                             >
-                              <option value="Open">🟣 Open</option>
-                              <option value="Investigating">🟡 Investigating</option>
-                              <option value="Answered">🟢 Answered</option>
-                              <option value="Replicated">🔵 Replicated</option>
-                              <option value="Refuted">🔴 Refuted</option>
-                              <option value="Archived">⚫ Archived</option>
+                              <option value="Open">● Open</option>
+                              <option value="Investigating">● Investigating</option>
+                              <option value="Answered">● Answered</option>
+                              <option value="Replicated">● Replicated</option>
+                              <option value="Refuted">● Refuted</option>
+                              <option value="Archived">● Archived</option>
                             </select>
                             <input
                               type="text"
@@ -2830,7 +2829,7 @@ function CivilizationRecordPage() {
                                       setSelectedVariables(isSel ? selectedVariables.filter((item) => item !== v) : [...selectedVariables, v])
                                     }
                                     style={{
-                                      background: isSel ? "rgba(0,242,254,0.15)" : "rgba(255,255,255,0.02)",
+                                      background: isSel ? "rgba(0,242,254,0.12)" : "rgba(255,255,255,0.02)",
                                       border: `1px solid ${isSel ? "#00f2fe" : "var(--border-default)"}`,
                                       color: isSel ? "#00f2fe" : "var(--text-secondary)",
                                       padding: "0.15rem 0.5rem",
@@ -2839,7 +2838,7 @@ function CivilizationRecordPage() {
                                       cursor: "pointer",
                                     }}
                                   >
-                                    {isSel ? "✓ " : ""}{v}
+                                    {v}
                                   </button>
                                 );
                               })}
@@ -2860,7 +2859,7 @@ function CivilizationRecordPage() {
                                       setSelectedEvidence(isSel ? selectedEvidence.filter((item) => item !== m) : [...selectedEvidence, m])
                                     }
                                     style={{
-                                      background: isSel ? "rgba(16,185,129,0.15)" : "rgba(255,255,255,0.02)",
+                                      background: isSel ? "rgba(16,185,129,0.12)" : "rgba(255,255,255,0.02)",
                                       border: `1px solid ${isSel ? "#10b981" : "var(--border-default)"}`,
                                       color: isSel ? "#10b981" : "var(--text-secondary)",
                                       padding: "0.15rem 0.5rem",
@@ -2869,7 +2868,7 @@ function CivilizationRecordPage() {
                                       cursor: "pointer",
                                     }}
                                   >
-                                    {isSel ? "☑ " : ""}{m}
+                                    {m}
                                   </button>
                                 );
                               })}
@@ -2940,19 +2939,6 @@ function CivilizationRecordPage() {
                                 ? "#a855f7"
                                 : "#64748b";
 
-                            const statusIcon =
-                              rq.status === "Answered"
-                                ? "🟢"
-                                : rq.status === "Replicated"
-                                ? "🔵"
-                                : rq.status === "Investigating"
-                                ? "🟡"
-                                : rq.status === "Refuted"
-                                ? "🔴"
-                                : rq.status === "Open"
-                                ? "🟣"
-                                : "⚫";
-
                             return (
                               <div
                                 key={rq.id || qIdx}
@@ -2973,12 +2959,12 @@ function CivilizationRecordPage() {
                                     <span
                                       style={{
                                         fontFamily: "var(--font-mono)",
-                                        fontSize: "13px",
-                                        fontWeight: 800,
+                                        fontSize: "12px",
+                                        fontWeight: 700,
                                         color: "#00f2fe",
-                                        background: "rgba(0,242,254,0.1)",
-                                        border: "1px solid rgba(0,242,254,0.3)",
-                                        padding: "0.2rem 0.5rem",
+                                        background: "rgba(0,242,254,0.08)",
+                                        border: "1px solid rgba(0,242,254,0.25)",
+                                        padding: "0.15rem 0.5rem",
                                         borderRadius: "4px",
                                       }}
                                     >
@@ -2990,8 +2976,8 @@ function CivilizationRecordPage() {
                                         fontSize: "11px",
                                         fontWeight: 600,
                                         color: "#a5b4fc",
-                                        background: "rgba(99,102,241,0.15)",
-                                        border: "1px solid rgba(99,102,241,0.3)",
+                                        background: "rgba(99,102,241,0.12)",
+                                        border: "1px solid rgba(99,102,241,0.25)",
                                         padding: "0.15rem 0.5rem",
                                         borderRadius: "12px",
                                       }}
@@ -3002,18 +2988,18 @@ function CivilizationRecordPage() {
                                     <span
                                       style={{
                                         fontSize: "11px",
-                                        fontWeight: 700,
+                                        fontWeight: 600,
                                         color: statusColor,
-                                        background: `${statusColor}15`,
-                                        border: `1px solid ${statusColor}40`,
+                                        background: `${statusColor}12`,
+                                        border: `1px solid ${statusColor}35`,
                                         padding: "0.15rem 0.5rem",
                                         borderRadius: "12px",
                                         display: "flex",
                                         alignItems: "center",
-                                        gap: "0.3rem",
+                                        gap: "0.35rem",
                                       }}
                                     >
-                                      <span>{statusIcon}</span>
+                                      <span style={{ fontSize: "8px" }}>●</span>
                                       <span>{rq.status || "Open"}</span>
                                     </span>
 
@@ -3040,26 +3026,24 @@ function CivilizationRecordPage() {
                                       </span>
                                     )}
 
-                                    {/* Discreet Admin Trash Button */}
+                                    {/* Discreet Admin Delete Button */}
                                     {isAdmin && (
                                       <button
                                         onClick={() => handleDeleteQuestion(qIdx)}
                                         style={{
-                                          background: "rgba(255,255,255,0.03)",
+                                          background: "rgba(255,255,255,0.02)",
                                           border: "1px solid var(--border-default)",
                                           color: "var(--text-tertiary)",
                                           borderRadius: "4px",
-                                          padding: "0.2rem 0.5rem",
-                                          display: "flex",
-                                          alignItems: "center",
-                                          justifyContent: "center",
+                                          padding: "0.15rem 0.45rem",
                                           cursor: "pointer",
-                                          fontSize: "11px",
+                                          fontSize: "10px",
+                                          fontFamily: "var(--font-mono)",
                                           transition: "all 0.2s ease",
                                         }}
                                         title="Delete Question"
                                       >
-                                        🗑️
+                                        Delete
                                       </button>
                                     )}
                                   </div>
@@ -3092,7 +3076,7 @@ function CivilizationRecordPage() {
                                 {/* Motivation Section */}
                                 {rq.motivation && (
                                   <div style={{ fontSize: "11px", color: "var(--text-secondary)", background: "rgba(255,255,255,0.01)", padding: "0.5rem 0.8rem", borderRadius: "4px", border: "1px solid rgba(255,255,255,0.03)" }}>
-                                    <strong style={{ color: "#a5b4fc" }}>💡 Scientific Motivation: </strong>
+                                    <span style={{ fontSize: "9px", fontFamily: "var(--font-mono)", color: "#a5b4fc", textTransform: "uppercase", letterSpacing: "0.05em", marginRight: "0.4rem" }}>Scientific Motivation:</span>
                                     {rq.motivation}
                                   </div>
                                 )}
@@ -3126,7 +3110,7 @@ function CivilizationRecordPage() {
                                       <div style={{ display: "flex", flexWrap: "wrap", gap: "0.3rem", marginTop: "0.2rem" }}>
                                         {rq.variables.map((v: string, vIdx: number) => (
                                           <span key={vIdx} style={{ fontSize: "10px", background: "rgba(0,242,254,0.06)", color: "#00f2fe", border: "1px solid rgba(0,242,254,0.2)", padding: "0.1rem 0.4rem", borderRadius: "3px" }}>
-                                            ✓ {v}
+                                            {v}
                                           </span>
                                         ))}
                                       </div>
@@ -3141,7 +3125,7 @@ function CivilizationRecordPage() {
                                       <div style={{ display: "flex", flexWrap: "wrap", gap: "0.3rem", marginTop: "0.2rem" }}>
                                         {rq.expectedEvidence.map((ev: string, evIdx: number) => (
                                           <span key={evIdx} style={{ fontSize: "10px", background: "rgba(16,185,129,0.06)", color: "#10b981", border: "1px solid rgba(16,185,129,0.2)", padding: "0.1rem 0.4rem", borderRadius: "3px" }}>
-                                            ☑ {ev}
+                                            {ev}
                                           </span>
                                         ))}
                                       </div>
@@ -3891,8 +3875,8 @@ function CivilizationRecordPage() {
         >
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
             <div>
-              <h2 style={{ fontSize: "1.4rem", fontWeight: 800, color: "#fff", margin: 0 }}>📊 Interactive Simulation Console</h2>
-              <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.4)", marginTop: "0.2rem" }}>
+              <h2 style={{ fontSize: "1.3rem", fontWeight: 700, color: "#fff", margin: 0, fontFamily: "var(--font-display)" }}>Simulation Telemetry Console</h2>
+              <p style={{ fontSize: "0.85rem", color: "var(--text-tertiary)", marginTop: "0.2rem" }}>
                 Full telemetry, interactive lineage family tree, research chronicles, and timeline explorer.
               </p>
             </div>
@@ -3901,18 +3885,19 @@ function CivilizationRecordPage() {
               target="_blank"
               rel="noopener noreferrer"
               style={{
-                background: "rgba(99, 102, 241, 0.15)",
-                border: "1px solid rgba(99, 102, 241, 0.3)",
+                background: "rgba(255, 255, 255, 0.03)",
+                border: "1px solid var(--border-default)",
                 color: "#a5b4fc",
-                padding: "0.5rem 1rem",
-                borderRadius: "8px",
-                fontSize: "0.85rem",
+                padding: "0.45rem 0.9rem",
+                borderRadius: "6px",
+                fontSize: "0.8rem",
+                fontFamily: "var(--font-mono)",
                 fontWeight: 600,
                 textDecoration: "none",
                 transition: "all 0.2s"
               }}
             >
-              ↗ Open Fullscreen Dashboard
+              Fullscreen Console ↗
             </a>
           </div>
 
