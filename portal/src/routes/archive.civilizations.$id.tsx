@@ -1,15 +1,8 @@
-import React, { useState, useEffect, lazy, Suspense } from "react";
+import React, { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { fetchCivilizationData } from "@/lib/server-fns";
 import CivilizationCard, { ExperimentCardProps } from "@/components/civilization/CivilizationCard";
 import { BIOME_COLORS } from "@/lib/biome-palette";
-import type { ReplayData } from "@/components/civilization/ExperimentExplorer";
-
-// Lazy-load so it never SSRs (uses canvas / browser APIs)
-const ExperimentExplorer = lazy(() => import("@/components/civilization/ExperimentExplorer"));
-
-const SUPABASE_STORAGE_BASE =
-  "https://tyajlotsxwocxxawcwta.supabase.co/storage/v1/object/public/experiments";
 
 export const Route = createFileRoute("/archive/civilizations/$id")({
   loader: async ({ params }) => {
@@ -278,24 +271,6 @@ function CivilizationRecordPage() {
     "research" | "chronicle" | "observatory" | "technical"
   >("research");
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
-  const [replayData, setReplayData] = useState<ReplayData | null>(null);
-  const [replayLoading, setReplayLoading] = useState(true);
-
-  // Fetch replay.json DIRECTLY from public Supabase Storage (bypasses server function size limits)
-  useEffect(() => {
-    const url = `${SUPABASE_STORAGE_BASE}/${record.id}/replay/replay.json`;
-    fetch(url)
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
-      })
-      .then((data: ReplayData) => setReplayData(data))
-      .catch((err) => {
-        console.warn("[ExperimentExplorer] replay.json not found:", err.message);
-        setReplayData(null);
-      })
-      .finally(() => setReplayLoading(false));
-  }, [record.id]);
 
   const relatedCards: ExperimentCardProps[] = related.map((row: any) => ({
     id: row.id,
@@ -2442,50 +2417,63 @@ function CivilizationRecordPage() {
           </section>
         </div>
 
-        {/* ═══ Experiment Explorer ═══════════════════════════════════════════ */}
+        {/* ═══ Interactive Simulation Explorer ═════════════════════════════ */}
         <section
           style={{
             marginTop: "4rem",
             borderTop: "1px solid rgba(255,255,255,0.08)",
+            paddingTop: "2rem",
           }}
         >
-          {replayLoading && (
-            <div style={{
-              display: "flex", alignItems: "center", justifyContent: "center",
-              padding: "4rem", color: "rgba(255,255,255,0.3)", fontSize: 14,
-            }}>
-              <div style={{ textAlign: "center" }}>
-                <div style={{ fontSize: 32, marginBottom: 12 }}>⚙️</div>
-                <div>Loading Experiment Explorer…</div>
-                <div style={{ fontSize: 11, marginTop: 6, color: "rgba(255,255,255,0.2)" }}>Fetching replay data</div>
-              </div>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
+            <div>
+              <h2 style={{ fontSize: "1.4rem", fontWeight: 800, color: "#fff", margin: 0 }}>📊 Interactive Simulation Console</h2>
+              <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.4)", marginTop: "0.2rem" }}>
+                Full telemetry, interactive lineage family tree, research chronicles, and timeline explorer.
+              </p>
             </div>
-          )}
-          {!replayLoading && replayData && (
-            <Suspense fallback={
-              <div style={{ display:"flex", alignItems:"center", justifyContent:"center", padding:"4rem", color:"rgba(255,255,255,0.3)", fontSize:14 }}>
-                <div style={{ textAlign:"center" }}>
-                  <div style={{ fontSize:32, marginBottom:12 }}>⚙️</div>
-                  <div>Loading Experiment Explorer…</div>
-                </div>
-              </div>
-            }>
-              <ExperimentExplorer
-                replay={replayData}
-                coverUrl={record.cover_url || record.previewUrl || ""}
-                experimentId={record.id}
-                experimentTitle={record.title}
-              />
-            </Suspense>
-          )}
-          {!replayLoading && !replayData && (
-            <div style={{
-              display: "flex", alignItems: "center", justifyContent: "center",
-              padding: "3rem", color: "rgba(255,255,255,0.2)", fontSize: 13,
-            }}>
-              Experiment Explorer not available for this record.
-            </div>
-          )}
+            <a
+              href={`/visualizer.html?id=${record.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                background: "rgba(99, 102, 241, 0.15)",
+                border: "1px solid rgba(99, 102, 241, 0.3)",
+                color: "#a5b4fc",
+                padding: "0.5rem 1rem",
+                borderRadius: "8px",
+                fontSize: "0.85rem",
+                fontWeight: 600,
+                textDecoration: "none",
+                transition: "all 0.2s"
+              }}
+            >
+              ↗ Open Fullscreen Dashboard
+            </a>
+          </div>
+
+          <div
+            style={{
+              width: "100%",
+              height: "900px",
+              borderRadius: "12px",
+              overflow: "hidden",
+              border: "1px solid rgba(255, 255, 255, 0.08)",
+              background: "#0b0f19",
+              boxShadow: "0 10px 30px rgba(0,0,0,0.5)",
+            }}
+          >
+            <iframe
+              src={`/visualizer.html?id=${record.id}`}
+              style={{
+                width: "100%",
+                height: "100%",
+                border: "none",
+                background: "transparent",
+              }}
+              title="Genesis Simulation Visualizer"
+            />
+          </div>
         </section>
 
         {/* Dynamic Related Experiments Grid */}
