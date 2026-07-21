@@ -1,0 +1,120 @@
+{
+  "version": 1,
+  "sdk_version": "0.24.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "none"
+  },
+  "mcp": {
+    "server": {
+      "name": "genesis-mcp",
+      "version": "0.1.0",
+      "title": "Genesis — Civilization Archive"
+    },
+    "tools": [
+      {
+        "name": "list_civilizations",
+        "title": "List civilizations",
+        "description": "List published civilization records from the Genesis public archive (id, slug, title, abstract, tags, seed, ticks, and headline metrics).",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "description": "Max records to return"
+            },
+            "offset": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "description": "Pagination offset"
+            },
+            "featured_only": {
+              "type": "boolean",
+              "default": false,
+              "description": "Return only featured records"
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_civilization",
+        "title": "Get civilization record",
+        "description": "Fetch the full published record for one civilization by id (e.g. 'EXP-20260627-XY81') or slug, including config and summary JSON.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "id_or_slug": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Experiment id (EXP-...) or url slug"
+            }
+          },
+          "required": [
+            "id_or_slug"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_chronicle_events",
+        "title": "List chronicle events",
+        "description": "List narrative chronicle events (Birth, Death, Milestone, Disaster, Dispute, ClimateEpoch, Extinction) for a published civilization, ordered by tick.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "experiment_id": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Experiment id (EXP-...)"
+            },
+            "event_type": {
+              "type": "string",
+              "description": "Optional filter by event type"
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 50
+            },
+            "offset": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          "required": [
+            "experiment_id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
