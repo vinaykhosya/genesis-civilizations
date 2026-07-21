@@ -12,9 +12,13 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ArchiveRouteImport } from './routes/archive'
 import { Route as ControlRouteImport } from './routes/control'
+import { Route as McpRouteImport } from './routes/mcp'
+import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as ArchiveIndexRouteImport } from './routes/archive.index'
 import { Route as ControlIndexRouteImport } from './routes/control.index'
 import { Route as ControlLoginRouteImport } from './routes/control.login'
+import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 import { Route as ArchiveCivilizationsIdRouteImport } from './routes/archive.civilizations.$id'
 import { Route as DocsArchitectureFilenameRouteImport } from './routes/docs.architecture.$filename'
 import { Route as ApiV1AdminAuthRouteImport } from './routes/api/v1/admin/auth'
@@ -36,6 +40,23 @@ const ControlRoute = ControlRouteImport.update({
   path: '/control',
   getParentRoute: () => rootRouteImport,
 } as any)
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Char91DotmcpChar93ListToolsRoute =
+  Char91DotmcpChar93ListToolsRouteImport.update({
+    id: '/.mcp/list-tools',
+    path: '/.mcp/list-tools',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ArchiveIndexRoute = ArchiveIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -51,6 +72,12 @@ const ControlLoginRoute = ControlLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => ControlRoute,
 } as any)
+const Char91DotmcpChar93InvokeToolToolRoute =
+  Char91DotmcpChar93InvokeToolToolRouteImport.update({
+    id: '/.mcp/invoke-tool/$tool',
+    path: '/.mcp/invoke-tool/$tool',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ArchiveCivilizationsIdRoute = ArchiveCivilizationsIdRouteImport.update({
   id: '/civilizations/$id',
   path: '/civilizations/$id',
@@ -84,9 +111,13 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/archive': typeof ArchiveRouteWithChildren
   '/control': typeof ControlRouteWithChildren
+  '/mcp': typeof McpRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/control/login': typeof ControlLoginRoute
   '/archive/': typeof ArchiveIndexRoute
   '/control/': typeof ControlIndexRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/archive/civilizations/$id': typeof ArchiveCivilizationsIdRoute
   '/docs/architecture/$filename': typeof DocsArchitectureFilenameRoute
   '/api/v1/admin/auth': typeof ApiV1AdminAuthRoute
@@ -95,9 +126,13 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/mcp': typeof McpRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/control/login': typeof ControlLoginRoute
   '/archive': typeof ArchiveIndexRoute
   '/control': typeof ControlIndexRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/archive/civilizations/$id': typeof ArchiveCivilizationsIdRoute
   '/docs/architecture/$filename': typeof DocsArchitectureFilenameRoute
   '/api/v1/admin/auth': typeof ApiV1AdminAuthRoute
@@ -109,9 +144,13 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/archive': typeof ArchiveRouteWithChildren
   '/control': typeof ControlRouteWithChildren
+  '/mcp': typeof McpRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/control/login': typeof ControlLoginRoute
   '/archive/': typeof ArchiveIndexRoute
   '/control/': typeof ControlIndexRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/archive/civilizations/$id': typeof ArchiveCivilizationsIdRoute
   '/docs/architecture/$filename': typeof DocsArchitectureFilenameRoute
   '/api/v1/admin/auth': typeof ApiV1AdminAuthRoute
@@ -124,9 +163,13 @@ export interface FileRouteTypes {
     | '/'
     | '/archive'
     | '/control'
+    | '/mcp'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/control/login'
     | '/archive/'
     | '/control/'
+    | '/.mcp/invoke-tool/$tool'
     | '/archive/civilizations/$id'
     | '/docs/architecture/$filename'
     | '/api/v1/admin/auth'
@@ -135,9 +178,13 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/mcp'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/control/login'
     | '/archive'
     | '/control'
+    | '/.mcp/invoke-tool/$tool'
     | '/archive/civilizations/$id'
     | '/docs/architecture/$filename'
     | '/api/v1/admin/auth'
@@ -148,9 +195,13 @@ export interface FileRouteTypes {
     | '/'
     | '/archive'
     | '/control'
+    | '/mcp'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/control/login'
     | '/archive/'
     | '/control/'
+    | '/.mcp/invoke-tool/$tool'
     | '/archive/civilizations/$id'
     | '/docs/architecture/$filename'
     | '/api/v1/admin/auth'
@@ -162,6 +213,10 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ArchiveRoute: typeof ArchiveRouteWithChildren
   ControlRoute: typeof ControlRouteWithChildren
+  McpRoute: typeof McpRoute
+  Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
+  Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
   DocsArchitectureFilenameRoute: typeof DocsArchitectureFilenameRoute
   ApiV1AdminAuthRoute: typeof ApiV1AdminAuthRoute
   ApiV1AdminExperimentsUploadRoute: typeof ApiV1AdminExperimentsUploadRoute
@@ -191,6 +246,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ControlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.mcp/list-tools': {
+      id: '/.mcp/list-tools'
+      path: '/.mcp/list-tools'
+      fullPath: '/.mcp/list-tools'
+      preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/archive/': {
       id: '/archive/'
       path: '/'
@@ -211,6 +287,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/control/login'
       preLoaderRoute: typeof ControlLoginRouteImport
       parentRoute: typeof ControlRoute
+    }
+    '/.mcp/invoke-tool/$tool': {
+      id: '/.mcp/invoke-tool/$tool'
+      path: '/.mcp/invoke-tool/$tool'
+      fullPath: '/.mcp/invoke-tool/$tool'
+      preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/archive/civilizations/$id': {
       id: '/archive/civilizations/$id'
@@ -280,6 +363,11 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ArchiveRoute: ArchiveRouteWithChildren,
   ControlRoute: ControlRouteWithChildren,
+  McpRoute: McpRoute,
+  Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
+  Char91DotwellKnownChar93OauthProtectedResourceRoute:
+    Char91DotwellKnownChar93OauthProtectedResourceRoute,
+  Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
   DocsArchitectureFilenameRoute: DocsArchitectureFilenameRoute,
   ApiV1AdminAuthRoute: ApiV1AdminAuthRoute,
   ApiV1AdminExperimentsUploadRoute: ApiV1AdminExperimentsUploadRoute,
