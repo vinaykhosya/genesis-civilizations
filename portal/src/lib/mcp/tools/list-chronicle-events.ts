@@ -13,32 +13,31 @@ function publicSupabase() {
 }
 
 export default defineTool({
-  name: "list_civilizations",
-  title: "List civilizations",
+  name: "list_chronicle_events",
+  title: "List chronicle events",
   description:
-    "List published civilization records from the Genesis public archive (id, slug, title, abstract, tags, seed, ticks, and headline metrics).",
+    "List narrative chronicle events (Birth, Death, Milestone, Disaster, Dispute, ClimateEpoch, Extinction) for a published civilization, ordered by tick.",
   inputSchema: {
-    limit: z.number().int().min(1).max(100).default(25).describe("Max records to return"),
-    offset: z.number().int().min(0).default(0).describe("Pagination offset"),
-    featured_only: z.boolean().default(false).describe("Return only featured records"),
+    experiment_id: z.string().min(1).describe("Experiment id (EXP-...)"),
+    event_type: z.string().optional().describe("Optional filter by event type"),
+    limit: z.number().int().min(1).max(200).default(50),
+    offset: z.number().int().min(0).default(0),
   },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
-  handler: async ({ limit, offset, featured_only }) => {
+  handler: async ({ experiment_id, event_type, limit, offset }) => {
     const sb = publicSupabase();
-    let query = sb
-      .from("experiments")
-      .select(
-        "id, slug, title, abstract, tags, seed, ticks, world_preset, total_agents, survivors_count, max_generation, is_featured, published_at",
-      )
-      .eq("is_published", true)
-      .order("published_at", { ascending: false })
+    let q = sb
+      .from("experiment_events")
+      .select("tick, year, day, event_type, description, metadata")
+      .eq("experiment_id", experiment_id)
+      .order("tick", { ascending: true })
       .range(offset, offset + limit - 1);
-    if (featured_only) query = query.eq("is_featured", true);
-    const { data, error } = await query;
+    if (event_type) q = q.eq("event_type", event_type);
+    const { data, error } = await q;
     if (error) return { content: [{ type: "text", text: error.message }], isError: true };
     return {
       content: [{ type: "text", text: JSON.stringify(data ?? [], null, 2) }],
-      structuredContent: { civilizations: data ?? [] },
+      structuredContent: { events: data ?? [] },
     };
   },
 });
