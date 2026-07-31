@@ -14,6 +14,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as ArchiveRouteImport } from './routes/archive'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as ControlRouteImport } from './routes/control'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.xml]'
 import { Route as ApiSitemapDotxmlRouteImport } from './routes/api/sitemap[.xml]'
 import { Route as ArchiveIndexRouteImport } from './routes/archive.index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
@@ -49,6 +50,11 @@ const BlogRoute = BlogRouteImport.update({
 const ControlRoute = ControlRouteImport.update({
   id: '/control',
   path: '/control',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiSitemapDotxmlRoute = ApiSitemapDotxmlRouteImport.update({
@@ -116,6 +122,7 @@ export interface FileRoutesByFullPath {
   '/archive': typeof ArchiveRouteWithChildren
   '/blog': typeof BlogRouteWithChildren
   '/control': typeof ControlRouteWithChildren
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/control/login': typeof ControlLoginRoute
@@ -131,6 +138,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/control/login': typeof ControlLoginRoute
@@ -150,6 +158,7 @@ export interface FileRoutesById {
   '/archive': typeof ArchiveRouteWithChildren
   '/blog': typeof BlogRouteWithChildren
   '/control': typeof ControlRouteWithChildren
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/control/login': typeof ControlLoginRoute
@@ -170,6 +179,7 @@ export interface FileRouteTypes {
     | '/archive'
     | '/blog'
     | '/control'
+    | '/sitemap.xml'
     | '/api/sitemap.xml'
     | '/blog/$slug'
     | '/control/login'
@@ -185,6 +195,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/sitemap.xml'
     | '/api/sitemap.xml'
     | '/blog/$slug'
     | '/control/login'
@@ -203,6 +214,7 @@ export interface FileRouteTypes {
     | '/archive'
     | '/blog'
     | '/control'
+    | '/sitemap.xml'
     | '/api/sitemap.xml'
     | '/blog/$slug'
     | '/control/login'
@@ -222,6 +234,7 @@ export interface RootRouteChildren {
   ArchiveRoute: typeof ArchiveRouteWithChildren
   BlogRoute: typeof BlogRouteWithChildren
   ControlRoute: typeof ControlRouteWithChildren
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ApiSitemapDotxmlRoute: typeof ApiSitemapDotxmlRoute
   DocsArchitectureFilenameRoute: typeof DocsArchitectureFilenameRoute
   ApiV1AdminAuthRoute: typeof ApiV1AdminAuthRoute
@@ -264,6 +277,13 @@ declare module '@tanstack/react-router' {
       path: '/control'
       fullPath: '/control'
       preLoaderRoute: typeof ControlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/sitemap.xml': {
@@ -390,6 +410,7 @@ const rootRouteChildren: RootRouteChildren = {
   ArchiveRoute: ArchiveRouteWithChildren,
   BlogRoute: BlogRouteWithChildren,
   ControlRoute: ControlRouteWithChildren,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   ApiSitemapDotxmlRoute: ApiSitemapDotxmlRoute,
   DocsArchitectureFilenameRoute: DocsArchitectureFilenameRoute,
   ApiV1AdminAuthRoute: ApiV1AdminAuthRoute,
