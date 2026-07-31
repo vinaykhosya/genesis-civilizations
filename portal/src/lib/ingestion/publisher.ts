@@ -126,34 +126,36 @@ export async function publishExperiment(
   await chunkAndInsert("experiment_events", mappedEvents);
 
   // 3. Batch-insert agents
-  const mappedAgents = agents.map((agent) => ({
-    experiment_id: id,
-    agent_id: agent.agent_id,
-    colony_id: agent.colony_id,
-    colony_name: agent.colony_name,
-    generation: agent.generation,
-    age_ticks: agent.age_ticks,
-    lifespan_ticks: agent.lifespan_ticks,
-    health_at_death: agent.health_at_death,
-    children_count: agent.children_count,
-    shelter_level: agent.shelter_level,
-    cause_of_death: agent.cause_of_death,
-    birth_location: agent.birth_location,
-    death_location: agent.death_location,
-    exploration_radius: agent.exploration_radius,
-    genes: agent.genes,
-  }));
+  const mappedAgents = agents
+    .filter((agent) => agent && agent.agent_id !== undefined && agent.agent_id !== null && !isNaN(agent.agent_id))
+    .map((agent) => ({
+      experiment_id: id,
+      agent_id: parseInt(agent.agent_id, 10),
+      colony_id: isNaN(parseInt(agent.colony_id, 10)) ? 0 : parseInt(agent.colony_id, 10),
+      colony_name: agent.colony_name || "Unknown",
+      generation: parseInt(agent.generation, 10) || 0,
+      age_ticks: parseInt(agent.age_ticks, 10) || 0,
+      lifespan_ticks: parseInt(agent.lifespan_ticks, 10) || 0,
+      health_at_death: parseFloat(agent.health_at_death) || 0.0,
+      children_count: parseInt(agent.children_count, 10) || 0,
+      shelter_level: parseInt(agent.shelter_level, 10) || 0,
+      cause_of_death: agent.cause_of_death || "unknown",
+      birth_location: agent.birth_location || null,
+      death_location: agent.death_location || null,
+      exploration_radius: parseFloat(agent.exploration_radius) || 0.0,
+      genes: agent.genes || {},
+    }));
   await chunkAndInsert("experiment_agents", mappedAgents);
 
   // 4. Batch-insert population data points
   const mappedPop = population.map((row) => ({
     experiment_id: id,
     tick: parseInt(row.tick, 10),
-    total: parseInt(row.total, 10) || 0,
-    alpha: parseInt(row.alpha, 10) || 0,
-    beta: parseInt(row.beta, 10) || 0,
-    gamma: parseInt(row.gamma, 10) || 0,
-    delta: parseInt(row.delta, 10) || 0,
+    total: parseInt(row.total_alive || row.total, 10) || 0,
+    alpha: parseInt(row.colony_alpha || row.alpha, 10) || 0,
+    beta: parseInt(row.colony_beta || row.beta, 10) || 0,
+    gamma: parseInt(row.colony_gamma || row.gamma, 10) || 0,
+    delta: parseInt(row.colony_delta || row.delta, 10) || 0,
   }));
   await chunkAndInsert("experiment_population", mappedPop);
 }

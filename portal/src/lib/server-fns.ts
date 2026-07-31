@@ -171,4 +171,33 @@ export const updateExperimentData = createServerFn({ method: "POST" })
     return { success: true };
   });
 
+// 7. Fetch paginated Agent Census Telemetry records from Supabase
+export const fetchExperimentAgents = createServerFn({ method: "POST" })
+  .validator((data: { experimentId: string; colony?: string; page?: number; limit?: number }) => data)
+  .handler(async ({ data }) => {
+    const { experimentId, colony, page = 1, limit = 25 } = data;
+    let query = supabaseServer
+      .from("experiment_agents")
+      .select("*", { count: "exact" })
+      .eq("experiment_id", experimentId);
+
+    if (colony && colony !== "All") {
+      query = query.eq("colony_name", colony);
+    }
+
+    const from = (page - 1) * limit;
+    const to = from + limit - 1;
+
+    const { data: agents, count, error } = await query
+      .order("agent_id", { ascending: true })
+      .range(from, to);
+
+    if (error) {
+      console.warn("[fetchExperimentAgents] Error fetching agents:", error.message);
+      return { agents: [], total: 0 };
+    }
+
+    return { agents: agents || [], total: count || 0 };
+  });
+
 

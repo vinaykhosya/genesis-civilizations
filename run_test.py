@@ -1319,17 +1319,24 @@ def main():
         leaderboards["most_generations"] = sorted(founder_stats, key=lambda x: x["max_generation"], reverse=True)[:5]
         leaderboards["cognitive_mastery"] = sorted(founder_stats, key=lambda x: x["avg_prediction_accuracy"], reverse=True)[:5]
 
-    # Extract colony center spawn locations from Gen 0 founders
+    # Extract colony center spawn locations directly from world.colonies
     colony_locations = {}
-    colony_names = {0: "Alpha", 1: "Beta", 2: "Gamma", 3: "Delta"}
-    for a in world.agents:
-        if getattr(a, "generation", 0) == 0 and hasattr(a, "sampled_path_history") and a.sampled_path_history:
-            cid = getattr(a, "colony_id", 0)
-            cname = colony_names.get(cid, f"Colony-{cid}")
-            if cname not in colony_locations:
-                first_coord = a.sampled_path_history[0]
-                if len(first_coord) >= 2:
-                    colony_locations[cname] = [int(first_coord[0]), int(first_coord[1])] # [x, y] in JS/Canvas standard
+    if hasattr(world, "colonies") and world.colonies:
+        for c in world.colonies:
+            cname = c.get("name")
+            if cname and "location" in c:
+                # Store as [y, x] to remain consistent with world matrix indexing
+                colony_locations[cname] = [int(c["location"][1]), int(c["location"][0])]
+    if not colony_locations:
+        colony_names = {0: "Alpha", 1: "Beta", 2: "Gamma", 3: "Delta"}
+        for a in world.agents:
+            if getattr(a, "generation", 0) == 0 and hasattr(a, "sampled_path_history") and a.sampled_path_history:
+                cid = getattr(a, "colony_id", 0)
+                cname = colony_names.get(cid, f"Colony-{cid}")
+                if cname not in colony_locations:
+                    first_coord = a.sampled_path_history[0]
+                    if len(first_coord) >= 2:
+                        colony_locations[cname] = [int(first_coord[0]), int(first_coord[1])]
 
     summary_record = {
         "timestamp": timestamp,
@@ -1393,12 +1400,24 @@ def main():
     archive_experiment(world, summary_record, exp_folder, epoch_stats=epoch_stats)
     print(f"Experiment successfully archived to: {exp_folder}")
     
-    # 13. Create a ZIP package of the experiment folder
+    # 13. Create a clean ZIP package of the experiment folder for portal ingestion
     try:
-        shutil.make_archive(exp_folder, "zip", exp_folder)
-        print(f"ZIP package created successfully: {exp_folder}.zip")
+        import zipfile
+        zip_path = f"{exp_folder}.zip"
+        with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zipf:
+            for root, dirs, files in os.walk(exp_folder):
+                for f in files:
+                    if not f.startswith("checkpoint_"):
+                        full_p = os.path.join(root, f)
+                        rel_p = os.path.relpath(full_p, exp_folder)
+                        zipf.write(full_p, rel_p)
+        print(f"ZIP package created successfully: {zip_path}")
     except Exception as ze:
-        print(f"  Warning: Failed to create ZIP package: {ze}")
+        print(f"  Warning: Failed to create clean ZIP package, falling back to full archive: {ze}")
+        try:
+            shutil.make_archive(exp_folder, "zip", exp_folder)
+        except Exception:
+            pass
 
 
 if __name__ == "__main__":

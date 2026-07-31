@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { fetchCivilizationData, updateExperimentData, checkAdminAuthStatus } from "@/lib/server-fns";
+import { fetchCivilizationData, updateExperimentData, checkAdminAuthStatus, fetchExperimentAgents } from "@/lib/server-fns";
 import CivilizationCard, { ExperimentCardProps } from "@/components/civilization/CivilizationCard";
 import { BIOME_COLORS } from "@/lib/biome-palette";
 
@@ -198,6 +198,23 @@ const STUDY_METADATA: { [key: string]: StudyMetadata } = {
     simulationDate: "2026-06-28",
     citationKey: "genesis_record_gen_0002",
     related: [{ id: "GEN-0001", role: "Accelerated recovery comparison" }],
+  },
+  "GEN-EXP-0002": {
+    question:
+      "How do extreme injury recovery costs (200x slow-healing) shape long-term cognitive, genetic, and social evolution under scarcity?",
+    findings: [
+      "🧠 Cognitive Paradox: Colony Delta displayed highest prediction accuracy (95%), yet went extinct first (Year 45).",
+      "🧬 Single-Lineage Monopoly: Founder #5 achieved 100% population dominance by Year 600.",
+      "💧 Hydration Paradox: 55.5M water units stored in Beta Colony, yet 83.2% of dehydration deaths occurred while holding water.",
+      "🔄 Altruism Reversal: Resource sharing peaked at Year 100 (+19%), then reversed (-57%) under Malthusian capacity.",
+      "⛺ Infrastructure Ceiling: 98.9% of agents remained at Level 1 (Tent) shelter for 905 years.",
+    ],
+    simStatus: "Completed (905 Years)",
+    archiveStatus: "Published & Featured",
+    engineVersion: "v1.5.0",
+    simulationDate: "2026-07-31",
+    citationKey: "gen_exp_0002_slow_healing",
+    related: [{ id: "GEN-EXP-0001", role: "Baseline 100k comparison" }],
   },
   "GEN-0003": {
     question:
@@ -453,6 +470,45 @@ function CivilizationRecordPage() {
   const [proposedIndVars, setProposedIndVars] = useState<string>("");
   const [proposedDepVars, setProposedDepVars] = useState<string>("");
   const [proposedDuration, setProposedDuration] = useState<string>("100k ticks");
+
+  // Collapsible Research Questions Dropdown State
+  const [expandedQuestions, setExpandedQuestions] = useState<{ [key: string]: boolean }>({});
+
+  // Collapsible Agent Census Telemetry Accordion & Pagination State
+  const [censusExpanded, setCensusExpanded] = useState<boolean>(false);
+  const [censusAgents, setCensusAgents] = useState<any[]>([]);
+  const [censusTotal, setCensusTotal] = useState<number>(0);
+  const [censusColonyFilter, setCensusColonyFilter] = useState<string>("All");
+  const [censusPage, setCensusPage] = useState<number>(1);
+  const [censusLoading, setCensusLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!censusExpanded) return;
+    let isMounted = true;
+    setCensusLoading(true);
+    fetchExperimentAgents({
+      data: {
+        experimentId: record.id,
+        colony: censusColonyFilter,
+        page: censusPage,
+        limit: 25,
+      },
+    })
+      .then((res) => {
+        if (isMounted) {
+          setCensusAgents(res.agents || []);
+          setCensusTotal(res.total || 0);
+          setCensusLoading(false);
+        }
+      })
+      .catch(() => {
+        if (isMounted) setCensusLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [censusExpanded, censusColonyFilter, censusPage, record.id]);
 
   // Comments / Open Questions State
   const [comments, setComments] = useState<any[]>(
@@ -2053,9 +2109,12 @@ function CivilizationRecordPage() {
                       };
                       const colColor = colors[colName] || "#ffffff";
 
-                      // coordinates mapping [x, y] in 1024x1024 grid
-                      const xPct = (coords[0] / 1024) * 100;
-                      const yPct = (coords[1] / 1024) * 100;
+                      // Coordinates mapping: simulation grid stores [y, x] where coords[0]=row (Y/top), coords[1]=col (X/left)
+                      const yVal = typeof coords[0] === "number" ? coords[0] : parseFloat(coords[0]);
+                      const xVal = typeof coords[1] === "number" ? coords[1] : parseFloat(coords[1]);
+
+                      const xPct = Math.max(2, Math.min(98, (xVal / 1024) * 100));
+                      const yPct = Math.max(2, Math.min(98, (yVal / 1024) * 100));
 
                       return (
                         <div
@@ -2072,7 +2131,7 @@ function CivilizationRecordPage() {
                           <span
                             style={{
                               position: "absolute",
-                              top: "16px",
+                              top: yPct > 70 ? "-24px" : "16px",
                               left: "50%",
                               transform: "translateX(-50%)",
                               background: "rgba(2, 4, 8, 0.85)",
@@ -3024,6 +3083,8 @@ function CivilizationRecordPage() {
                           .filter((rq) => selectedCategoryFilter === "All" || (rq.category || "Population Dynamics") === selectedCategoryFilter)
                           .filter((rq) => selectedStatusFilter === "All" || (rq.status || "Open") === selectedStatusFilter)
                           .map((rq, qIdx) => {
+                            const qId = rq.id || String(qIdx);
+                            const isExpanded = !!expandedQuestions[qId];
                             const statusColor =
                               rq.status === "Answered"
                                 ? "#10b981"
@@ -3039,20 +3100,37 @@ function CivilizationRecordPage() {
 
                             return (
                               <div
-                                key={rq.id || qIdx}
+                                key={qId}
                                 style={{
                                   position: "relative",
-                                  padding: "1.4rem",
+                                  padding: "1.25rem",
                                   background: "#0a0f19",
-                                  border: "1px solid var(--border-default)",
+                                  border: `1px solid ${isExpanded ? "rgba(0, 242, 254, 0.3)" : "var(--border-default)"}`,
                                   borderRadius: "var(--radius-lg)",
                                   display: "flex",
                                   flexDirection: "column",
-                                  gap: "1rem",
+                                  gap: "0.85rem",
+                                  transition: "border-color 0.2s ease",
                                 }}
                               >
                                 {/* Header Bar */}
-                                <div className="rq-card-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.75rem" }}>
+                                <div
+                                  className="rq-card-header"
+                                  style={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    alignItems: "center",
+                                    flexWrap: "wrap",
+                                    gap: "0.75rem",
+                                    cursor: "pointer",
+                                  }}
+                                  onClick={() =>
+                                    setExpandedQuestions((prev) => ({
+                                      ...prev,
+                                      [qId]: !prev[qId],
+                                    }))
+                                  }
+                                >
                                   <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }}>
                                     <span
                                       style={{
@@ -3124,10 +3202,44 @@ function CivilizationRecordPage() {
                                       </span>
                                     )}
 
+                                    {/* Expand/Collapse Dropdown Arrow Toggle Button */}
+                                    <button
+                                      type="button"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setExpandedQuestions((prev) => ({
+                                          ...prev,
+                                          [qId]: !prev[qId],
+                                        }));
+                                      }}
+                                      style={{
+                                        background: isExpanded ? "rgba(0, 242, 254, 0.15)" : "rgba(255, 255, 255, 0.04)",
+                                        border: `1px solid ${isExpanded ? "rgba(0, 242, 254, 0.4)" : "var(--border-default)"}`,
+                                        color: isExpanded ? "#00f2fe" : "var(--text-secondary)",
+                                        padding: "0.25rem 0.65rem",
+                                        borderRadius: "6px",
+                                        fontSize: "11px",
+                                        fontFamily: "var(--font-mono)",
+                                        fontWeight: 700,
+                                        cursor: "pointer",
+                                        display: "inline-flex",
+                                        alignItems: "center",
+                                        gap: "0.4rem",
+                                        transition: "all 0.2s ease",
+                                      }}
+                                    >
+                                      <span>{isExpanded ? "Hide Details" : "View Details"}</span>
+                                      <span style={{ transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s ease", display: "inline-block" }}>▼</span>
+                                    </button>
+
                                     {/* Discreet Admin Delete Button */}
                                     {isAdmin && (
                                       <button
-                                        onClick={() => handleDeleteQuestion(qIdx)}
+                                        type="button"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          handleDeleteQuestion(qIdx);
+                                        }}
                                         style={{
                                           background: "rgba(255,255,255,0.02)",
                                           border: "1px solid var(--border-default)",
@@ -3147,115 +3259,133 @@ function CivilizationRecordPage() {
                                   </div>
                                 </div>
 
-                                {/* Question Title & Core Question Box */}
-                                <div>
-                                  <h4 style={{ fontSize: "var(--text-md)", fontWeight: 700, color: "#fff", margin: "0 0 0.5rem 0" }}>
-                                    {rq.title}
-                                  </h4>
-                                  <div
-                                    style={{
-                                      background: "#05080f",
-                                      borderLeft: "3px solid #00f2fe",
-                                      borderTop: "1px solid rgba(255,255,255,0.03)",
-                                      borderRight: "1px solid rgba(255,255,255,0.03)",
-                                      borderBottom: "1px solid rgba(255,255,255,0.03)",
-                                      borderRadius: "6px",
-                                      padding: "0.8rem 1rem",
-                                      fontSize: "var(--text-xs)",
-                                      color: "#cbd5e1",
-                                      lineHeight: 1.5,
-                                    }}
-                                  >
-                                    <strong style={{ color: "#00f2fe" }}>Question: </strong>
-                                    {rq.question}
-                                  </div>
-                                </div>
-
-                                {/* Motivation Section */}
-                                {rq.motivation && (
-                                  <div style={{ fontSize: "11px", color: "var(--text-secondary)", background: "rgba(255,255,255,0.01)", padding: "0.5rem 0.8rem", borderRadius: "4px", border: "1px solid rgba(255,255,255,0.03)" }}>
-                                    <span style={{ fontSize: "9px", fontFamily: "var(--font-mono)", color: "#a5b4fc", textTransform: "uppercase", letterSpacing: "0.05em", marginRight: "0.4rem" }}>Scientific Motivation:</span>
-                                    {rq.motivation}
-                                  </div>
-                                )}
-
-                                {/* Proposed Design Box */}
-                                {rq.proposedDesign && (
-                                  <div style={{ fontSize: "10px", fontFamily: "var(--font-mono)", background: "#05070d", border: "1px dashed rgba(0,242,254,0.2)", borderRadius: "6px", padding: "0.6rem 0.8rem", display: "flex", flexWrap: "wrap", gap: "1rem", justifyContent: "space-between" }}>
-                                    <div><span style={{ color: "var(--text-tertiary)" }}>Ind. Vars: </span><span style={{ color: "#00f2fe" }}>{rq.proposedDesign.indVars}</span></div>
-                                    <div><span style={{ color: "var(--text-tertiary)" }}>Dep. Vars: </span><span style={{ color: "#10b981" }}>{rq.proposedDesign.depVars}</span></div>
-                                    <div><span style={{ color: "var(--text-tertiary)" }}>Target Duration: </span><span style={{ color: "#f59e0b" }}>{rq.proposedDesign.duration}</span></div>
-                                  </div>
-                                )}
-
-                                {/* Metadata Grid & Evidence Trail */}
-                                <div
-                                  className="rq-metadata-grid"
+                                {/* Title Header */}
+                                <h4
+                                  onClick={() =>
+                                    setExpandedQuestions((prev) => ({
+                                      ...prev,
+                                      [qId]: !prev[qId],
+                                    }))
+                                  }
                                   style={{
-                                    display: "grid",
-                                    gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-                                    gap: "0.8rem",
-                                    background: "rgba(255,255,255,0.01)",
-                                    border: "1px solid rgba(255,255,255,0.04)",
-                                    borderRadius: "6px",
-                                    padding: "0.75rem",
+                                    fontSize: "var(--text-md)",
+                                    fontWeight: 700,
+                                    color: "#fff",
+                                    margin: 0,
+                                    cursor: "pointer",
                                   }}
                                 >
-                                  {rq.variables && rq.variables.length > 0 && (
-                                    <div>
-                                      <span style={{ fontSize: "10px", fontFamily: "var(--font-mono)", color: "var(--text-tertiary)", textTransform: "uppercase" }}>
-                                        Variables:
-                                      </span>
-                                      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.3rem", marginTop: "0.2rem" }}>
-                                        {rq.variables.map((v: string, vIdx: number) => (
-                                          <span key={vIdx} style={{ fontSize: "10px", background: "rgba(0,242,254,0.06)", color: "#00f2fe", border: "1px solid rgba(0,242,254,0.2)", padding: "0.1rem 0.4rem", borderRadius: "3px" }}>
-                                            {v}
-                                          </span>
-                                        ))}
-                                      </div>
-                                    </div>
-                                  )}
+                                  {rq.title}
+                                </h4>
 
-                                  {rq.expectedEvidence && rq.expectedEvidence.length > 0 && (
-                                    <div>
-                                      <span style={{ fontSize: "10px", fontFamily: "var(--font-mono)", color: "var(--text-tertiary)", textTransform: "uppercase" }}>
-                                        Metrics Expected:
-                                      </span>
-                                      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.3rem", marginTop: "0.2rem" }}>
-                                        {rq.expectedEvidence.map((ev: string, evIdx: number) => (
-                                          <span key={evIdx} style={{ fontSize: "10px", background: "rgba(16,185,129,0.06)", color: "#10b981", border: "1px solid rgba(16,185,129,0.2)", padding: "0.1rem 0.4rem", borderRadius: "3px" }}>
-                                            {ev}
-                                          </span>
-                                        ))}
-                                      </div>
+                                {/* Collapsible Expanded Details Body */}
+                                {isExpanded && (
+                                  <div style={{ display: "flex", flexDirection: "column", gap: "0.85rem", marginTop: "0.25rem" }}>
+                                    {/* Question Box */}
+                                    <div
+                                      style={{
+                                        background: "#05080f",
+                                        borderLeft: "3px solid #00f2fe",
+                                        borderTop: "1px solid rgba(255,255,255,0.03)",
+                                        borderRight: "1px solid rgba(255,255,255,0.03)",
+                                        borderBottom: "1px solid rgba(255,255,255,0.03)",
+                                        borderRadius: "6px",
+                                        padding: "0.8rem 1rem",
+                                        fontSize: "var(--text-xs)",
+                                        color: "#cbd5e1",
+                                        lineHeight: 1.5,
+                                      }}
+                                    >
+                                      <strong style={{ color: "#00f2fe" }}>Question: </strong>
+                                      {rq.question}
                                     </div>
-                                  )}
 
-                                  {/* Evidence Trail */}
-                                  <div>
-                                    <span style={{ fontSize: "10px", fontFamily: "var(--font-mono)", color: "var(--text-tertiary)", textTransform: "uppercase" }}>
-                                      Evidence Trail:
-                                    </span>
-                                    <div style={{ display: "flex", flexWrap: "wrap", gap: "0.3rem", marginTop: "0.2rem" }}>
-                                      {rq.evidenceTrail && rq.evidenceTrail.length > 0 ? (
-                                        rq.evidenceTrail.map((item: any, expIdx: number) => (
-                                          <a
-                                            key={expIdx}
-                                            href={`/archive/civilizations/${item.runId}`}
-                                            title={item.note || item.type}
-                                            style={{ fontSize: "10px", background: "rgba(99,102,241,0.1)", color: "#a5b4fc", border: "1px solid rgba(99,102,241,0.3)", padding: "0.1rem 0.4rem", borderRadius: "3px", textDecoration: "none" }}
-                                          >
-                                            {item.runId} ({item.type})
-                                          </a>
-                                        ))
-                                      ) : (
-                                        <span style={{ fontSize: "10px", color: "var(--text-tertiary)", fontStyle: "italic" }}>
-                                          No experimental evidence linked yet
-                                        </span>
+                                    {/* Motivation Section */}
+                                    {rq.motivation && (
+                                      <div style={{ fontSize: "11px", color: "var(--text-secondary)", background: "rgba(255,255,255,0.01)", padding: "0.5rem 0.8rem", borderRadius: "4px", border: "1px solid rgba(255,255,255,0.03)" }}>
+                                        <span style={{ fontSize: "9px", fontFamily: "var(--font-mono)", color: "#a5b4fc", textTransform: "uppercase", letterSpacing: "0.05em", marginRight: "0.4rem" }}>Scientific Motivation:</span>
+                                        {rq.motivation}
+                                      </div>
+                                    )}
+
+                                    {/* Proposed Design Box */}
+                                    {rq.proposedDesign && (
+                                      <div style={{ fontSize: "10px", fontFamily: "var(--font-mono)", background: "#05070d", border: "1px dashed rgba(0,242,254,0.2)", borderRadius: "6px", padding: "0.6rem 0.8rem", display: "flex", flexWrap: "wrap", gap: "1rem", justifyContent: "space-between" }}>
+                                        <div><span style={{ color: "var(--text-tertiary)" }}>Ind. Vars: </span><span style={{ color: "#00f2fe" }}>{rq.proposedDesign.indVars}</span></div>
+                                        <div><span style={{ color: "var(--text-tertiary)" }}>Dep. Vars: </span><span style={{ color: "#10b981" }}>{rq.proposedDesign.depVars}</span></div>
+                                        <div><span style={{ color: "var(--text-tertiary)" }}>Target Duration: </span><span style={{ color: "#f59e0b" }}>{rq.proposedDesign.duration}</span></div>
+                                      </div>
+                                    )}
+
+                                    {/* Metadata Grid & Evidence Trail */}
+                                    <div
+                                      className="rq-metadata-grid"
+                                      style={{
+                                        display: "grid",
+                                        gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+                                        gap: "0.8rem",
+                                        background: "rgba(255,255,255,0.01)",
+                                        border: "1px solid rgba(255,255,255,0.04)",
+                                        borderRadius: "6px",
+                                        padding: "0.75rem",
+                                      }}
+                                    >
+                                      {rq.variables && rq.variables.length > 0 && (
+                                        <div>
+                                          <span style={{ fontSize: "10px", fontFamily: "var(--font-mono)", color: "var(--text-tertiary)", textTransform: "uppercase" }}>
+                                            Variables:
+                                          </span>
+                                          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.3rem", marginTop: "0.2rem" }}>
+                                            {rq.variables.map((v: string, vIdx: number) => (
+                                              <span key={vIdx} style={{ fontSize: "10px", background: "rgba(0,242,254,0.06)", color: "#00f2fe", border: "1px solid rgba(0,242,254,0.2)", padding: "0.1rem 0.4rem", borderRadius: "3px" }}>
+                                                {v}
+                                              </span>
+                                            ))}
+                                          </div>
+                                        </div>
                                       )}
+
+                                      {rq.expectedEvidence && rq.expectedEvidence.length > 0 && (
+                                        <div>
+                                          <span style={{ fontSize: "10px", fontFamily: "var(--font-mono)", color: "var(--text-tertiary)", textTransform: "uppercase" }}>
+                                            Metrics Expected:
+                                          </span>
+                                          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.3rem", marginTop: "0.2rem" }}>
+                                            {rq.expectedEvidence.map((ev: string, evIdx: number) => (
+                                              <span key={evIdx} style={{ fontSize: "10px", background: "rgba(16,185,129,0.06)", color: "#10b981", border: "1px solid rgba(16,185,129,0.2)", padding: "0.1rem 0.4rem", borderRadius: "3px" }}>
+                                                {ev}
+                                              </span>
+                                            ))}
+                                          </div>
+                                        </div>
+                                      )}
+
+                                      {/* Evidence Trail */}
+                                      <div>
+                                        <span style={{ fontSize: "10px", fontFamily: "var(--font-mono)", color: "var(--text-tertiary)", textTransform: "uppercase" }}>
+                                          Evidence Trail:
+                                        </span>
+                                        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.3rem", marginTop: "0.2rem" }}>
+                                          {rq.evidenceTrail && rq.evidenceTrail.length > 0 ? (
+                                            rq.evidenceTrail.map((item: any, expIdx: number) => (
+                                              <a
+                                                key={expIdx}
+                                                href={`/archive/civilizations/${item.runId}`}
+                                                style={{ fontSize: "10px", background: "rgba(99,102,241,0.1)", color: "#a5b4fc", border: "1px solid rgba(99,102,241,0.3)", padding: "0.1rem 0.4rem", borderRadius: "3px", textDecoration: "none" }}
+                                              >
+                                                {item.runId} ({item.type})
+                                              </a>
+                                            ))
+                                          ) : (
+                                            <span style={{ fontSize: "10px", color: "var(--text-tertiary)", fontStyle: "italic" }}>
+                                              No experimental evidence linked yet
+                                            </span>
+                                          )}
+                                        </div>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
+                                )}
                               </div>
                             );
                           })}
@@ -3579,7 +3709,13 @@ function CivilizationRecordPage() {
                                       {k.replace(/_/g, " ").toUpperCase()}
                                     </td>
                                     <td style={{ textAlign: "right", fontWeight: 700 }}>
-                                      {typeof v === "number" ? v.toFixed(4) : String(v)}
+                                      {typeof v === "number"
+                                        ? v.toFixed(4)
+                                        : typeof v === "object" && v !== null
+                                        ? Object.entries(v)
+                                            .map(([col, ticks]) => `${col}: ${typeof ticks === "number" ? ticks.toLocaleString() : ticks} t`)
+                                            .join(", ")
+                                        : String(v)}
                                     </td>
                                   </tr>
                                 ))}
@@ -3608,7 +3744,13 @@ function CivilizationRecordPage() {
                                       {k.replace(/_/g, " ").toUpperCase()}
                                     </td>
                                     <td style={{ textAlign: "right", fontWeight: 700 }}>
-                                      {typeof v === "number" ? v.toFixed(4) : String(v)}
+                                      {typeof v === "number"
+                                        ? v.toFixed(4)
+                                        : typeof v === "object" && v !== null
+                                        ? Object.entries(v)
+                                            .map(([col, ticks]) => `${col}: ${typeof ticks === "number" ? ticks.toLocaleString() : ticks} t`)
+                                            .join(", ")
+                                        : String(v)}
                                     </td>
                                   </tr>
                                 ))}
@@ -3619,6 +3761,160 @@ function CivilizationRecordPage() {
                         <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)" }}>
                           Derived scientific variables not computed for this legacy experiment.
                         </p>
+                      )}
+                    </div>
+
+                    {/* Agent Census Telemetry Directory Collapsible Accordion */}
+                    <div style={{ borderTop: "1px solid var(--border-default)", paddingTop: "1.5rem" }}>
+                      <div
+                        onClick={() => setCensusExpanded(!censusExpanded)}
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          background: "rgba(255,255,255,0.02)",
+                          border: `1px solid ${censusExpanded ? "rgba(0, 242, 254, 0.3)" : "var(--border-default)"}`,
+                          borderRadius: "var(--radius-lg)",
+                          padding: "1rem 1.25rem",
+                          cursor: "pointer",
+                          transition: "all 0.2s ease",
+                        }}
+                      >
+                        <div>
+                          <h3 style={{ fontSize: "var(--text-md)", fontWeight: 700, color: "#fff", margin: 0, display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                            👥 Agent Census Telemetry Directory
+                          </h3>
+                          <p style={{ fontSize: "11px", color: "var(--text-tertiary)", margin: "0.2rem 0 0 0" }}>
+                            {(record.total_agents || 3042).toLocaleString()} registered synthetic agents across {record.max_generation || 38} generations. Click to open dropdown telemetry directory.
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          style={{
+                            background: censusExpanded ? "rgba(0, 242, 254, 0.15)" : "rgba(255,255,255,0.04)",
+                            border: `1px solid ${censusExpanded ? "rgba(0, 242, 254, 0.4)" : "var(--border-default)"}`,
+                            color: censusExpanded ? "#00f2fe" : "var(--text-secondary)",
+                            padding: "0.35rem 0.8rem",
+                            borderRadius: "6px",
+                            fontSize: "12px",
+                            fontWeight: 700,
+                            fontFamily: "var(--font-mono)",
+                            cursor: "pointer",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "0.4rem",
+                          }}
+                        >
+                          <span>{censusExpanded ? "Hide Agent Directory" : "Open Agent Directory"}</span>
+                          <span style={{ transform: censusExpanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s ease", display: "inline-block" }}>▼</span>
+                        </button>
+                      </div>
+
+                      {censusExpanded && (
+                        <div style={{ marginTop: "1rem", background: "#060911", border: "1px solid var(--border-default)", borderRadius: "var(--radius-lg)", padding: "1.25rem" }}>
+                          {/* Colony Filter & Pagination Header */}
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem", flexWrap: "wrap", gap: "0.75rem" }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap" }}>
+                              <span style={{ fontSize: "11px", color: "var(--text-tertiary)", fontFamily: "var(--font-mono)" }}>Filter Colony:</span>
+                              {["All", "Alpha", "Beta", "Gamma", "Delta"].map((col) => (
+                                <button
+                                  key={col}
+                                  type="button"
+                                  onClick={() => { setCensusColonyFilter(col); setCensusPage(1); }}
+                                  style={{
+                                    background: censusColonyFilter === col ? "rgba(0,242,254,0.15)" : "rgba(255,255,255,0.02)",
+                                    border: `1px solid ${censusColonyFilter === col ? "#00f2fe" : "var(--border-default)"}`,
+                                    color: censusColonyFilter === col ? "#00f2fe" : "var(--text-secondary)",
+                                    padding: "0.2rem 0.65rem",
+                                    borderRadius: "4px",
+                                    fontSize: "11px",
+                                    fontWeight: 600,
+                                    cursor: "pointer",
+                                  }}
+                                >
+                                  {col}
+                                </button>
+                              ))}
+                            </div>
+
+                            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                              <span style={{ fontSize: "11px", color: "var(--text-tertiary)", fontFamily: "var(--font-mono)" }}>
+                                Showing {censusAgents.length > 0 ? (censusPage - 1) * 25 + 1 : 0}-{Math.min(censusPage * 25, censusTotal)} of {censusTotal.toLocaleString()} agents
+                              </span>
+                              <button
+                                type="button"
+                                disabled={censusPage <= 1 || censusLoading}
+                                onClick={() => setCensusPage(censusPage - 1)}
+                                style={{ background: "rgba(255,255,255,0.04)", border: "1px solid var(--border-default)", color: "#fff", padding: "0.2rem 0.6rem", borderRadius: "4px", fontSize: "11px", cursor: "pointer", opacity: censusPage <= 1 ? 0.4 : 1 }}
+                              >
+                                ← Prev
+                              </button>
+                              <span style={{ fontSize: "11px", color: "#00f2fe", fontFamily: "var(--font-mono)", fontWeight: 700 }}>
+                                Page {censusPage} / {Math.ceil(censusTotal / 25) || 1}
+                              </span>
+                              <button
+                                type="button"
+                                disabled={censusPage >= Math.ceil(censusTotal / 25) || censusLoading}
+                                onClick={() => setCensusPage(censusPage + 1)}
+                                style={{ background: "rgba(255,255,255,0.04)", border: "1px solid var(--border-default)", color: "#fff", padding: "0.2rem 0.6rem", borderRadius: "4px", fontSize: "11px", cursor: "pointer", opacity: censusPage >= Math.ceil(censusTotal / 25) ? 0.4 : 1 }}
+                              >
+                                Next →
+                              </button>
+                            </div>
+                          </div>
+
+                          {censusLoading ? (
+                            <div style={{ textAlign: "center", padding: "2rem", color: "#00f2fe", fontSize: "12px", fontFamily: "var(--font-mono)" }}>
+                              ⚡ Loading agent census telemetry...
+                            </div>
+                          ) : censusAgents.length > 0 ? (
+                            <div style={{ overflowX: "auto" }}>
+                              <table style={{ width: "100%", fontSize: "11px", fontFamily: "var(--font-mono)", borderCollapse: "collapse" }}>
+                                <thead>
+                                  <tr style={{ borderBottom: "1px solid var(--border-default)", color: "var(--text-tertiary)", textAlign: "left", height: "30px" }}>
+                                    <th>Agent ID</th>
+                                    <th>Colony</th>
+                                    <th>Gen</th>
+                                    <th>Age (Ticks / Yrs)</th>
+                                    <th>Health at Death</th>
+                                    <th>Children</th>
+                                    <th>Shelter</th>
+                                    <th>Primary Cause of Death</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {censusAgents.map((a: any) => {
+                                    const years = ((a.age_ticks || a.lifespan_ticks || 0) / 360).toFixed(1);
+                                    const cause = a.cause_of_death || "Unknown";
+                                    const causeColor = cause.includes("dehydration") ? "#60a5fa" : cause.includes("starvation") ? "#f59e0b" : cause.includes("old_age") ? "#10b981" : "#ef4444";
+                                    return (
+                                      <tr key={a.id || a.agent_id} style={{ borderBottom: "1px solid rgba(255,255,255,0.03)", height: "32px" }}>
+                                        <td style={{ color: "#00f2fe", fontWeight: 700 }}>#{a.agent_id}</td>
+                                        <td>
+                                          <span style={{ padding: "0.1rem 0.4rem", borderRadius: "3px", fontSize: "10px", fontWeight: 700, background: "rgba(255,255,255,0.05)" }}>
+                                            {a.colony_name || "Alpha"}
+                                          </span>
+                                        </td>
+                                        <td>Gen {a.generation}</td>
+                                        <td>{a.age_ticks || a.lifespan_ticks || 0} t ({years} yrs)</td>
+                                        <td style={{ color: (a.health_at_death || 0) > 50 ? "#10b981" : "#ef4444" }}>
+                                          {(a.health_at_death || 0).toFixed(1)} HP
+                                        </td>
+                                        <td>{a.children_count || 0}</td>
+                                        <td>{a.shelter_level === 0 ? "None" : a.shelter_level === 1 ? "Tent" : a.shelter_level === 2 ? "Cabin" : "Stone"}</td>
+                                        <td style={{ color: causeColor, fontWeight: 600 }}>{cause}</td>
+                                      </tr>
+                                    );
+                                  })}
+                                </tbody>
+                              </table>
+                            </div>
+                          ) : (
+                            <p style={{ color: "var(--text-tertiary)", fontSize: "12px", textAlign: "center", padding: "1.5rem" }}>
+                              No agent census records match the selected filter.
+                            </p>
+                          )}
+                        </div>
                       )}
                     </div>
                   </div>

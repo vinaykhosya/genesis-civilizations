@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS experiments (
 
 CREATE TABLE IF NOT EXISTS experiment_events (
   id              BIGSERIAL PRIMARY KEY,
-  experiment_id   TEXT NOT NULL REFERENCES experiments(id) ON DELETE CASCADE,
+  experiment_id   TEXT NOT NULL REFERENCES experiments(id) ON DELETE CASCADE ON UPDATE CASCADE,
   tick            INTEGER NOT NULL,
   year            INTEGER,
   day             INTEGER,
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS experiment_events (
 
 CREATE TABLE IF NOT EXISTS experiment_agents (
   id              BIGSERIAL PRIMARY KEY,
-  experiment_id   TEXT NOT NULL REFERENCES experiments(id) ON DELETE CASCADE,
+  experiment_id   TEXT NOT NULL REFERENCES experiments(id) ON DELETE CASCADE ON UPDATE CASCADE,
   agent_id        INTEGER NOT NULL,
   colony_id       INTEGER,
   colony_name     TEXT,
@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS experiment_agents (
 
 CREATE TABLE IF NOT EXISTS experiment_population (
   id              BIGSERIAL PRIMARY KEY,
-  experiment_id   TEXT NOT NULL REFERENCES experiments(id) ON DELETE CASCADE,
+  experiment_id   TEXT NOT NULL REFERENCES experiments(id) ON DELETE CASCADE ON UPDATE CASCADE,
   tick            INTEGER NOT NULL,
   total           INTEGER,
   alpha           INTEGER,
@@ -169,14 +169,19 @@ CREATE POLICY "admin_all_research_documents"
   ON research_documents FOR ALL USING (auth.jwt() ->> 'email' = 'vinay@khosya.com');
 
 -- ============================================================
--- STORAGE BUCKETS (run separately in Storage UI or via SQL)
+-- STORAGE BUCKETS CONFIGURATION (1 GB File Size Limits)
 -- ============================================================
--- Go to: Storage → New Bucket
--- Create: "thumbnails" (public: YES)
--- Create: "packages"   (public: YES)
--- Create: "replays"    (public: NO)
+INSERT INTO storage.buckets (id, name, public, file_size_limit)
+VALUES 
+  ('packages', 'packages', true, 1073741824),
+  ('experiments', 'experiments', true, 1073741824),
+  ('thumbnails', 'thumbnails', true, 1073741824),
+  ('replays', 'replays', false, 1073741824)
+ON CONFLICT (id) DO UPDATE SET 
+  file_size_limit = 1073741824,
+  public = EXCLUDED.public;
 
 -- ============================================================
 -- DONE ✓
 -- ============================================================
-SELECT 'Genesis schema migration complete!' AS status;
+SELECT 'Genesis schema & 1GB storage bucket migration complete!' AS status;

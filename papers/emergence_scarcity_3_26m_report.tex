@@ -1,0 +1,108 @@
+\documentclass[11pt,a4paper,twocolumn]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{xcolor}
+
+\definecolor{genesiscyan}{rgb}{0.0, 0.75, 0.85}
+\definecolor{darkslate}{rgb}{0.05, 0.08, 0.12}
+
+\title{\textbf{\Large Emergent Evolutionary Dynamics and Speciation Bottlenecks under Resource Scarcity}\\
+\large A 326,075-Tick Longitudinal Study of Project Genesis}
+\author{\textbf{Project Genesis Autonomous Research Systems}\\
+\small Department of Computational Life Systems \& Synthetic Ecology}
+\date{July 21, 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We report the findings of a 326,075-tick (905.76-year) longitudinal artificial life simulation investigating the emergence of social structures, technological shelter networks, and genetic drift under severe resource scarcity ($S = 3.0$). Initialized with 16 Gen 0 founder agents divided equally across 4 geographically distinct colonies (Alpha, Beta, Gamma, Delta), the simulation tracked 3,042 total agents across 38 generations. Our empirical results demonstrate how environmental stress triggers severe lineage attrition, reducing 4 independent colonies to a single surviving super-clade (Colony Beta, 201 living descendants). We analyze the evolutionary trajectories across 14 genomic traits, highlighting a \textbf{-72.4\% crash in Novelty Seeking} ($0.341 \to 0.094$), a \textbf{+57.0\% surge in Longevity} ($0.540 \to 0.848$), a \textbf{+53.8\% increase in Vision Radius} ($0.515 \to 0.792$), and a \textbf{-95.6\% decline in Learning Rate} ($0.520 \to 0.023$) as agents transition from active exploratory learning to automated procedure execution. We detail the mechanics of shelter technology adoption (3,009 shelters constructed), water caching dynamics (55.5 million units accumulated in Colony Beta), and mortality trade-offs, establishing key principles for artificial life research.
+\end{abstract}
+
+\section{Introduction \& Experimental Setup}
+Understanding how ecological pressure shapes social cooperation, cognitive specialization, and genetic architecture remains a fundamental objective of computational biology and artificial life. \textbf{Project Genesis} models high-resolution agent-environment interactions on a 1024x1024 cellular grid using deterministic multi-octave Perlin noise, fluid advection climate mechanics, and Priority-Flood hydrology.
+
+The experiment \texttt{emergence\_social\_bonds\_accelerated with very slow healing} was executed with the following fixed parameters:
+\begin{itemize}
+    \item \textbf{Seed Integer:} \texttt{1720} (100\% deterministic reproducibility)
+    \item \textbf{Scarcity Multiplier:} $S = 3.0$
+    \item \textbf{Carrying Capacity Ceiling:} $N_{max} = 200$
+    \item \textbf{Mutation Deviation:} $\sigma_{mut} = 0.05$
+    \item \textbf{Healing Multiplier:} $200.0\times$
+    \item \textbf{Disasters / Disputes:} Disasters Enabled / Disputes Disabled
+\end{itemize}
+
+At Tick 1, 16 founder agents (Gen 0) were distributed across 4 biomes: Colony Alpha (146, 503), Colony Beta (597, 556), Colony Gamma (847, 540), and Colony Delta (552, 304).
+
+\section{Macro-Demographics \& Colony Dynamics}
+Over 326,075 ticks, a total of \textbf{3,042 agents} were born and \textbf{2,841 agents} died, leaving \textbf{201 active survivors} at experiment termination (survivor ratio: $6.61\%$).
+
+\begin{table}[h]
+\centering
+\small
+\caption{Colony Lifespans and Extinction Mechanics}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Colony} & \textbf{Lifespan} & \textbf{Max Gen} & \textbf{Descendants} & \textbf{Status} \\
+\midrule
+Alpha & 206,400 & Gen 19 & 683 & Extinct \\
+Beta & 326,075 & Gen 38 & 2,242 & \textbf{Survivor} \\
+Gamma & 75,600 & Gen 8 & 114 & Extinct \\
+Delta & 16,400 & Gen 1 & 3 & Extinct \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Colony Delta collapsed at Tick 16,400 due to highland thermal stress. Colony Gamma collapsed at Tick 75,600 due to water exhaustion (stored water capped at 393,944 units). Colony Alpha persisted for 573.3 years but suffered metabolic attrition. Colony Beta achieved 100\% population monopolization with 201 living descendants.
+
+\section{Genomic Drift Audit}
+The Genesis genome encodes 14 distinct functional traits in $[0.0, 1.0]$. Across 326,075 ticks, directional selection altered genetic means significantly.
+
+\begin{table}[h]
+\centering
+\scriptsize
+\caption{14-Gene Evolutionary Trajectories}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Gene Symbol} & \textbf{Baseline} & \textbf{Final} & \textbf{Shift} & \textbf{Variance} \\
+\midrule
+\texttt{g\_metabolism} & 0.527 & 0.627 & +19.0\% & 0.0518 \\
+\texttt{g\_thermoregulation} & 0.529 & 0.199 & -62.4\% & 0.0181 \\
+\texttt{g\_vision} & 0.515 & 0.792 & +53.8\% & 0.0336 \\
+\texttt{g\_mobility} & 0.549 & 0.363 & -33.9\% & 0.0531 \\
+\texttt{g\_memory\_fidelity} & 0.466 & 0.614 & +31.8\% & 0.0814 \\
+\texttt{g\_planning} & 0.475 & 0.502 & +5.7\% & 0.0463 \\
+\texttt{g\_novelty\_seeking} & 0.341 & 0.094 & -72.4\% & 0.0073 \\
+\texttt{g\_social\_proximity} & 0.497 & 0.581 & +16.9\% & 0.0311 \\
+\texttt{g\_aggression} & 0.496 & 0.380 & -23.4\% & 0.0679 \\
+\texttt{g\_resource\_sharing} & 0.564 & 0.502 & -11.0\% & 0.0355 \\
+\texttt{g\_risk\_sensitivity} & 0.505 & 0.191 & -62.2\% & 0.0271 \\
+\texttt{g\_resilience} & 0.458 & 0.425 & -7.2\% & 0.0469 \\
+\texttt{g\_longevity} & 0.540 & 0.848 & +57.0\% & 0.0369 \\
+\texttt{g\_learning\_rate} & 0.520 & 0.023 & -95.6\% & 0.0011 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Mortality Profile \& Technology}
+Across 2,841 recorded deaths, \textbf{Old Age} accounted for 1,926 deaths ($67.8\%$), followed by Starvation (385 deaths, $13.6\%$), Dehydration (299 deaths, $10.5\%$), Injury (225 deaths, $7.9\%$), and Exposure (6 deaths, $0.2\%$).
+
+Colony Beta accumulated \textbf{55,510,805 units} of stored water in central reservoirs and constructed 3,009 Level 1 Tent shelters, effectively buffering agents against environmental temperature shocks.
+
+\section{Scientific Inferences}
+\begin{enumerate}
+    \item \textbf{Exploratory Suppression:} Scarcity ($S=3.0$) severely penalizes curiosity ($g_{novelty\_seeking} \to 0.094$).
+    \item \textbf{Technological Buffering:} Infrastructure (3,009 shelters) renders biological thermoregulation ($g_{thermoregulation} \to 0.199$) metabolically redundant.
+    \item \textbf{Cognitive Fixation:} High procedural creation (60.96 procedures/agent) causes neural plasticity collapse ($g_{learning\_rate} \to 0.023$).
+\end{enumerate}
+
+\section{Conclusion}
+Project Genesis demonstrates that severe resource scarcity drives rapid speciation bottlenecks, technological buffering, and cognitive automation in synthetic life.
+
+\end{document}

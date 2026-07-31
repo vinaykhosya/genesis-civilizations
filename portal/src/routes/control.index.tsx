@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { createFileRoute, Link, redirect, useNavigate } from "@tanstack/react-router";
 import { verifyAdminAuth } from "@/lib/server-fns";
+import JSZip from "jszip";
 
 export const Route = createFileRoute("/control/")({
   beforeLoad: async () => {
@@ -43,9 +44,48 @@ function ControlPage() {
     setDuplicateWarning(null);
 
     try {
+      let fileToUpload = file;
+
+      // Automatic client-side zip optimization:
+      // If ZIP is larger than 30MB, strip intermediate raw debug checkpoints (checkpoint_*.json)
+      // which account for 90%+ of the archive size and are not used by the web portal parser.
+      if (file.name.endsWith(".zip") && file.size > 30 * 1024 * 1024) {
+        try {
+          const zip = new JSZip();
+          const contents = await zip.loadAsync(file);
+          const filenames = Object.keys(contents.files);
+          const hasCheckpoints = filenames.some((f) => {
+            const name = f.split(/[/\\]/).pop() || "";
+            return name.startsWith("checkpoint_") && name.endsWith(".json");
+          });
+
+          if (hasCheckpoints) {
+            console.log("Optimizing package size: stripping intermediate debug checkpoints...");
+            const cleanZip = new JSZip();
+            for (const [relativePath, entry] of Object.entries(contents.files)) {
+              const name = relativePath.split(/[/\\]/).pop() || "";
+              if (!entry.dir && !(name.startsWith("checkpoint_") && name.endsWith(".json"))) {
+                const buf = await entry.async("uint8array");
+                cleanZip.file(relativePath, buf);
+              }
+            }
+            const cleanBlob = await cleanZip.generateAsync({
+              type: "blob",
+              compression: "DEFLATE",
+            });
+            fileToUpload = new File([cleanBlob], file.name, { type: "application/zip" });
+            console.log(
+              `Package size optimized from ${(file.size / (1024 * 1024)).toFixed(1)} MB to ${(fileToUpload.size / (1024 * 1024)).toFixed(1)} MB`,
+            );
+          }
+        } catch (optErr) {
+          console.warn("Client ZIP optimization note:", optErr);
+        }
+      }
+
       // 1. Get a signed upload URL to bypass Vercel's 4.5MB request payload limit
       const getUrlRes = await fetch(
-        `/api/v1/admin/experiments/upload?filename=${encodeURIComponent(file.name)}`,
+        `/api/v1/admin/experiments/upload?filename=${encodeURIComponent(fileToUpload.name)}`,
       );
       if (!getUrlRes.ok) {
         const getUrlError = await getUrlRes.json();
@@ -56,14 +96,33 @@ function ControlPage() {
       // 2. Upload file directly to Supabase storage
       const uploadRes = await fetch(signedUrl, {
         method: "PUT",
-        body: file,
+        body: fileToUpload,
         headers: {
-          "Content-Type": file.type || "application/zip",
+          "Content-Type": fileToUpload.type || "application/zip",
         },
       });
 
       if (!uploadRes.ok) {
-        throw new Error("Failed to upload ZIP package directly to storage");
+        let errorDetails = "";
+        try {
+          const errJson = await uploadRes.json();
+          errorDetails = errJson.message || errJson.error || JSON.stringify(errJson);
+        } catch {
+          errorDetails = await uploadRes.text().catch(() => "");
+        }
+        if (
+          uploadRes.status === 400 &&
+          errorDetails.includes("exceeded the maximum allowed size")
+        ) {
+          throw new Error(
+            `Storage limit exceeded (400): ${errorDetails}\n\n` +
+              `To allow raw uncompressed ZIPs over 50MB in Supabase:\n` +
+              `Supabase Dashboard -> Project Settings -> Storage -> Global Upload Limit -> Increase to 500MB`,
+          );
+        }
+        throw new Error(
+          `Failed to upload ZIP package directly to storage (${uploadRes.status}): ${errorDetails || uploadRes.statusText || "Storage bucket capacity or file size limit exceeded."}`,
+        );
       }
 
       // 3. Trigger validation & ingestion on Vercel with the uploaded filePath

@@ -1028,6 +1028,7 @@ def run_simulation(world: WorldState, ticks: int = 10000, experiment_type: str =
                     "founder_ids": [],
                     "stored_food":  0.0,
                     "stored_water": 0.0,
+                    "location":     [int(spot["x"]), int(spot["y"])],
                 }
 
                 for _ in range(AGENTS_PER_COL):

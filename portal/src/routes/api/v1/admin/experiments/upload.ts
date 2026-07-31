@@ -17,6 +17,25 @@ export const Route = createFileRoute("/api/v1/admin/experiments/upload")({
           const cleanFilename = filename.replace(/[^a-zA-Z0-9.\-_]/g, "_");
           const filePath = `staging/${crypto.randomUUID()}-${cleanFilename}`;
 
+          // Ensure packages storage bucket exists with 1 GB (1,073,741,824 bytes) max file size limit
+          try {
+            const { data: buckets } = await supabaseServer.storage.listBuckets();
+            const exists = buckets?.some((b) => b.id === "packages");
+            if (!exists) {
+              await supabaseServer.storage.createBucket("packages", {
+                public: true,
+                fileSizeLimit: 1073741824, // 1 GB
+              });
+            } else {
+              await supabaseServer.storage.updateBucket("packages", {
+                public: true,
+                fileSizeLimit: 1073741824, // 1 GB
+              });
+            }
+          } catch (bucketErr: any) {
+            console.warn("Storage bucket auto-configuration note:", bucketErr?.message);
+          }
+
           const { data, error } = await supabaseServer.storage
             .from("packages")
             .createSignedUploadUrl(filePath);

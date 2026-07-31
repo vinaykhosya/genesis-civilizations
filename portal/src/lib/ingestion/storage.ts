@@ -34,12 +34,18 @@ export async function uploadAssets(
       if (!exists) {
         const { error } = await supabaseServer.storage.createBucket(bucket, {
           public: isPublic,
+          fileSizeLimit: 1073741824, // 1 GB limit
         });
         if (error) {
           console.error(
             `Failed to programmatically create storage bucket [${bucket}]: ${error.message}`,
           );
         }
+      } else {
+        await supabaseServer.storage.updateBucket(bucket, {
+          public: isPublic,
+          fileSizeLimit: 1073741824, // 1 GB limit
+        });
       }
     } catch (err: any) {
       console.error(`Error checking/creating storage bucket [${bucket}]:`, err.message);
