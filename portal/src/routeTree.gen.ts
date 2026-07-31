@@ -10,9 +10,14 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as ArchiveRouteImport } from './routes/archive'
+import { Route as BlogRouteImport } from './routes/blog'
 import { Route as ControlRouteImport } from './routes/control'
+import { Route as ApiSitemapDotxmlRouteImport } from './routes/api/sitemap[.xml]'
 import { Route as ArchiveIndexRouteImport } from './routes/archive.index'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as ControlIndexRouteImport } from './routes/control.index'
 import { Route as ControlLoginRouteImport } from './routes/control.login'
 import { Route as ArchiveCivilizationsIdRouteImport } from './routes/archive.civilizations.$id'
@@ -26,9 +31,19 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ArchiveRoute = ArchiveRouteImport.update({
   id: '/archive',
   path: '/archive',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ControlRoute = ControlRouteImport.update({
@@ -36,10 +51,25 @@ const ControlRoute = ControlRouteImport.update({
   path: '/control',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiSitemapDotxmlRoute = ApiSitemapDotxmlRouteImport.update({
+  id: '/api/sitemap.xml',
+  path: '/api/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ArchiveIndexRoute = ArchiveIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => ArchiveRoute,
+} as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => BlogRoute,
+} as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => BlogRoute,
 } as any)
 const ControlIndexRoute = ControlIndexRouteImport.update({
   id: '/',
@@ -82,10 +112,15 @@ const ApiV1AdminExperimentsStagingIdPublishRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/archive': typeof ArchiveRouteWithChildren
+  '/blog': typeof BlogRouteWithChildren
   '/control': typeof ControlRouteWithChildren
+  '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/control/login': typeof ControlLoginRoute
   '/archive/': typeof ArchiveIndexRoute
+  '/blog/': typeof BlogIndexRoute
   '/control/': typeof ControlIndexRoute
   '/archive/civilizations/$id': typeof ArchiveCivilizationsIdRoute
   '/docs/architecture/$filename': typeof DocsArchitectureFilenameRoute
@@ -95,8 +130,12 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/control/login': typeof ControlLoginRoute
   '/archive': typeof ArchiveIndexRoute
+  '/blog': typeof BlogIndexRoute
   '/control': typeof ControlIndexRoute
   '/archive/civilizations/$id': typeof ArchiveCivilizationsIdRoute
   '/docs/architecture/$filename': typeof DocsArchitectureFilenameRoute
@@ -107,10 +146,15 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/archive': typeof ArchiveRouteWithChildren
+  '/blog': typeof BlogRouteWithChildren
   '/control': typeof ControlRouteWithChildren
+  '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/control/login': typeof ControlLoginRoute
   '/archive/': typeof ArchiveIndexRoute
+  '/blog/': typeof BlogIndexRoute
   '/control/': typeof ControlIndexRoute
   '/archive/civilizations/$id': typeof ArchiveCivilizationsIdRoute
   '/docs/architecture/$filename': typeof DocsArchitectureFilenameRoute
@@ -122,10 +166,15 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
     | '/archive'
+    | '/blog'
     | '/control'
+    | '/api/sitemap.xml'
+    | '/blog/$slug'
     | '/control/login'
     | '/archive/'
+    | '/blog/'
     | '/control/'
     | '/archive/civilizations/$id'
     | '/docs/architecture/$filename'
@@ -135,8 +184,12 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
+    | '/api/sitemap.xml'
+    | '/blog/$slug'
     | '/control/login'
     | '/archive'
+    | '/blog'
     | '/control'
     | '/archive/civilizations/$id'
     | '/docs/architecture/$filename'
@@ -146,10 +199,15 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/about'
     | '/archive'
+    | '/blog'
     | '/control'
+    | '/api/sitemap.xml'
+    | '/blog/$slug'
     | '/control/login'
     | '/archive/'
+    | '/blog/'
     | '/control/'
     | '/archive/civilizations/$id'
     | '/docs/architecture/$filename'
@@ -160,8 +218,11 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   ArchiveRoute: typeof ArchiveRouteWithChildren
+  BlogRoute: typeof BlogRouteWithChildren
   ControlRoute: typeof ControlRouteWithChildren
+  ApiSitemapDotxmlRoute: typeof ApiSitemapDotxmlRoute
   DocsArchitectureFilenameRoute: typeof DocsArchitectureFilenameRoute
   ApiV1AdminAuthRoute: typeof ApiV1AdminAuthRoute
   ApiV1AdminExperimentsUploadRoute: typeof ApiV1AdminExperimentsUploadRoute
@@ -177,11 +238,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/archive': {
       id: '/archive'
       path: '/archive'
       fullPath: '/archive'
       preLoaderRoute: typeof ArchiveRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/control': {
@@ -191,12 +266,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ControlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/sitemap.xml': {
+      id: '/api/sitemap.xml'
+      path: '/api/sitemap.xml'
+      fullPath: '/api/sitemap.xml'
+      preLoaderRoute: typeof ApiSitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/archive/': {
       id: '/archive/'
       path: '/'
       fullPath: '/archive/'
       preLoaderRoute: typeof ArchiveIndexRouteImport
       parentRoute: typeof ArchiveRoute
+    }
+    '/blog/': {
+      id: '/blog/'
+      path: '/'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof BlogRoute
+    }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof BlogRoute
     }
     '/control/': {
       id: '/control/'
@@ -263,6 +359,18 @@ const ArchiveRouteChildren: ArchiveRouteChildren = {
 const ArchiveRouteWithChildren =
   ArchiveRoute._addFileChildren(ArchiveRouteChildren)
 
+interface BlogRouteChildren {
+  BlogSlugRoute: typeof BlogSlugRoute
+  BlogIndexRoute: typeof BlogIndexRoute
+}
+
+const BlogRouteChildren: BlogRouteChildren = {
+  BlogSlugRoute: BlogSlugRoute,
+  BlogIndexRoute: BlogIndexRoute,
+}
+
+const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
+
 interface ControlRouteChildren {
   ControlLoginRoute: typeof ControlLoginRoute
   ControlIndexRoute: typeof ControlIndexRoute
@@ -278,8 +386,11 @@ const ControlRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   ArchiveRoute: ArchiveRouteWithChildren,
+  BlogRoute: BlogRouteWithChildren,
   ControlRoute: ControlRouteWithChildren,
+  ApiSitemapDotxmlRoute: ApiSitemapDotxmlRoute,
   DocsArchitectureFilenameRoute: DocsArchitectureFilenameRoute,
   ApiV1AdminAuthRoute: ApiV1AdminAuthRoute,
   ApiV1AdminExperimentsUploadRoute: ApiV1AdminExperimentsUploadRoute,

@@ -44,11 +44,22 @@ export const Route = createFileRoute("/")({
   component: GenesisLanding,
   head: () => ({
     meta: [
-      { title: "Genesis - Reproducible Computational Civilizations" },
+      { title: "Genesis — Open Artificial Life Research Platform" },
       {
         name: "description",
         content:
-          "An open artificial life research platform. Genesis simulates the evolution, cognition, and ecology of autonomous agents under reproducible conditions.",
+          "An open artificial life research platform. Genesis simulates digital evolution, emergent behavior, and agent-based civilizations. Reproducible experiments in evolutionary computation, multi-agent systems, and artificial life.",
+      },
+      {
+        name: "keywords",
+        content:
+          "artificial life simulation, digital evolution, evolutionary computation, agent-based simulation, emergent behavior, multi-agent systems, digital organisms, open artificial life, evolutionary simulation, artificial civilization research",
+      },
+      { property: "og:title", content: "Genesis — Open Artificial Life Research Platform" },
+      {
+        property: "og:description",
+        content:
+          "Open artificial life research platform simulating digital evolution, emergent behavior, and agent-based civilizations under reproducible conditions.",
       },
     ],
   }),

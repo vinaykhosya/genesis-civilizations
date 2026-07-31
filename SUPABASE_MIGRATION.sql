@@ -134,37 +134,47 @@ ALTER TABLE experiment_population ENABLE ROW LEVEL SECURITY;
 ALTER TABLE research_documents  ENABLE ROW LEVEL SECURITY;
 
 -- Public read (published only)
+DROP POLICY IF EXISTS "public_read_experiments" ON experiments;
 CREATE POLICY "public_read_experiments"
   ON experiments FOR SELECT USING (is_published = TRUE);
 
+DROP POLICY IF EXISTS "public_read_events" ON experiment_events;
 CREATE POLICY "public_read_events"
   ON experiment_events FOR SELECT
   USING (EXISTS (SELECT 1 FROM experiments e WHERE e.id = experiment_id AND e.is_published = TRUE));
 
+DROP POLICY IF EXISTS "public_read_agents" ON experiment_agents;
 CREATE POLICY "public_read_agents"
   ON experiment_agents FOR SELECT
   USING (EXISTS (SELECT 1 FROM experiments e WHERE e.id = experiment_id AND e.is_published = TRUE));
 
+DROP POLICY IF EXISTS "public_read_population" ON experiment_population;
 CREATE POLICY "public_read_population"
   ON experiment_population FOR SELECT
   USING (EXISTS (SELECT 1 FROM experiments e WHERE e.id = experiment_id AND e.is_published = TRUE));
 
+DROP POLICY IF EXISTS "public_read_research_documents" ON research_documents;
 CREATE POLICY "public_read_research_documents"
   ON research_documents FOR SELECT USING (is_published = TRUE);
 
 -- Admin write (service_role bypasses RLS, these are safety nets)
+DROP POLICY IF EXISTS "admin_all_experiments" ON experiments;
 CREATE POLICY "admin_all_experiments"
   ON experiments FOR ALL USING (auth.jwt() ->> 'email' = 'vinay@khosya.com');
 
+DROP POLICY IF EXISTS "admin_all_events" ON experiment_events;
 CREATE POLICY "admin_all_events"
   ON experiment_events FOR ALL USING (auth.jwt() ->> 'email' = 'vinay@khosya.com');
 
+DROP POLICY IF EXISTS "admin_all_agents" ON experiment_agents;
 CREATE POLICY "admin_all_agents"
   ON experiment_agents FOR ALL USING (auth.jwt() ->> 'email' = 'vinay@khosya.com');
 
+DROP POLICY IF EXISTS "admin_all_population" ON experiment_population;
 CREATE POLICY "admin_all_population"
   ON experiment_population FOR ALL USING (auth.jwt() ->> 'email' = 'vinay@khosya.com');
 
+DROP POLICY IF EXISTS "admin_all_research_documents" ON research_documents;
 CREATE POLICY "admin_all_research_documents"
   ON research_documents FOR ALL USING (auth.jwt() ->> 'email' = 'vinay@khosya.com');
 
@@ -182,6 +192,50 @@ ON CONFLICT (id) DO UPDATE SET
   public = EXCLUDED.public;
 
 -- ============================================================
+-- BLOG POSTS TABLE (Research Articles / Lab Notes)
+-- Added for SEO: each article targets specific researcher
+-- search queries that raw experiment pages don't cover.
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS blog_posts (
+  id                     UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  slug                   TEXT UNIQUE NOT NULL,
+  title                  TEXT NOT NULL,
+  excerpt                TEXT,                     -- 1–2 sentence summary (used as meta description)
+  content_html           TEXT,                     -- Rich HTML body (preferred)
+  content_md             TEXT,                     -- Raw markdown fallback
+  tags                   TEXT[] DEFAULT '{}',      -- Keyword tags (drives per-article SEO keywords)
+  experiment_id          TEXT REFERENCES experiments(id) ON DELETE SET NULL,
+  og_image               TEXT,                     -- Open Graph image URL (optional)
+  reading_time_minutes   INTEGER,                  -- Estimated reading time
+  is_published           BOOLEAN DEFAULT false,
+  published_at           TIMESTAMPTZ,
+  created_at             TIMESTAMPTZ DEFAULT now(),
+  updated_at             TIMESTAMPTZ DEFAULT now()
+);
+
+-- Index for fast slug lookups (used on every article page load)
+CREATE INDEX IF NOT EXISTS blog_posts_slug_idx    ON blog_posts (slug);
+CREATE INDEX IF NOT EXISTS blog_posts_pub_idx     ON blog_posts (published_at DESC) WHERE is_published = true;
+CREATE INDEX IF NOT EXISTS blog_posts_exp_idx     ON blog_posts (experiment_id)    WHERE experiment_id IS NOT NULL;
+
+-- Row Level Security
+ALTER TABLE blog_posts ENABLE ROW LEVEL SECURITY;
+
+-- Anyone can read published posts (Googlebot needs this)
+DROP POLICY IF EXISTS "public_read_published_blog_posts" ON blog_posts;
+CREATE POLICY "public_read_published_blog_posts"
+  ON blog_posts FOR SELECT
+  USING (is_published = true);
+
+-- Only admin can write
+DROP POLICY IF EXISTS "admin_all_blog_posts" ON blog_posts;
+CREATE POLICY "admin_all_blog_posts"
+  ON blog_posts FOR ALL
+  USING (auth.jwt() ->> 'email' = 'vinay@khosya.com');
+
+-- ============================================================
 -- DONE ✓
 -- ============================================================
 SELECT 'Genesis schema & 1GB storage bucket migration complete!' AS status;
+

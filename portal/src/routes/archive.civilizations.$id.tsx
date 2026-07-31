@@ -3,6 +3,15 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { fetchCivilizationData, updateExperimentData, checkAdminAuthStatus, fetchExperimentAgents } from "@/lib/server-fns";
 import CivilizationCard, { ExperimentCardProps } from "@/components/civilization/CivilizationCard";
 import { BIOME_COLORS } from "@/lib/biome-palette";
+import { CitationBlock } from "@/components/civilization/CitationBlock";
+
+const SITE_URL = "https://genesis.vinaykhosya.com";
+
+/** Extract the numeric sequence from IDs like "gen-exp-0001" → "0001" */
+function extractExpNumber(id: string): string {
+  const match = id.match(/(\d+)$/);
+  return match ? match[1] : id;
+}
 
 export const Route = createFileRoute("/archive/civilizations/$id")({
   loader: async ({ params }) => {
@@ -10,6 +19,112 @@ export const Route = createFileRoute("/archive/civilizations/$id")({
     return await fetchCivilizationData({ data: params.id });
   },
   component: CivilizationRecordPage,
+  head: ({ loaderData }) => {
+    if (!loaderData?.record) return {};
+    const { record } = loaderData;
+
+    const expNumber = extractExpNumber(record.id);
+    const expLabel = `GEN-EXP-${expNumber}`;
+    const pageUrl = `${SITE_URL}/archive/civilizations/${record.id}`;
+
+    // Build description: executive_summary → abstract → research_theme fallback
+    const rawDesc: string =
+      record.summary_json?.executive_summary ||
+      record.abstract ||
+      record.summary_json?.research_theme ||
+      `A reproducible artificial life experiment simulating digital evolution and emergent agent behavior.`;
+    // Truncate to ~160 chars for meta description
+    const metaDesc = rawDesc.length > 160 ? rawDesc.slice(0, 157) + "..." : rawDesc;
+
+    // Build keyword list from experiment tags + fixed research terms
+    const baseTags = ["artificial life", "evolutionary simulation", "digital organisms", "agent-based model", "emergent behavior"];
+    const expTags: string[] = Array.isArray(record.tags) ? record.tags : [];
+    const allKeywords = [...new Set([...expTags, ...baseTags])].join(", ");
+
+    const ogImage = record.thumbnail_url || record.atlas?.biomes;
+
+    // Year for citation
+    const pubYear = record.published_at ? new Date(record.published_at).getFullYear() : new Date().getFullYear();
+
+    // JSON-LD: 4 schemas combined
+    const jsonLd = JSON.stringify([
+      {
+        "@context": "https://schema.org",
+        "@type": "ScholarlyArticle",
+        name: record.title,
+        description: rawDesc,
+        datePublished: record.published_at || undefined,
+        keywords: allKeywords,
+        identifier: expLabel,
+        author: { "@type": "Person", name: "Vinay Khosya" },
+        publisher: {
+          "@type": "Organization",
+          name: "Genesis Research Platform",
+          url: SITE_URL,
+        },
+        url: pageUrl,
+        ...(ogImage ? { image: ogImage } : {}),
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Dataset",
+        name: `${record.title} — Simulation Dataset`,
+        description: `Agent telemetry, census data, and world-state snapshots from Genesis experiment ${expLabel}. Tracks ${record.total_agents ?? "unknown"} agents across ${record.ticks ?? "unknown"} simulation ticks.`,
+        creator: { "@type": "Person", name: "Vinay Khosya" },
+        datePublished: record.published_at || undefined,
+        keywords: allKeywords,
+        identifier: expLabel,
+        url: pageUrl,
+        license: "https://creativecommons.org/licenses/by/4.0/",
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareSourceCode",
+        name: "Genesis Simulation Engine",
+        description: "Artificial life simulator generating reproducible computational civilizations. Models terrain, climate, ecology, agent cognition, and civilizational emergence.",
+        programmingLanguage: ["Python", "TypeScript"],
+        url: SITE_URL,
+        author: { "@type": "Person", name: "Vinay Khosya" },
+        codeRepository: SITE_URL,
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "ResearchProject",
+        name: "Project Genesis",
+        description: "Open artificial life research platform studying emergent behavior, digital evolution, and agent-based civilizational dynamics.",
+        url: SITE_URL,
+        member: { "@type": "Person", name: "Vinay Khosya" },
+      },
+    ]);
+
+    return {
+      meta: [
+        { title: `${record.title} — Genesis Artificial Life Experiment` },
+        { name: "description", content: metaDesc },
+        { name: "keywords", content: allKeywords },
+        // Open Graph
+        { property: "og:type", content: "article" },
+        { property: "og:title", content: `${record.title} — Genesis Artificial Life Experiment` },
+        { property: "og:description", content: metaDesc },
+        { property: "og:url", content: pageUrl },
+        ...(ogImage ? [{ property: "og:image", content: ogImage }] : []),
+        // Twitter card
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: `${record.title} — Genesis Experiment ${expLabel}` },
+        { name: "twitter:description", content: metaDesc },
+        ...(ogImage ? [{ name: "twitter:image", content: ogImage }] : []),
+      ],
+      links: [
+        { rel: "canonical", href: pageUrl },
+      ],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: jsonLd,
+        },
+      ],
+    };
+  },
 });
 
 interface MapMetadata {
@@ -4360,6 +4475,16 @@ function CivilizationRecordPage() {
             </div>
           </section>
         )}
+      </div>
+
+      {/* Citation Block — stable GEN-EXP-XXXX identifier for academic referencing */}
+      <div style={{ maxWidth: "var(--content-width, 1200px)", margin: "0 auto", padding: "0 1.5rem 4rem" }}>
+        <CitationBlock
+          id={record.id}
+          title={record.title}
+          publishedAt={record.published_at}
+          engineVersion={record.engine_version}
+        />
       </div>
     </main>
   );

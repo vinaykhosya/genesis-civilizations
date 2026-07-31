@@ -89,25 +89,39 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Genesis — Reproducible Computational Civilizations" },
+      { title: "Genesis — Open Artificial Life Research Platform" },
       {
         name: "description",
         content:
-          "Genesis is a scientific platform simulating the evolution of artificial civilizations. Reproducible experiments in emergent intelligence.",
+          "Genesis is an open artificial life research platform simulating digital evolution, emergent behavior, and agent-based civilizations. Reproducible experiments in evolutionary computation and multi-agent systems.",
       },
-      { name: "author", content: "Genesis Research Institute" },
-      { property: "og:title", content: "Genesis — Reproducible Computational Civilizations" },
+      {
+        name: "keywords",
+        content:
+          "artificial life simulation, digital evolution, agent-based simulation, emergent behavior, emergent intelligence, evolutionary computation, multi-agent systems, digital organisms, artificial civilization, open artificial life platform, evolutionary simulation, computational biology",
+      },
+      { name: "author", content: "Vinay Khosya" },
+      { property: "og:site_name", content: "Genesis Research Platform" },
+      { property: "og:title", content: "Genesis — Open Artificial Life Research Platform" },
       {
         property: "og:description",
         content:
-          "Understanding emergent intelligence through reproducible computational civilizations.",
+          "An open artificial life research platform simulating digital evolution, emergent behavior, and agent-based civilizations under reproducible conditions.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://genesis.vinaykhosya.com" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Genesis — Open Artificial Life Research Platform" },
+      {
+        name: "twitter:description",
+        content:
+          "Open artificial life research platform. Digital evolution, emergent behavior, and agent-based civilizations under reproducible conditions.",
+      },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/logo.svg", type: "image/svg+xml" },
+      { rel: "canonical", href: "https://genesis.vinaykhosya.com" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {

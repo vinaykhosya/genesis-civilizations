@@ -8,6 +8,28 @@ export const Route = createFileRoute("/archive/")({
     return await fetchCivilizations();
   },
   component: ArchivePage,
+  head: () => ({
+    meta: [
+      { title: "Experiment Archive — Genesis Artificial Life Research" },
+      {
+        name: "description",
+        content:
+          "Browse all published Genesis simulation runs. Each experiment tracks artificial life evolution, agent cognition, and emergent social behavior across hundreds of in-simulation years under fully reproducible conditions.",
+      },
+      {
+        name: "keywords",
+        content:
+          "artificial life experiments, evolutionary simulation archive, digital evolution research, agent-based simulation results, emergent behavior studies, multi-agent systems research",
+      },
+      { property: "og:title", content: "Experiment Archive — Genesis Artificial Life Research" },
+      {
+        property: "og:description",
+        content:
+          "Browse published Genesis artificial life simulation runs. Each experiment tracks digital evolution, agent cognition, and emergent social behavior under reproducible conditions.",
+      },
+      { property: "og:type", content: "website" },
+    ],
+  }),
 });
 
 function ArchivePage() {
