@@ -60,33 +60,87 @@ export const Route = createFileRoute("/about")({
 
 function AboutResearcherPage() {
   return (
-    <main
+    <div
       style={{
         minHeight: "100vh",
         backgroundColor: "var(--bg-void)",
         color: "var(--text-primary)",
         fontFamily: "var(--font-body)",
-        padding: "4rem 2rem",
       }}
     >
-      <div style={{ maxWidth: "800px", margin: "0 auto" }}>
-        {/* Nav Link */}
-        <header style={{ marginBottom: "3rem" }}>
-          <Link
-            to="/"
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "11px",
-              fontWeight: 500,
-              letterSpacing: "0.08em",
-              textTransform: "uppercase",
-              color: "var(--text-secondary)",
-              textDecoration: "none",
-            }}
-          >
-            ← Return to Genesis
-          </Link>
-        </header>
+      {/* Navigation Header */}
+      <nav
+        style={{
+          borderBottom: "1px solid var(--border-default)",
+          padding: "1.25rem 2rem",
+          display: "flex",
+          alignItems: "center",
+          gap: "2rem",
+          backdropFilter: "blur(12px)",
+          position: "sticky",
+          top: 0,
+          zIndex: 50,
+          background: "rgba(var(--bg-void-raw, 3,3,6), 0.85)",
+        }}
+      >
+        <Link
+          to="/"
+          style={{
+            fontFamily: "var(--font-display)",
+            fontWeight: 500,
+            fontSize: "var(--text-sm)",
+            color: "var(--text-secondary)",
+            textDecoration: "none",
+            letterSpacing: "0.04em",
+          }}
+        >
+          ← Genesis
+        </Link>
+        <Link
+          to="/archive/"
+          style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: "11px",
+            fontWeight: 500,
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            color: "var(--text-secondary)",
+            textDecoration: "none",
+          }}
+        >
+          Archive
+        </Link>
+        <Link
+          to="/blog/"
+          style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: "11px",
+            fontWeight: 500,
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            color: "var(--text-secondary)",
+            textDecoration: "none",
+          }}
+        >
+          Blog
+        </Link>
+        <Link
+          to="/about"
+          style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: "11px",
+            fontWeight: 600,
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+            color: "var(--text-primary)",
+            textDecoration: "none",
+          }}
+        >
+          About
+        </Link>
+      </nav>
+
+      <main style={{ maxWidth: "800px", margin: "0 auto", padding: "4rem 2rem" }}>
 
         {/* Hero Section */}
         <section style={{ marginBottom: "4rem" }}>
@@ -321,7 +375,7 @@ function AboutResearcherPage() {
             </div>
           </article>
         </div>
-      </div>
-    </main>
+      </main>
+    </div>
   );
 }

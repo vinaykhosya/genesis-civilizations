@@ -1440,17 +1440,17 @@ function Portal({ civilizations }: { civilizations: any[] }) {
             </p>
           </div>
           <div className="grid grid-cols-2 gap-x-12 gap-y-2 font-mono-tight text-[0.72rem] uppercase tracking-[0.24em] text-muted-foreground md:grid-cols-4">
-            <a href="#archive" className="hover:text-teal transition-colors">
+            <Link to="/archive" className="hover:text-teal transition-colors">
               Archive
-            </a>
-            <a href="#evidence" className="hover:text-teal transition-colors">
-              Artifacts
-            </a>
+            </Link>
+            <Link to="/blog" className="hover:text-teal transition-colors">
+              Blog
+            </Link>
+            <Link to="/about" className="hover:text-teal transition-colors">
+              About
+            </Link>
             <a href="#questions" className="hover:text-teal transition-colors">
               Research
-            </a>
-            <a href="#about" className="hover:text-teal transition-colors">
-              About
             </a>
           </div>
           <p className="font-mono-tight text-[0.65rem] uppercase tracking-[0.3em] text-muted-foreground/60">
@@ -1470,22 +1470,22 @@ function TopNav() {
           <Hexagon className="h-3.5 w-3.5 text-teal" strokeWidth={1.3} />
           <span className="font-display text-lg text-bone">Genesis</span>
         </a>
-        <div className="hidden items-center gap-10 font-mono-tight text-[0.7rem] uppercase tracking-[0.28em] text-muted-foreground md:flex">
+        <div className="hidden items-center gap-8 font-mono-tight text-[0.7rem] uppercase tracking-[0.28em] text-muted-foreground md:flex">
           <a href="#what" className="hover:text-bone transition-colors">
             Premise
           </a>
           <a href="#how" className="hover:text-bone transition-colors">
             Pipeline
           </a>
-          <a href="#archive" className="hover:text-bone transition-colors">
+          <Link to="/archive" className="hover:text-bone transition-colors">
             Archive
-          </a>
-          <a href="#evidence" className="hover:text-bone transition-colors">
-            Artifacts
-          </a>
-          <a href="#questions" className="hover:text-bone transition-colors">
-            Research
-          </a>
+          </Link>
+          <Link to="/blog" className="hover:text-bone transition-colors">
+            Blog
+          </Link>
+          <Link to="/about" className="hover:text-bone transition-colors">
+            About
+          </Link>
         </div>
         <Link
           to="/archive"
