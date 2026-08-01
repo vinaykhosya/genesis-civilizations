@@ -281,6 +281,7 @@ interface StudyMetadata {
   related: StudyRelatedRecord[];
   zenodoDoi?: string;   // Zenodo dataset DOI
   paperDoi?: string;    // Zenodo preprint DOI
+  arxivId?: string;     // arXiv preprint ID e.g. "2608.XXXXX"
 }
 
 const STUDY_METADATA: { [key: string]: StudyMetadata } = {
@@ -4492,6 +4493,7 @@ function CivilizationRecordPage() {
           engineVersion={record.engine_version}
           zenodoDoi={meta?.zenodoDoi}
           paperDoi={meta?.paperDoi}
+          arxivId={meta?.arxivId}
         />
       </div>
     </main>

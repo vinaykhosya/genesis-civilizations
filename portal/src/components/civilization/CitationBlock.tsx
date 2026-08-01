@@ -7,6 +7,7 @@ interface CitationBlockProps {
   engineVersion?: string | null;
   zenodoDoi?: string | null;       // Dataset DOI  e.g. "10.5281/zenodo.21735664"
   paperDoi?: string | null;        // Preprint DOI e.g. "10.5281/zenodo.21735672"
+  arxivId?: string | null;         // arXiv ID e.g. "2608.XXXXX"
   githubUrl?: string;
 }
 
@@ -23,6 +24,7 @@ export function CitationBlock({
   engineVersion,
   zenodoDoi,
   paperDoi,
+  arxivId,
   githubUrl = "https://github.com/vinaykhosya/genesis-civilizations",
 }: CitationBlockProps) {
   const [copied, setCopied] = useState<"apa" | "bibtex" | null>(null);
@@ -33,7 +35,12 @@ export function CitationBlock({
   const url = `https://genesis.vinaykhosya.com/archive/civilizations/${id}`;
 
   const zenodoUrl  = zenodoDoi ? `https://doi.org/${zenodoDoi}` : null;
-  const paperUrl   = paperDoi  ? `https://doi.org/${paperDoi}`  : null;
+  const paperUrl   = arxivId
+    ? `https://arxiv.org/abs/${arxivId}`
+    : paperDoi
+    ? `https://doi.org/${paperDoi}`
+    : null;
+  const paperLabel = arxivId ? "Preprint (arXiv)" : paperDoi ? "Preprint (Zenodo)" : "Preprint";
 
   const citationText = `Khosya, V. (${year}). ${title}. Project Genesis, Experiment ${expLabel}, Version ${version}. Genesis Research Platform. Retrieved from ${url}`;
 
@@ -131,7 +138,7 @@ ${bibtexDataset}
             margin:        0,
           }}
         >
-          Research Links &amp; Citation
+          Research Artifacts &amp; Citation
         </h3>
       </div>
 
@@ -158,7 +165,7 @@ ${bibtexDataset}
             onMouseLeave={hoverLeave}
           >
             <span>📄</span>
-            <span>Preprint</span>
+            <span>{paperLabel}</span>
             <span style={{ opacity: 0.5, fontSize: "10px" }}>↗</span>
           </a>
         )}
@@ -175,7 +182,7 @@ ${bibtexDataset}
             onMouseLeave={hoverLeave}
           >
             <span>🗄</span>
-            <span>Dataset</span>
+            <span>Dataset (Zenodo)</span>
             <span
               style={{
                 fontFamily:    "var(--font-mono)",
