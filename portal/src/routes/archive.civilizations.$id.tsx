@@ -279,6 +279,8 @@ interface StudyMetadata {
   simulationDate: string;
   citationKey: string;
   related: StudyRelatedRecord[];
+  zenodoDoi?: string;   // Zenodo dataset DOI
+  paperDoi?: string;    // Zenodo preprint DOI
 }
 
 const STUDY_METADATA: { [key: string]: StudyMetadata } = {
@@ -296,6 +298,8 @@ const STUDY_METADATA: { [key: string]: StudyMetadata } = {
     engineVersion: "v9.2.0",
     simulationDate: "2026-06-28",
     citationKey: "genesis_record_gen_0001",
+    zenodoDoi: "10.5281/zenodo.21735662",
+    paperDoi:  "10.5281/zenodo.21735672",
     related: [{ id: "GEN-0002", role: "Control comparison under physiological constraints" }],
   },
   "GEN-0002": {
@@ -329,6 +333,8 @@ const STUDY_METADATA: { [key: string]: StudyMetadata } = {
     engineVersion: "v1.5.0",
     simulationDate: "2026-07-31",
     citationKey: "gen_exp_0002_slow_healing",
+    zenodoDoi: "10.5281/zenodo.21735664",
+    paperDoi:  "10.5281/zenodo.21735672",
     related: [{ id: "GEN-EXP-0001", role: "Baseline 100k comparison" }],
   },
   "GEN-0003": {
@@ -4484,6 +4490,8 @@ function CivilizationRecordPage() {
           title={record.title}
           publishedAt={record.published_at}
           engineVersion={record.engine_version}
+          zenodoDoi={meta?.zenodoDoi}
+          paperDoi={meta?.paperDoi}
         />
       </div>
     </main>

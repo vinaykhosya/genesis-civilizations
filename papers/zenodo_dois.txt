@@ -1,0 +1,14 @@
+ZENODO DEPOSITS — Genesis Project
+Generated: 2026-08-01
+
+Experiment 1 (Accelerated, 100k ticks)
+  DOI: 10.5281/zenodo.21735662
+  URL: https://zenodo.org/record/21735662
+
+Experiment 2 (Slow Healing / Monograph, 326k ticks)
+  DOI: 10.5281/zenodo.21735664
+  URL: https://zenodo.org/record/21735664
+
+Preprint (Monograph)
+  DOI: 10.5281/zenodo.21735672
+  URL: https://zenodo.org/record/21735672
