@@ -105,8 +105,8 @@ ${bibtexDataset}
         background:   "var(--bg-secondary)",
         border:       "1px solid var(--border-default)",
         borderRadius: "var(--radius-xl)",
-        padding:      "2rem",
-        marginTop:    "2rem",
+        padding:      "1.75rem 2rem",
+        marginTop:    0,
       }}
       className="glass"
       id={`citation-${id}`}

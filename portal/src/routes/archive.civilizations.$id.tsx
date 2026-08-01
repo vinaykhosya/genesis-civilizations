@@ -1567,6 +1567,19 @@ function CivilizationRecordPage() {
           </div>
         </div>
 
+        {/* Research Artifacts & Citation Block — Prominently positioned at the top */}
+        <div style={{ marginBottom: "2rem" }}>
+          <CitationBlock
+            id={record.id}
+            title={record.title}
+            publishedAt={record.published_at}
+            engineVersion={record.engine_version}
+            zenodoDoi={meta?.zenodoDoi}
+            paperDoi={meta?.paperDoi}
+            arxivId={meta?.arxivId}
+          />
+        </div>
+
         {/* Master Dual Column Grid */}
         <div
           className="master-detail-grid"
@@ -4484,18 +4497,7 @@ function CivilizationRecordPage() {
         )}
       </div>
 
-      {/* Citation Block — stable GEN-EXP-XXXX identifier for academic referencing */}
-      <div style={{ maxWidth: "var(--content-width, 1200px)", margin: "0 auto", padding: "0 1.5rem 4rem" }}>
-        <CitationBlock
-          id={record.id}
-          title={record.title}
-          publishedAt={record.published_at}
-          engineVersion={record.engine_version}
-          zenodoDoi={meta?.zenodoDoi}
-          paperDoi={meta?.paperDoi}
-          arxivId={meta?.arxivId}
-        />
-      </div>
+
     </main>
   );
 }
