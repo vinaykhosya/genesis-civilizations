@@ -4,8 +4,12 @@
   "scripts": {
     "dev": "pnpm --filter portal dev",
     "build": "pnpm --filter portal build && node -e \"const fs=require('fs'); fs.cpSync('portal/.vercel/output', '.vercel/output', {recursive: true})\"",
+    "build:dev": "pnpm --filter portal build:dev",
     "start": "pnpm --filter portal start",
     "lint": "pnpm --filter portal lint",
     "publish": "pnpm --filter portal publish"
-  }
+  },
+  "workspaces": [
+    "portal"
+  ]
 }
