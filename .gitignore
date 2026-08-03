@@ -19,6 +19,9 @@ epoch_stats.json
 run_history.json
 *.tmp
 *.log
+*.aux
+*.out
+*.toc
 simulation.png
 elevation.png
 biomes.png

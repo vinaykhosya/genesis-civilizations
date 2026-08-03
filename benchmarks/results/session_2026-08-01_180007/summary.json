@@ -1,0 +1,223 @@
+{
+  "provenance": {
+    "timestamp": "2026-08-01_180007",
+    "cpu": "AMD Ryzen 7 6800H with Radeon Graphics",
+    "logical_cores": 16,
+    "physical_cores": 8,
+    "ram": "15.2GB",
+    "python": "3.11.0",
+    "os": "Windows 10 (10.0.26200)",
+    "git_commit": "949e053",
+    "seeds": [
+      1720
+    ],
+    "concurrency_levels": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "repetitions": 1,
+    "ticks_target": 300,
+    "duration_target": "N/A",
+    "core_pinning": true,
+    "headless": true
+  },
+  "concurrency_summary": [
+    {
+      "concurrency": 1,
+      "avg_cpu_pct": 12.98,
+      "peak_cpu_pct": 26.89,
+      "avg_ram_mb": 12404.05,
+      "avg_tps_per_run": 54.37,
+      "avg_tps_per_run_ci": 0.0,
+      "total_tps": 54.37,
+      "total_tps_ci": 0.0,
+      "scaling_factor": 1.0,
+      "scaling_str": "1.00x",
+      "slowdown_pct": 0.0,
+      "slowdown_str": "0.0%"
+    },
+    {
+      "concurrency": 2,
+      "avg_cpu_pct": 16.92,
+      "peak_cpu_pct": 27.67,
+      "avg_ram_mb": 12447.13,
+      "avg_tps_per_run": 60.69,
+      "avg_tps_per_run_ci": 0.0,
+      "total_tps": 111.89,
+      "total_tps_ci": 0.0,
+      "scaling_factor": 2.06,
+      "scaling_str": "2.06x",
+      "slowdown_pct": 0.0,
+      "slowdown_str": "0.0%"
+    },
+    {
+      "concurrency": 3,
+      "avg_cpu_pct": 23.84,
+      "peak_cpu_pct": 50.96,
+      "avg_ram_mb": 12675.48,
+      "avg_tps_per_run": 60.59,
+      "avg_tps_per_run_ci": 0.0,
+      "total_tps": 176.56,
+      "total_tps_ci": 0.0,
+      "scaling_factor": 3.25,
+      "scaling_str": "3.25x",
+      "slowdown_pct": 0.0,
+      "slowdown_str": "0.0%"
+    },
+    {
+      "concurrency": 4,
+      "avg_cpu_pct": 30.75,
+      "peak_cpu_pct": 43.93,
+      "avg_ram_mb": 12862.94,
+      "avg_tps_per_run": 57.64,
+      "avg_tps_per_run_ci": 0.0,
+      "total_tps": 223.32,
+      "total_tps_ci": 0.0,
+      "scaling_factor": 4.11,
+      "scaling_str": "4.11x",
+      "slowdown_pct": 0.0,
+      "slowdown_str": "0.0%"
+    }
+  ],
+  "recommendation": {
+    "optimal_concurrency": 4,
+    "scaling_str": "4.11x",
+    "slowdown_str": "0.0%",
+    "total_tps": 223.32,
+    "avg_cpu_pct": 30.75,
+    "avg_ram_mb": 12862.94,
+    "summary_text": "**4 simultaneous experiments** provide the optimal balance between throughput and resource efficiency.",
+    "reasons": [
+      "Delivers 4.11x total throughput scaling (223.3 aggregate TPS).",
+      "Per-simulation slowdown is constrained to only 0.0%.",
+      "CPU utilization stays optimal at average 30.8%.",
+      "Total system memory footprint remains low at 12863 MB."
+    ]
+  },
+  "subsystem_profiling": {
+    "available": true,
+    "total_subsystem_time_ms": 38443.02,
+    "subsystems": {
+      "perception": {
+        "time_ms": 12353.94,
+        "percentage": 32.14,
+        "calls": 61995,
+        "max_ms": 1.16,
+        "worst_tick": 129
+      },
+      "decision": {
+        "time_ms": 19593.2,
+        "percentage": 50.97,
+        "calls": 35481,
+        "max_ms": 1.39,
+        "worst_tick": 120
+      },
+      "movement": {
+        "time_ms": 1369.77,
+        "percentage": 3.56,
+        "calls": 61995,
+        "max_ms": 0.73,
+        "worst_tick": 217
+      },
+      "drives_relationships": {
+        "time_ms": 1993.6,
+        "percentage": 5.19,
+        "calls": 61995,
+        "max_ms": 0.85,
+        "worst_tick": 124
+      },
+      "emotion_clock": {
+        "time_ms": 66.68,
+        "percentage": 0.17,
+        "calls": 2086,
+        "max_ms": 0.13,
+        "worst_tick": 60
+      },
+      "relationship_clock": {
+        "time_ms": 5.78,
+        "percentage": 0.02,
+        "calls": 431,
+        "max_ms": 0.05,
+        "worst_tick": 240
+      },
+      "motivation_clock": {
+        "time_ms": 0.0,
+        "percentage": 0.0,
+        "calls": 0,
+        "max_ms": 0.0,
+        "worst_tick": -1
+      },
+      "neural_predictor": {
+        "time_ms": 511.41,
+        "percentage": 1.33,
+        "calls": 12120,
+        "max_ms": 0.0,
+        "worst_tick": -1
+      },
+      "memory_pruning": {
+        "time_ms": 0.0,
+        "percentage": 0.0,
+        "calls": 0,
+        "max_ms": 0.0,
+        "worst_tick": -1
+      },
+      "reproduction": {
+        "time_ms": 83.75,
+        "percentage": 0.22,
+        "calls": 3000,
+        "max_ms": 0.68,
+        "worst_tick": 1
+      },
+      "ecology": {
+        "time_ms": 2437.16,
+        "percentage": 6.34,
+        "calls": 3000,
+        "max_ms": 22.49,
+        "worst_tick": 121
+      },
+      "logging": {
+        "time_ms": 1.78,
+        "percentage": 0.0,
+        "calls": 3000,
+        "max_ms": 0.03,
+        "worst_tick": 100
+      },
+      "callback": {
+        "time_ms": 25.95,
+        "percentage": 0.07,
+        "calls": 3000,
+        "max_ms": 0.04,
+        "worst_tick": 29
+      }
+    }
+  },
+  "phase_analysis": {
+    "World Initialization": {
+      "tick_range_str": "0 - 1000",
+      "description": "Initializing terrain, biomes, seasonal noise, and founding agents",
+      "mean": 54.4
+    },
+    "Founder Exploration": {
+      "tick_range_str": "1000 - 5000",
+      "description": "Initial survival, resource discovery, shelter establishment",
+      "mean": 54.4
+    },
+    "Population Expansion": {
+      "tick_range_str": "5000 - 25000",
+      "description": "Reproduction boom, multi-colony growth, territory competition",
+      "mean": 54.4
+    },
+    "Stable Civilization": {
+      "tick_range_str": "25000 - 100000",
+      "description": "Social networks, trade, mature shelter networks, steady population",
+      "mean": 54.4
+    },
+    "Late-Game Congestion": {
+      "tick_range_str": "100000 - inf",
+      "description": "High agent density, deep memory history, dense pathfinding interactions",
+      "mean": 54.4
+    }
+  }
+}

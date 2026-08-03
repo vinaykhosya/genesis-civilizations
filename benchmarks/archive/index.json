@@ -1,0 +1,224 @@
+{
+  "BENCH-2026-08-01_180636": {
+    "benchmark_id": "BENCH-2026-08-01_180636",
+    "date": "2026-08-01T19:12:07.532786",
+    "hardware": {
+      "cpu": "AMD Ryzen 7 6800H with Radeon Graphics",
+      "logical_cores": 16,
+      "ram": "15.2GB",
+      "os": "Windows 10 (10.0.26200)"
+    },
+    "software": {
+      "python": "3.11.0",
+      "git_commit": "949e053",
+      "core_pinning": true
+    },
+    "experiment_config": {
+      "seeds": [
+        1720
+      ],
+      "ticks_target": 1000,
+      "duration_target": "N/A",
+      "initial_population": 200,
+      "repetitions": 3
+    },
+    "concurrency_summary": [
+      {
+        "concurrency": 1,
+        "avg_cpu_pct": 9.76,
+        "peak_cpu_pct": 36.08,
+        "avg_ram_mb": 12554.08,
+        "avg_tps_per_run": 5.48,
+        "avg_tps_per_run_ci": 0.84,
+        "total_tps": 5.48,
+        "total_tps_ci": 0.84,
+        "scaling_factor": 1.0,
+        "scaling_str": "1.00x",
+        "slowdown_pct": 0.0,
+        "slowdown_str": "0.0%"
+      },
+      {
+        "concurrency": 2,
+        "avg_cpu_pct": 14.61,
+        "peak_cpu_pct": 41.02,
+        "avg_ram_mb": 12162.4,
+        "avg_tps_per_run": 5.26,
+        "avg_tps_per_run_ci": 0.04,
+        "total_tps": 10.15,
+        "total_tps_ci": 0.02,
+        "scaling_factor": 1.85,
+        "scaling_str": "1.85x",
+        "slowdown_pct": 4.0,
+        "slowdown_str": "4.0%"
+      },
+      {
+        "concurrency": 3,
+        "avg_cpu_pct": 20.77,
+        "peak_cpu_pct": 44.09,
+        "avg_ram_mb": 12052.33,
+        "avg_tps_per_run": 5.26,
+        "avg_tps_per_run_ci": 0.01,
+        "total_tps": 15.04,
+        "total_tps_ci": 0.14,
+        "scaling_factor": 2.74,
+        "scaling_str": "2.74x",
+        "slowdown_pct": 4.0,
+        "slowdown_str": "4.0%"
+      },
+      {
+        "concurrency": 4,
+        "avg_cpu_pct": 26.42,
+        "peak_cpu_pct": 51.2,
+        "avg_ram_mb": 12435.98,
+        "avg_tps_per_run": 5.41,
+        "avg_tps_per_run_ci": 0.03,
+        "total_tps": 19.98,
+        "total_tps_ci": 0.28,
+        "scaling_factor": 3.65,
+        "scaling_str": "3.65x",
+        "slowdown_pct": 1.3,
+        "slowdown_str": "1.3%"
+      },
+      {
+        "concurrency": 6,
+        "avg_cpu_pct": 38.61,
+        "peak_cpu_pct": 89.32,
+        "avg_ram_mb": 12281.43,
+        "avg_tps_per_run": 6.27,
+        "avg_tps_per_run_ci": 0.73,
+        "total_tps": 34.68,
+        "total_tps_ci": 3.95,
+        "scaling_factor": 6.33,
+        "scaling_str": "6.33x",
+        "slowdown_pct": 0.0,
+        "slowdown_str": "0.0%"
+      },
+      {
+        "concurrency": 8,
+        "avg_cpu_pct": 49.75,
+        "peak_cpu_pct": 79.41,
+        "avg_ram_mb": 11796.51,
+        "avg_tps_per_run": 6.5,
+        "avg_tps_per_run_ci": 0.03,
+        "total_tps": 46.61,
+        "total_tps_ci": 0.79,
+        "scaling_factor": 8.51,
+        "scaling_str": "8.51x",
+        "slowdown_pct": 0.0,
+        "slowdown_str": "0.0%"
+      }
+    ],
+    "recommendation": {
+      "optimal_concurrency": 8,
+      "scaling_str": "8.51x",
+      "slowdown_str": "0.0%",
+      "total_tps": 46.61,
+      "avg_cpu_pct": 49.75,
+      "avg_ram_mb": 11796.51,
+      "summary_text": "**8 simultaneous experiments** provide the optimal balance between throughput and resource efficiency.",
+      "reasons": [
+        "Delivers 8.51x total throughput scaling (46.6 aggregate TPS).",
+        "Per-simulation slowdown is constrained to only 0.0%.",
+        "CPU utilization stays optimal at average 49.8%.",
+        "Total system memory footprint remains low at 11797 MB."
+      ]
+    },
+    "subsystem_profiling": {
+      "available": true,
+      "total_subsystem_time_ms": 9586350.47,
+      "subsystems": {
+        "perception": {
+          "time_ms": 5201545.67,
+          "percentage": 54.26,
+          "calls": 15031464,
+          "max_ms": 26.38,
+          "worst_tick": 771
+        },
+        "decision": {
+          "time_ms": 3204050.43,
+          "percentage": 33.42,
+          "calls": 4016658,
+          "max_ms": 37.34,
+          "worst_tick": 466
+        },
+        "movement": {
+          "time_ms": 300644.04,
+          "percentage": 3.14,
+          "calls": 15031464,
+          "max_ms": 26.97,
+          "worst_tick": 243
+        },
+        "drives_relationships": {
+          "time_ms": 568517.75,
+          "percentage": 5.93,
+          "calls": 15031464,
+          "max_ms": 10.02,
+          "worst_tick": 771
+        },
+        "emotion_clock": {
+          "time_ms": 25249.53,
+          "percentage": 0.26,
+          "calls": 496290,
+          "max_ms": 7.5,
+          "worst_tick": 780
+        },
+        "relationship_clock": {
+          "time_ms": 4214.16,
+          "percentage": 0.04,
+          "calls": 120921,
+          "max_ms": 0.78,
+          "worst_tick": 960
+        },
+        "motivation_clock": {
+          "time_ms": 3817.52,
+          "percentage": 0.04,
+          "calls": 30585,
+          "max_ms": 1.04,
+          "worst_tick": 500
+        },
+        "neural_predictor": {
+          "time_ms": 46777.83,
+          "percentage": 0.49,
+          "calls": 916407,
+          "max_ms": 0.0,
+          "worst_tick": -1
+        },
+        "memory_pruning": {
+          "time_ms": 7137.67,
+          "percentage": 0.07,
+          "calls": 30072,
+          "max_ms": 1.01,
+          "worst_tick": 720
+        },
+        "reproduction": {
+          "time_ms": 125561.95,
+          "percentage": 1.31,
+          "calls": 72000,
+          "max_ms": 419.1,
+          "worst_tick": 1000
+        },
+        "ecology": {
+          "time_ms": 97087.21,
+          "percentage": 1.01,
+          "calls": 72000,
+          "max_ms": 87.99,
+          "worst_tick": 841
+        },
+        "logging": {
+          "time_ms": 67.72,
+          "percentage": 0.0,
+          "calls": 72000,
+          "max_ms": 0.1,
+          "worst_tick": 500
+        },
+        "callback": {
+          "time_ms": 1678.99,
+          "percentage": 0.02,
+          "calls": 72000,
+          "max_ms": 0.74,
+          "worst_tick": 562
+        }
+      }
+    }
+  }
+}

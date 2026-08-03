@@ -1,0 +1,24 @@
+{
+  "timestamp": "2026-08-01_175739",
+  "cpu": "AMD Ryzen 7 6800H with Radeon Graphics",
+  "logical_cores": 16,
+  "physical_cores": 8,
+  "ram": "15.2GB",
+  "python": "3.11.0",
+  "os": "Windows 10 (10.0.26200)",
+  "git_commit": "949e053",
+  "seeds": [
+    1720
+  ],
+  "concurrency_levels": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "repetitions": 1,
+  "ticks_target": 300,
+  "duration_target": "N/A",
+  "core_pinning": true,
+  "headless": true
+}

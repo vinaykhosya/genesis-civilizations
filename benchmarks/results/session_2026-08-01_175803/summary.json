@@ -1,0 +1,131 @@
+{
+  "provenance": {
+    "timestamp": "2026-08-01_175803",
+    "cpu": "AMD Ryzen 7 6800H with Radeon Graphics",
+    "logical_cores": 16,
+    "physical_cores": 8,
+    "ram": "15.2GB",
+    "python": "3.11.0",
+    "os": "Windows 10 (10.0.26200)",
+    "git_commit": "949e053",
+    "seeds": [
+      1720
+    ],
+    "concurrency_levels": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "repetitions": 1,
+    "ticks_target": 300,
+    "duration_target": "N/A",
+    "core_pinning": true,
+    "headless": true
+  },
+  "concurrency_summary": [
+    {
+      "concurrency": 1,
+      "avg_cpu_pct": 14.03,
+      "peak_cpu_pct": 30.14,
+      "avg_ram_mb": 13324.75,
+      "avg_tps_per_run": 0.0,
+      "avg_tps_per_run_ci": 0.0,
+      "total_tps": 0.0,
+      "total_tps_ci": 0.0,
+      "scaling_factor": 0.0,
+      "scaling_str": "0.00x",
+      "slowdown_pct": 100.0,
+      "slowdown_str": "100.0%"
+    },
+    {
+      "concurrency": 2,
+      "avg_cpu_pct": 19.97,
+      "peak_cpu_pct": 36.15,
+      "avg_ram_mb": 13462.81,
+      "avg_tps_per_run": 0.0,
+      "avg_tps_per_run_ci": 0.0,
+      "total_tps": 0.0,
+      "total_tps_ci": 0.0,
+      "scaling_factor": 0.0,
+      "scaling_str": "0.00x",
+      "slowdown_pct": 100.0,
+      "slowdown_str": "100.0%"
+    },
+    {
+      "concurrency": 3,
+      "avg_cpu_pct": 24.0,
+      "peak_cpu_pct": 38.04,
+      "avg_ram_mb": 12959.37,
+      "avg_tps_per_run": 0.0,
+      "avg_tps_per_run_ci": 0.0,
+      "total_tps": 0.0,
+      "total_tps_ci": 0.0,
+      "scaling_factor": 0.0,
+      "scaling_str": "0.00x",
+      "slowdown_pct": 100.0,
+      "slowdown_str": "100.0%"
+    },
+    {
+      "concurrency": 4,
+      "avg_cpu_pct": 31.9,
+      "peak_cpu_pct": 45.5,
+      "avg_ram_mb": 13036.34,
+      "avg_tps_per_run": 0.0,
+      "avg_tps_per_run_ci": 0.0,
+      "total_tps": 0.0,
+      "total_tps_ci": 0.0,
+      "scaling_factor": 0.0,
+      "scaling_str": "0.00x",
+      "slowdown_pct": 100.0,
+      "slowdown_str": "100.0%"
+    }
+  ],
+  "recommendation": {
+    "optimal_concurrency": 1,
+    "scaling_str": "0.00x",
+    "slowdown_str": "100.0%",
+    "total_tps": 0.0,
+    "avg_cpu_pct": 14.03,
+    "avg_ram_mb": 13324.75,
+    "summary_text": "**1 simultaneous experiments** provide the optimal balance between throughput and resource efficiency. Higher concurrency (4 runs) saturates CPU core cache and causes elevated per-simulation slowdown (100.0%).",
+    "reasons": [
+      "Delivers 0.00x total throughput scaling (0.0 aggregate TPS).",
+      "Per-simulation slowdown is constrained to only 100.0%.",
+      "CPU utilization stays optimal at average 14.0%.",
+      "Total system memory footprint remains low at 13325 MB."
+    ]
+  },
+  "subsystem_profiling": {
+    "available": false,
+    "message": "Subsystem profiler data unavailable in world object.",
+    "subsystems": {}
+  },
+  "phase_analysis": {
+    "World Initialization": {
+      "tick_range_str": "0 - 1000",
+      "description": "Initializing terrain, biomes, seasonal noise, and founding agents",
+      "mean": 1.0
+    },
+    "Founder Exploration": {
+      "tick_range_str": "1000 - 5000",
+      "description": "Initial survival, resource discovery, shelter establishment",
+      "mean": 1.0
+    },
+    "Population Expansion": {
+      "tick_range_str": "5000 - 25000",
+      "description": "Reproduction boom, multi-colony growth, territory competition",
+      "mean": 1.0
+    },
+    "Stable Civilization": {
+      "tick_range_str": "25000 - 100000",
+      "description": "Social networks, trade, mature shelter networks, steady population",
+      "mean": 1.0
+    },
+    "Late-Game Congestion": {
+      "tick_range_str": "100000 - inf",
+      "description": "High agent density, deep memory history, dense pathfinding interactions",
+      "mean": 1.0
+    }
+  }
+}

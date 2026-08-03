@@ -1,0 +1,81 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\geometry{margin=1in}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+\title{\textbf{Project Genesis: Research Orchestrator \& $2^4$ Factorial Experimentation Infrastructure}}
+\author{\textbf{Project Genesis Core Architecture Team}}
+\date{August 1, 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Project Genesis has evolved from an isolated artificial life simulator into a scientifically rigorous, high-throughput computational research platform. This technical paper presents the design and implementation of the \textbf{Genesis Research Orchestrator}—a system integrating multi-core parallel process management, continuous Phase 9A checkpoint-resume state recovery, failure classification, and automated experimental campaign aggregation. The orchestrator enables systematic $2^4$ full factorial experimental screening across arbitrary seed blocks with zero data loss under process interruption.
+\end{abstract}
+
+\section{Introduction}
+Simulating complex socio-ecological interactions and evolutionary dynamics requires running millions of ticks across high-dimensional parameter spaces. To transform raw simulation capabilities into reproducible scientific findings, robust experimental infrastructure is required. The Genesis Research Orchestrator addresses this challenge by providing process clamping, fault-tolerant state recovery, campaign provenance, and automated dataset export.
+
+\section{System Architecture}
+The Genesis platform is structured into three decoupled operational layers:
+
+\begin{enumerate}
+    \item \textbf{Layer 3: Research Infrastructure (Orchestrator)}: Manages campaign manifests (\texttt{campaign\_manifest.json}), concurrency clamping (\texttt{BATCH\_SIZE = 4}), Phase 9A checkpoint recovery, failure logging, and CSV/JSON summary aggregation.
+    \item \textbf{Layer 2: Research Platform (Analytics \& Web Viewer)}: Provides settlement location prediction, spatial heatmaps, trajectory telemetry, and interactive web visualization.
+    \item \textbf{Layer 1: Simulation Engine (Physical \& Agent Core)}: Executes the Whittaker biome matrix, priority-flood hydrology, Hebbian learning, and biological drive integration.
+\end{enumerate}
+
+\section{Study A: $2^4$ Full Factorial Experimental Design}
+Study A evaluates the main effects and higher-order interactions between territorial disputes, spatial dispersal, healing speed, and resource scarcity.
+
+\begin{table}[h]
+\centering
+\caption{Factorial Design Matrix for Study A}
+\label{tab:factorial_matrix}
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{Factor} & \textbf{Parameter} & \textbf{Level 0 ($- $)} & \textbf{Level 1 ($+$)} \\ \midrule
+$F_1$ & Disputes (\texttt{disputes\_enabled}) & \texttt{False} (Social Peace) & \texttt{True} (Hostility) \\
+$F_2$ & Spawn Mode (\texttt{spawn\_mode}) & \texttt{"fixed"} (Clusters) & \texttt{"random\_valid"} (Dispersed) \\
+$F_3$ & Healing Rate (\texttt{healing\_speed\_mult}) & \texttt{1.0} (Standard) & \texttt{0.5} (Harsh) \\
+$F_4$ & Scarcity (\texttt{scarcity}) & \texttt{1.0} (Abundant) & \texttt{3.0} (Depleted) \\ \bottomrule
+\end{tabular}
+\end{table}
+
+Crossing these four factors yields 16 orthogonal conditions ($C_{01}$ through $C_{16}$), executed across world seed blocks (e.g., Seed 1720, 1847, 2011) to isolate environmental effects from specific map geographies.
+
+\section{Parallel Concurrency Clamping}
+Benchmarking on an 8-core / 16-thread processor demonstrated an 8.51$\times$ throughput speedup at concurrency $N=8$. To preserve memory locality and prevent thread thrashing during late-game cognition ($>10^6$ ticks), active process execution is clamped to \texttt{BATCH\_SIZE = 4}.
+
+Each experiment executes in an isolated OS console window (\texttt{CREATE\_NEW\_CONSOLE}). The orchestrator monitors active process handles synchronously, launching subsequent batches automatically upon batch completion.
+
+\section{Phase 9A Checkpoint \& Auto-Resume Engine}
+To ensure fault tolerance over long execution horizons ($10^7$ ticks $\approx$ 27,777 simulation years), state is saved periodically every 50,000 ticks.
+
+\begin{itemize}
+    \item \textbf{Persistent State}: Physiological scalars, drive tensions, Hebbian weights, social relationships, and episodic memory are serialized to \texttt{latest\_checkpoint.json}.
+    \item \textbf{Derived State}: Deterministic 2D NumPy world arrays (elevation, biomes, hydrology) are regenerated from the world seed in $\sim 2.5$ seconds upon resume.
+\end{itemize}
+
+Upon launcher invocation, existing experiment directories are inspected. Experiments marked as complete are skipped instantly, while interrupted runs load \texttt{latest\_checkpoint.json} and resume seamlessly from the last saved tick.
+
+\section{Conclusion \& Future Work}
+The Genesis Research Orchestrator freezes the core simulation infrastructure into a reliable, reproducible experiment engine. Future work will focus on executing multi-seed campaign blocks and analyzing multi-factorial interactions using linear mixed-effects models.
+
+\end{document}

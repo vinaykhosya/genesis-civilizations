@@ -1,0 +1,6092 @@
+{
+  "worker_id": 5,
+  "pid": 29232,
+  "seed": 1720,
+  "initial_population": 220,
+  "ticks_completed": 1000,
+  "setup_duration_sec": 29.9163,
+  "elapsed_sec": 162.4343,
+  "avg_tps": 6.16,
+  "tick_records": [
+    [
+      1,
+      0.0,
+      "World Initialization",
+      199
+    ],
+    [
+      2,
+      0.1854,
+      "World Initialization",
+      199
+    ],
+    [
+      3,
+      0.371,
+      "World Initialization",
+      199
+    ],
+    [
+      4,
+      0.5587,
+      "World Initialization",
+      199
+    ],
+    [
+      5,
+      0.7497,
+      "World Initialization",
+      219
+    ],
+    [
+      6,
+      0.9568,
+      "World Initialization",
+      219
+    ],
+    [
+      7,
+      1.1824,
+      "World Initialization",
+      219
+    ],
+    [
+      8,
+      1.3939,
+      "World Initialization",
+      219
+    ],
+    [
+      9,
+      1.5917,
+      "World Initialization",
+      219
+    ],
+    [
+      10,
+      1.7779,
+      "World Initialization",
+      219
+    ],
+    [
+      11,
+      1.9597,
+      "World Initialization",
+      219
+    ],
+    [
+      12,
+      2.1344,
+      "World Initialization",
+      219
+    ],
+    [
+      13,
+      2.3144,
+      "World Initialization",
+      219
+    ],
+    [
+      14,
+      2.4978,
+      "World Initialization",
+      219
+    ],
+    [
+      15,
+      2.6886,
+      "World Initialization",
+      219
+    ],
+    [
+      16,
+      2.8678,
+      "World Initialization",
+      219
+    ],
+    [
+      17,
+      3.0458,
+      "World Initialization",
+      219
+    ],
+    [
+      18,
+      3.2231,
+      "World Initialization",
+      219
+    ],
+    [
+      19,
+      3.397,
+      "World Initialization",
+      219
+    ],
+    [
+      20,
+      3.5838,
+      "World Initialization",
+      219
+    ],
+    [
+      21,
+      3.769,
+      "World Initialization",
+      219
+    ],
+    [
+      22,
+      3.9625,
+      "World Initialization",
+      219
+    ],
+    [
+      23,
+      4.1499,
+      "World Initialization",
+      219
+    ],
+    [
+      24,
+      4.3423,
+      "World Initialization",
+      219
+    ],
+    [
+      25,
+      4.5337,
+      "World Initialization",
+      219
+    ],
+    [
+      26,
+      4.7246,
+      "World Initialization",
+      219
+    ],
+    [
+      27,
+      4.9156,
+      "World Initialization",
+      219
+    ],
+    [
+      28,
+      5.1075,
+      "World Initialization",
+      219
+    ],
+    [
+      29,
+      5.2952,
+      "World Initialization",
+      219
+    ],
+    [
+      30,
+      5.4962,
+      "World Initialization",
+      219
+    ],
+    [
+      31,
+      5.6784,
+      "World Initialization",
+      219
+    ],
+    [
+      32,
+      5.8436,
+      "World Initialization",
+      219
+    ],
+    [
+      33,
+      6.0081,
+      "World Initialization",
+      219
+    ],
+    [
+      34,
+      6.1723,
+      "World Initialization",
+      219
+    ],
+    [
+      35,
+      6.3333,
+      "World Initialization",
+      219
+    ],
+    [
+      36,
+      6.4935,
+      "World Initialization",
+      219
+    ],
+    [
+      37,
+      6.653,
+      "World Initialization",
+      219
+    ],
+    [
+      38,
+      6.8121,
+      "World Initialization",
+      219
+    ],
+    [
+      39,
+      6.9735,
+      "World Initialization",
+      219
+    ],
+    [
+      40,
+      7.1317,
+      "World Initialization",
+      219
+    ],
+    [
+      41,
+      7.2886,
+      "World Initialization",
+      219
+    ],
+    [
+      42,
+      7.4487,
+      "World Initialization",
+      219
+    ],
+    [
+      43,
+      7.61,
+      "World Initialization",
+      219
+    ],
+    [
+      44,
+      7.7601,
+      "World Initialization",
+      219
+    ],
+    [
+      45,
+      7.9114,
+      "World Initialization",
+      219
+    ],
+    [
+      46,
+      8.0732,
+      "World Initialization",
+      219
+    ],
+    [
+      47,
+      8.2238,
+      "World Initialization",
+      219
+    ],
+    [
+      48,
+      8.3721,
+      "World Initialization",
+      219
+    ],
+    [
+      49,
+      8.5231,
+      "World Initialization",
+      219
+    ],
+    [
+      50,
+      8.6742,
+      "World Initialization",
+      219
+    ],
+    [
+      51,
+      8.8193,
+      "World Initialization",
+      219
+    ],
+    [
+      52,
+      8.9762,
+      "World Initialization",
+      219
+    ],
+    [
+      53,
+      9.1506,
+      "World Initialization",
+      219
+    ],
+    [
+      54,
+      9.3198,
+      "World Initialization",
+      219
+    ],
+    [
+      55,
+      9.4897,
+      "World Initialization",
+      219
+    ],
+    [
+      56,
+      9.6626,
+      "World Initialization",
+      219
+    ],
+    [
+      57,
+      9.8328,
+      "World Initialization",
+      219
+    ],
+    [
+      58,
+      10.0048,
+      "World Initialization",
+      219
+    ],
+    [
+      59,
+      10.1758,
+      "World Initialization",
+      219
+    ],
+    [
+      60,
+      10.3582,
+      "World Initialization",
+      219
+    ],
+    [
+      61,
+      10.552,
+      "World Initialization",
+      219
+    ],
+    [
+      62,
+      10.7274,
+      "World Initialization",
+      219
+    ],
+    [
+      63,
+      10.9,
+      "World Initialization",
+      219
+    ],
+    [
+      64,
+      11.0672,
+      "World Initialization",
+      219
+    ],
+    [
+      65,
+      11.2356,
+      "World Initialization",
+      219
+    ],
+    [
+      66,
+      11.3998,
+      "World Initialization",
+      219
+    ],
+    [
+      67,
+      11.5851,
+      "World Initialization",
+      219
+    ],
+    [
+      68,
+      11.7637,
+      "World Initialization",
+      219
+    ],
+    [
+      69,
+      11.9354,
+      "World Initialization",
+      219
+    ],
+    [
+      70,
+      12.1134,
+      "World Initialization",
+      219
+    ],
+    [
+      71,
+      12.2929,
+      "World Initialization",
+      219
+    ],
+    [
+      72,
+      12.4599,
+      "World Initialization",
+      219
+    ],
+    [
+      73,
+      12.6279,
+      "World Initialization",
+      219
+    ],
+    [
+      74,
+      12.794,
+      "World Initialization",
+      219
+    ],
+    [
+      75,
+      12.9566,
+      "World Initialization",
+      219
+    ],
+    [
+      76,
+      13.1224,
+      "World Initialization",
+      219
+    ],
+    [
+      77,
+      13.2827,
+      "World Initialization",
+      219
+    ],
+    [
+      78,
+      13.44,
+      "World Initialization",
+      219
+    ],
+    [
+      79,
+      13.6073,
+      "World Initialization",
+      219
+    ],
+    [
+      80,
+      13.7798,
+      "World Initialization",
+      219
+    ],
+    [
+      81,
+      13.948,
+      "World Initialization",
+      219
+    ],
+    [
+      82,
+      14.1098,
+      "World Initialization",
+      219
+    ],
+    [
+      83,
+      14.272,
+      "World Initialization",
+      219
+    ],
+    [
+      84,
+      14.4278,
+      "World Initialization",
+      219
+    ],
+    [
+      85,
+      14.5847,
+      "World Initialization",
+      219
+    ],
+    [
+      86,
+      14.7623,
+      "World Initialization",
+      219
+    ],
+    [
+      87,
+      14.9355,
+      "World Initialization",
+      219
+    ],
+    [
+      88,
+      15.1096,
+      "World Initialization",
+      219
+    ],
+    [
+      89,
+      15.2882,
+      "World Initialization",
+      219
+    ],
+    [
+      90,
+      15.4724,
+      "World Initialization",
+      219
+    ],
+    [
+      91,
+      15.6703,
+      "World Initialization",
+      219
+    ],
+    [
+      92,
+      15.8497,
+      "World Initialization",
+      219
+    ],
+    [
+      93,
+      16.0288,
+      "World Initialization",
+      219
+    ],
+    [
+      94,
+      16.2125,
+      "World Initialization",
+      219
+    ],
+    [
+      95,
+      16.3911,
+      "World Initialization",
+      219
+    ],
+    [
+      96,
+      16.5507,
+      "World Initialization",
+      219
+    ],
+    [
+      97,
+      16.7101,
+      "World Initialization",
+      219
+    ],
+    [
+      98,
+      16.8736,
+      "World Initialization",
+      219
+    ],
+    [
+      99,
+      17.0427,
+      "World Initialization",
+      219
+    ],
+    [
+      100,
+      17.2124,
+      "World Initialization",
+      219
+    ],
+    [
+      101,
+      17.3886,
+      "World Initialization",
+      219
+    ],
+    [
+      102,
+      17.5621,
+      "World Initialization",
+      219
+    ],
+    [
+      103,
+      17.7393,
+      "World Initialization",
+      219
+    ],
+    [
+      104,
+      17.9204,
+      "World Initialization",
+      219
+    ],
+    [
+      105,
+      18.096,
+      "World Initialization",
+      219
+    ],
+    [
+      106,
+      18.273,
+      "World Initialization",
+      219
+    ],
+    [
+      107,
+      18.4604,
+      "World Initialization",
+      219
+    ],
+    [
+      108,
+      18.6352,
+      "World Initialization",
+      219
+    ],
+    [
+      109,
+      18.8141,
+      "World Initialization",
+      219
+    ],
+    [
+      110,
+      18.9943,
+      "World Initialization",
+      219
+    ],
+    [
+      111,
+      19.1676,
+      "World Initialization",
+      219
+    ],
+    [
+      112,
+      19.3416,
+      "World Initialization",
+      219
+    ],
+    [
+      113,
+      19.5234,
+      "World Initialization",
+      219
+    ],
+    [
+      114,
+      19.7062,
+      "World Initialization",
+      219
+    ],
+    [
+      115,
+      19.9023,
+      "World Initialization",
+      219
+    ],
+    [
+      116,
+      20.0841,
+      "World Initialization",
+      219
+    ],
+    [
+      117,
+      20.2646,
+      "World Initialization",
+      219
+    ],
+    [
+      118,
+      20.4475,
+      "World Initialization",
+      219
+    ],
+    [
+      119,
+      20.6291,
+      "World Initialization",
+      219
+    ],
+    [
+      120,
+      20.8215,
+      "World Initialization",
+      219
+    ],
+    [
+      121,
+      21.02,
+      "World Initialization",
+      219
+    ],
+    [
+      122,
+      21.2018,
+      "World Initialization",
+      219
+    ],
+    [
+      123,
+      21.382,
+      "World Initialization",
+      219
+    ],
+    [
+      124,
+      21.5676,
+      "World Initialization",
+      219
+    ],
+    [
+      125,
+      21.7421,
+      "World Initialization",
+      219
+    ],
+    [
+      126,
+      21.9132,
+      "World Initialization",
+      219
+    ],
+    [
+      127,
+      22.083,
+      "World Initialization",
+      219
+    ],
+    [
+      128,
+      22.256,
+      "World Initialization",
+      219
+    ],
+    [
+      129,
+      22.4242,
+      "World Initialization",
+      219
+    ],
+    [
+      130,
+      22.5954,
+      "World Initialization",
+      219
+    ],
+    [
+      131,
+      22.7682,
+      "World Initialization",
+      219
+    ],
+    [
+      132,
+      22.9432,
+      "World Initialization",
+      219
+    ],
+    [
+      133,
+      23.1244,
+      "World Initialization",
+      219
+    ],
+    [
+      134,
+      23.3103,
+      "World Initialization",
+      219
+    ],
+    [
+      135,
+      23.4928,
+      "World Initialization",
+      219
+    ],
+    [
+      136,
+      23.6692,
+      "World Initialization",
+      219
+    ],
+    [
+      137,
+      23.8431,
+      "World Initialization",
+      219
+    ],
+    [
+      138,
+      24.0158,
+      "World Initialization",
+      219
+    ],
+    [
+      139,
+      24.1884,
+      "World Initialization",
+      219
+    ],
+    [
+      140,
+      24.3588,
+      "World Initialization",
+      219
+    ],
+    [
+      141,
+      24.5275,
+      "World Initialization",
+      219
+    ],
+    [
+      142,
+      24.6937,
+      "World Initialization",
+      219
+    ],
+    [
+      143,
+      24.8603,
+      "World Initialization",
+      219
+    ],
+    [
+      144,
+      25.0292,
+      "World Initialization",
+      219
+    ],
+    [
+      145,
+      25.1973,
+      "World Initialization",
+      219
+    ],
+    [
+      146,
+      25.3692,
+      "World Initialization",
+      219
+    ],
+    [
+      147,
+      25.5359,
+      "World Initialization",
+      219
+    ],
+    [
+      148,
+      25.7047,
+      "World Initialization",
+      219
+    ],
+    [
+      149,
+      25.8688,
+      "World Initialization",
+      219
+    ],
+    [
+      150,
+      26.0516,
+      "World Initialization",
+      219
+    ],
+    [
+      151,
+      26.2502,
+      "World Initialization",
+      219
+    ],
+    [
+      152,
+      26.4276,
+      "World Initialization",
+      219
+    ],
+    [
+      153,
+      26.606,
+      "World Initialization",
+      219
+    ],
+    [
+      154,
+      26.7822,
+      "World Initialization",
+      219
+    ],
+    [
+      155,
+      26.9547,
+      "World Initialization",
+      219
+    ],
+    [
+      156,
+      27.1334,
+      "World Initialization",
+      219
+    ],
+    [
+      157,
+      27.3128,
+      "World Initialization",
+      219
+    ],
+    [
+      158,
+      27.4862,
+      "World Initialization",
+      219
+    ],
+    [
+      159,
+      27.6543,
+      "World Initialization",
+      219
+    ],
+    [
+      160,
+      27.8214,
+      "World Initialization",
+      219
+    ],
+    [
+      161,
+      27.9895,
+      "World Initialization",
+      219
+    ],
+    [
+      162,
+      28.1544,
+      "World Initialization",
+      219
+    ],
+    [
+      163,
+      28.3194,
+      "World Initialization",
+      219
+    ],
+    [
+      164,
+      28.4825,
+      "World Initialization",
+      219
+    ],
+    [
+      165,
+      28.6496,
+      "World Initialization",
+      219
+    ],
+    [
+      166,
+      28.827,
+      "World Initialization",
+      219
+    ],
+    [
+      167,
+      29.0051,
+      "World Initialization",
+      219
+    ],
+    [
+      168,
+      29.1815,
+      "World Initialization",
+      219
+    ],
+    [
+      169,
+      29.354,
+      "World Initialization",
+      219
+    ],
+    [
+      170,
+      29.5274,
+      "World Initialization",
+      219
+    ],
+    [
+      171,
+      29.697,
+      "World Initialization",
+      219
+    ],
+    [
+      172,
+      29.8706,
+      "World Initialization",
+      219
+    ],
+    [
+      173,
+      30.0453,
+      "World Initialization",
+      219
+    ],
+    [
+      174,
+      30.2245,
+      "World Initialization",
+      219
+    ],
+    [
+      175,
+      30.4033,
+      "World Initialization",
+      219
+    ],
+    [
+      176,
+      30.5804,
+      "World Initialization",
+      219
+    ],
+    [
+      177,
+      30.7554,
+      "World Initialization",
+      219
+    ],
+    [
+      178,
+      30.9362,
+      "World Initialization",
+      219
+    ],
+    [
+      179,
+      31.1131,
+      "World Initialization",
+      219
+    ],
+    [
+      180,
+      31.2984,
+      "World Initialization",
+      219
+    ],
+    [
+      181,
+      31.4898,
+      "World Initialization",
+      219
+    ],
+    [
+      182,
+      31.6625,
+      "World Initialization",
+      219
+    ],
+    [
+      183,
+      31.8337,
+      "World Initialization",
+      219
+    ],
+    [
+      184,
+      31.9985,
+      "World Initialization",
+      219
+    ],
+    [
+      185,
+      32.1686,
+      "World Initialization",
+      219
+    ],
+    [
+      186,
+      32.3415,
+      "World Initialization",
+      219
+    ],
+    [
+      187,
+      32.5195,
+      "World Initialization",
+      219
+    ],
+    [
+      188,
+      32.6979,
+      "World Initialization",
+      219
+    ],
+    [
+      189,
+      32.8747,
+      "World Initialization",
+      219
+    ],
+    [
+      190,
+      33.0448,
+      "World Initialization",
+      219
+    ],
+    [
+      191,
+      33.2143,
+      "World Initialization",
+      219
+    ],
+    [
+      192,
+      33.3827,
+      "World Initialization",
+      219
+    ],
+    [
+      193,
+      33.5529,
+      "World Initialization",
+      219
+    ],
+    [
+      194,
+      33.7232,
+      "World Initialization",
+      219
+    ],
+    [
+      195,
+      33.8891,
+      "World Initialization",
+      219
+    ],
+    [
+      196,
+      34.049,
+      "World Initialization",
+      219
+    ],
+    [
+      197,
+      34.2058,
+      "World Initialization",
+      219
+    ],
+    [
+      198,
+      34.3631,
+      "World Initialization",
+      219
+    ],
+    [
+      199,
+      34.532,
+      "World Initialization",
+      219
+    ],
+    [
+      200,
+      34.7025,
+      "World Initialization",
+      219
+    ],
+    [
+      201,
+      34.8635,
+      "World Initialization",
+      219
+    ],
+    [
+      202,
+      35.0189,
+      "World Initialization",
+      219
+    ],
+    [
+      203,
+      35.1879,
+      "World Initialization",
+      219
+    ],
+    [
+      204,
+      35.3563,
+      "World Initialization",
+      219
+    ],
+    [
+      205,
+      35.5233,
+      "World Initialization",
+      219
+    ],
+    [
+      206,
+      35.6774,
+      "World Initialization",
+      219
+    ],
+    [
+      207,
+      35.8419,
+      "World Initialization",
+      219
+    ],
+    [
+      208,
+      36.0038,
+      "World Initialization",
+      219
+    ],
+    [
+      209,
+      36.1674,
+      "World Initialization",
+      219
+    ],
+    [
+      210,
+      36.3398,
+      "World Initialization",
+      219
+    ],
+    [
+      211,
+      36.5134,
+      "World Initialization",
+      219
+    ],
+    [
+      212,
+      36.6619,
+      "World Initialization",
+      219
+    ],
+    [
+      213,
+      36.8219,
+      "World Initialization",
+      219
+    ],
+    [
+      214,
+      36.9769,
+      "World Initialization",
+      219
+    ],
+    [
+      215,
+      37.1434,
+      "World Initialization",
+      219
+    ],
+    [
+      216,
+      37.2899,
+      "World Initialization",
+      219
+    ],
+    [
+      217,
+      37.44,
+      "World Initialization",
+      219
+    ],
+    [
+      218,
+      37.5982,
+      "World Initialization",
+      219
+    ],
+    [
+      219,
+      37.7552,
+      "World Initialization",
+      219
+    ],
+    [
+      220,
+      37.9079,
+      "World Initialization",
+      219
+    ],
+    [
+      221,
+      38.0642,
+      "World Initialization",
+      219
+    ],
+    [
+      222,
+      38.213,
+      "World Initialization",
+      219
+    ],
+    [
+      223,
+      38.3757,
+      "World Initialization",
+      219
+    ],
+    [
+      224,
+      38.5342,
+      "World Initialization",
+      219
+    ],
+    [
+      225,
+      38.6955,
+      "World Initialization",
+      219
+    ],
+    [
+      226,
+      38.8622,
+      "World Initialization",
+      219
+    ],
+    [
+      227,
+      39.0332,
+      "World Initialization",
+      219
+    ],
+    [
+      228,
+      39.1828,
+      "World Initialization",
+      219
+    ],
+    [
+      229,
+      39.3415,
+      "World Initialization",
+      219
+    ],
+    [
+      230,
+      39.4981,
+      "World Initialization",
+      219
+    ],
+    [
+      231,
+      39.6529,
+      "World Initialization",
+      219
+    ],
+    [
+      232,
+      39.8067,
+      "World Initialization",
+      219
+    ],
+    [
+      233,
+      39.9777,
+      "World Initialization",
+      219
+    ],
+    [
+      234,
+      40.1499,
+      "World Initialization",
+      219
+    ],
+    [
+      235,
+      40.3445,
+      "World Initialization",
+      219
+    ],
+    [
+      236,
+      40.5154,
+      "World Initialization",
+      219
+    ],
+    [
+      237,
+      40.6932,
+      "World Initialization",
+      219
+    ],
+    [
+      238,
+      40.8608,
+      "World Initialization",
+      219
+    ],
+    [
+      239,
+      41.0237,
+      "World Initialization",
+      219
+    ],
+    [
+      240,
+      41.2123,
+      "World Initialization",
+      219
+    ],
+    [
+      241,
+      41.4036,
+      "World Initialization",
+      219
+    ],
+    [
+      242,
+      41.565,
+      "World Initialization",
+      219
+    ],
+    [
+      243,
+      41.7279,
+      "World Initialization",
+      219
+    ],
+    [
+      244,
+      41.8874,
+      "World Initialization",
+      219
+    ],
+    [
+      245,
+      42.0757,
+      "World Initialization",
+      219
+    ],
+    [
+      246,
+      42.2603,
+      "World Initialization",
+      219
+    ],
+    [
+      247,
+      42.4484,
+      "World Initialization",
+      219
+    ],
+    [
+      248,
+      42.6375,
+      "World Initialization",
+      219
+    ],
+    [
+      249,
+      42.8288,
+      "World Initialization",
+      219
+    ],
+    [
+      250,
+      43.0161,
+      "World Initialization",
+      219
+    ],
+    [
+      251,
+      43.2123,
+      "World Initialization",
+      219
+    ],
+    [
+      252,
+      43.4043,
+      "World Initialization",
+      219
+    ],
+    [
+      253,
+      43.5843,
+      "World Initialization",
+      219
+    ],
+    [
+      254,
+      43.7566,
+      "World Initialization",
+      219
+    ],
+    [
+      255,
+      43.933,
+      "World Initialization",
+      219
+    ],
+    [
+      256,
+      44.1075,
+      "World Initialization",
+      219
+    ],
+    [
+      257,
+      44.2775,
+      "World Initialization",
+      219
+    ],
+    [
+      258,
+      44.4489,
+      "World Initialization",
+      219
+    ],
+    [
+      259,
+      44.6144,
+      "World Initialization",
+      219
+    ],
+    [
+      260,
+      44.7896,
+      "World Initialization",
+      219
+    ],
+    [
+      261,
+      44.9632,
+      "World Initialization",
+      219
+    ],
+    [
+      262,
+      45.1352,
+      "World Initialization",
+      219
+    ],
+    [
+      263,
+      45.3058,
+      "World Initialization",
+      219
+    ],
+    [
+      264,
+      45.4782,
+      "World Initialization",
+      219
+    ],
+    [
+      265,
+      45.6435,
+      "World Initialization",
+      219
+    ],
+    [
+      266,
+      45.8146,
+      "World Initialization",
+      219
+    ],
+    [
+      267,
+      45.9866,
+      "World Initialization",
+      219
+    ],
+    [
+      268,
+      46.1811,
+      "World Initialization",
+      219
+    ],
+    [
+      269,
+      46.3798,
+      "World Initialization",
+      219
+    ],
+    [
+      270,
+      46.5879,
+      "World Initialization",
+      219
+    ],
+    [
+      271,
+      46.8006,
+      "World Initialization",
+      219
+    ],
+    [
+      272,
+      46.9905,
+      "World Initialization",
+      219
+    ],
+    [
+      273,
+      47.1948,
+      "World Initialization",
+      219
+    ],
+    [
+      274,
+      47.3887,
+      "World Initialization",
+      219
+    ],
+    [
+      275,
+      47.5991,
+      "World Initialization",
+      219
+    ],
+    [
+      276,
+      47.8035,
+      "World Initialization",
+      219
+    ],
+    [
+      277,
+      48.0084,
+      "World Initialization",
+      219
+    ],
+    [
+      278,
+      48.2131,
+      "World Initialization",
+      219
+    ],
+    [
+      279,
+      48.4143,
+      "World Initialization",
+      219
+    ],
+    [
+      280,
+      48.6113,
+      "World Initialization",
+      219
+    ],
+    [
+      281,
+      48.801,
+      "World Initialization",
+      219
+    ],
+    [
+      282,
+      48.9895,
+      "World Initialization",
+      219
+    ],
+    [
+      283,
+      49.1725,
+      "World Initialization",
+      219
+    ],
+    [
+      284,
+      49.356,
+      "World Initialization",
+      219
+    ],
+    [
+      285,
+      49.5373,
+      "World Initialization",
+      219
+    ],
+    [
+      286,
+      49.7175,
+      "World Initialization",
+      219
+    ],
+    [
+      287,
+      49.8977,
+      "World Initialization",
+      219
+    ],
+    [
+      288,
+      50.0778,
+      "World Initialization",
+      219
+    ],
+    [
+      289,
+      50.2593,
+      "World Initialization",
+      219
+    ],
+    [
+      290,
+      50.4488,
+      "World Initialization",
+      219
+    ],
+    [
+      291,
+      50.6332,
+      "World Initialization",
+      219
+    ],
+    [
+      292,
+      50.8185,
+      "World Initialization",
+      219
+    ],
+    [
+      293,
+      50.9995,
+      "World Initialization",
+      219
+    ],
+    [
+      294,
+      51.1868,
+      "World Initialization",
+      219
+    ],
+    [
+      295,
+      51.3714,
+      "World Initialization",
+      219
+    ],
+    [
+      296,
+      51.5389,
+      "World Initialization",
+      219
+    ],
+    [
+      297,
+      51.704,
+      "World Initialization",
+      219
+    ],
+    [
+      298,
+      51.8584,
+      "World Initialization",
+      219
+    ],
+    [
+      299,
+      52.031,
+      "World Initialization",
+      219
+    ],
+    [
+      300,
+      52.2128,
+      "World Initialization",
+      219
+    ],
+    [
+      301,
+      52.4306,
+      "World Initialization",
+      219
+    ],
+    [
+      302,
+      52.5877,
+      "World Initialization",
+      219
+    ],
+    [
+      303,
+      52.7376,
+      "World Initialization",
+      219
+    ],
+    [
+      304,
+      52.8905,
+      "World Initialization",
+      219
+    ],
+    [
+      305,
+      53.0546,
+      "World Initialization",
+      219
+    ],
+    [
+      306,
+      53.2135,
+      "World Initialization",
+      219
+    ],
+    [
+      307,
+      53.3643,
+      "World Initialization",
+      219
+    ],
+    [
+      308,
+      53.518,
+      "World Initialization",
+      219
+    ],
+    [
+      309,
+      53.6703,
+      "World Initialization",
+      219
+    ],
+    [
+      310,
+      53.8235,
+      "World Initialization",
+      219
+    ],
+    [
+      311,
+      53.9778,
+      "World Initialization",
+      219
+    ],
+    [
+      312,
+      54.1324,
+      "World Initialization",
+      219
+    ],
+    [
+      313,
+      54.2922,
+      "World Initialization",
+      219
+    ],
+    [
+      314,
+      54.453,
+      "World Initialization",
+      219
+    ],
+    [
+      315,
+      54.6109,
+      "World Initialization",
+      219
+    ],
+    [
+      316,
+      54.766,
+      "World Initialization",
+      219
+    ],
+    [
+      317,
+      54.9189,
+      "World Initialization",
+      219
+    ],
+    [
+      318,
+      55.0774,
+      "World Initialization",
+      219
+    ],
+    [
+      319,
+      55.2329,
+      "World Initialization",
+      219
+    ],
+    [
+      320,
+      55.3896,
+      "World Initialization",
+      219
+    ],
+    [
+      321,
+      55.5455,
+      "World Initialization",
+      219
+    ],
+    [
+      322,
+      55.6983,
+      "World Initialization",
+      219
+    ],
+    [
+      323,
+      55.8516,
+      "World Initialization",
+      219
+    ],
+    [
+      324,
+      56.0045,
+      "World Initialization",
+      219
+    ],
+    [
+      325,
+      56.1554,
+      "World Initialization",
+      219
+    ],
+    [
+      326,
+      56.3063,
+      "World Initialization",
+      219
+    ],
+    [
+      327,
+      56.4563,
+      "World Initialization",
+      219
+    ],
+    [
+      328,
+      56.6067,
+      "World Initialization",
+      219
+    ],
+    [
+      329,
+      56.7578,
+      "World Initialization",
+      219
+    ],
+    [
+      330,
+      56.9191,
+      "World Initialization",
+      219
+    ],
+    [
+      331,
+      57.087,
+      "World Initialization",
+      219
+    ],
+    [
+      332,
+      57.238,
+      "World Initialization",
+      219
+    ],
+    [
+      333,
+      57.3902,
+      "World Initialization",
+      219
+    ],
+    [
+      334,
+      57.5508,
+      "World Initialization",
+      219
+    ],
+    [
+      335,
+      57.7091,
+      "World Initialization",
+      219
+    ],
+    [
+      336,
+      57.8666,
+      "World Initialization",
+      219
+    ],
+    [
+      337,
+      58.0247,
+      "World Initialization",
+      219
+    ],
+    [
+      338,
+      58.1853,
+      "World Initialization",
+      219
+    ],
+    [
+      339,
+      58.348,
+      "World Initialization",
+      219
+    ],
+    [
+      340,
+      58.5108,
+      "World Initialization",
+      219
+    ],
+    [
+      341,
+      58.6765,
+      "World Initialization",
+      219
+    ],
+    [
+      342,
+      58.8344,
+      "World Initialization",
+      219
+    ],
+    [
+      343,
+      58.9987,
+      "World Initialization",
+      219
+    ],
+    [
+      344,
+      59.1582,
+      "World Initialization",
+      219
+    ],
+    [
+      345,
+      59.3162,
+      "World Initialization",
+      219
+    ],
+    [
+      346,
+      59.4771,
+      "World Initialization",
+      219
+    ],
+    [
+      347,
+      59.6498,
+      "World Initialization",
+      219
+    ],
+    [
+      348,
+      59.8105,
+      "World Initialization",
+      219
+    ],
+    [
+      349,
+      59.9662,
+      "World Initialization",
+      219
+    ],
+    [
+      350,
+      60.123,
+      "World Initialization",
+      219
+    ],
+    [
+      351,
+      60.2866,
+      "World Initialization",
+      219
+    ],
+    [
+      352,
+      60.4483,
+      "World Initialization",
+      219
+    ],
+    [
+      353,
+      60.6076,
+      "World Initialization",
+      219
+    ],
+    [
+      354,
+      60.7698,
+      "World Initialization",
+      219
+    ],
+    [
+      355,
+      60.9276,
+      "World Initialization",
+      219
+    ],
+    [
+      356,
+      61.0841,
+      "World Initialization",
+      219
+    ],
+    [
+      357,
+      61.2434,
+      "World Initialization",
+      219
+    ],
+    [
+      358,
+      61.3974,
+      "World Initialization",
+      219
+    ],
+    [
+      359,
+      61.5542,
+      "World Initialization",
+      219
+    ],
+    [
+      360,
+      61.7802,
+      "World Initialization",
+      219
+    ],
+    [
+      361,
+      61.9717,
+      "World Initialization",
+      219
+    ],
+    [
+      362,
+      62.1365,
+      "World Initialization",
+      219
+    ],
+    [
+      363,
+      62.297,
+      "World Initialization",
+      219
+    ],
+    [
+      364,
+      62.4573,
+      "World Initialization",
+      219
+    ],
+    [
+      365,
+      62.6176,
+      "World Initialization",
+      219
+    ],
+    [
+      366,
+      62.7789,
+      "World Initialization",
+      219
+    ],
+    [
+      367,
+      62.9413,
+      "World Initialization",
+      219
+    ],
+    [
+      368,
+      63.1052,
+      "World Initialization",
+      219
+    ],
+    [
+      369,
+      63.2657,
+      "World Initialization",
+      219
+    ],
+    [
+      370,
+      63.4223,
+      "World Initialization",
+      219
+    ],
+    [
+      371,
+      63.5947,
+      "World Initialization",
+      219
+    ],
+    [
+      372,
+      63.7658,
+      "World Initialization",
+      219
+    ],
+    [
+      373,
+      63.9367,
+      "World Initialization",
+      219
+    ],
+    [
+      374,
+      64.1032,
+      "World Initialization",
+      219
+    ],
+    [
+      375,
+      64.2621,
+      "World Initialization",
+      219
+    ],
+    [
+      376,
+      64.424,
+      "World Initialization",
+      219
+    ],
+    [
+      377,
+      64.5881,
+      "World Initialization",
+      219
+    ],
+    [
+      378,
+      64.7506,
+      "World Initialization",
+      219
+    ],
+    [
+      379,
+      64.9138,
+      "World Initialization",
+      219
+    ],
+    [
+      380,
+      65.0748,
+      "World Initialization",
+      219
+    ],
+    [
+      381,
+      65.2408,
+      "World Initialization",
+      219
+    ],
+    [
+      382,
+      65.4033,
+      "World Initialization",
+      219
+    ],
+    [
+      383,
+      65.5643,
+      "World Initialization",
+      219
+    ],
+    [
+      384,
+      65.7195,
+      "World Initialization",
+      219
+    ],
+    [
+      385,
+      65.8747,
+      "World Initialization",
+      219
+    ],
+    [
+      386,
+      66.0333,
+      "World Initialization",
+      219
+    ],
+    [
+      387,
+      66.1912,
+      "World Initialization",
+      219
+    ],
+    [
+      388,
+      66.3479,
+      "World Initialization",
+      219
+    ],
+    [
+      389,
+      66.503,
+      "World Initialization",
+      219
+    ],
+    [
+      390,
+      66.6705,
+      "World Initialization",
+      219
+    ],
+    [
+      391,
+      66.8471,
+      "World Initialization",
+      219
+    ],
+    [
+      392,
+      67.0086,
+      "World Initialization",
+      219
+    ],
+    [
+      393,
+      67.17,
+      "World Initialization",
+      219
+    ],
+    [
+      394,
+      67.3312,
+      "World Initialization",
+      219
+    ],
+    [
+      395,
+      67.4895,
+      "World Initialization",
+      219
+    ],
+    [
+      396,
+      67.6533,
+      "World Initialization",
+      219
+    ],
+    [
+      397,
+      67.8174,
+      "World Initialization",
+      219
+    ],
+    [
+      398,
+      67.9796,
+      "World Initialization",
+      219
+    ],
+    [
+      399,
+      68.1487,
+      "World Initialization",
+      219
+    ],
+    [
+      400,
+      68.3492,
+      "World Initialization",
+      219
+    ],
+    [
+      401,
+      68.5186,
+      "World Initialization",
+      218
+    ],
+    [
+      402,
+      68.6737,
+      "World Initialization",
+      218
+    ],
+    [
+      403,
+      68.8309,
+      "World Initialization",
+      218
+    ],
+    [
+      404,
+      68.9877,
+      "World Initialization",
+      218
+    ],
+    [
+      405,
+      69.1468,
+      "World Initialization",
+      218
+    ],
+    [
+      406,
+      69.3091,
+      "World Initialization",
+      218
+    ],
+    [
+      407,
+      69.4696,
+      "World Initialization",
+      218
+    ],
+    [
+      408,
+      69.6276,
+      "World Initialization",
+      218
+    ],
+    [
+      409,
+      69.788,
+      "World Initialization",
+      218
+    ],
+    [
+      410,
+      69.9487,
+      "World Initialization",
+      218
+    ],
+    [
+      411,
+      70.1084,
+      "World Initialization",
+      218
+    ],
+    [
+      412,
+      70.2671,
+      "World Initialization",
+      218
+    ],
+    [
+      413,
+      70.4224,
+      "World Initialization",
+      218
+    ],
+    [
+      414,
+      70.5829,
+      "World Initialization",
+      218
+    ],
+    [
+      415,
+      70.7405,
+      "World Initialization",
+      218
+    ],
+    [
+      416,
+      70.8943,
+      "World Initialization",
+      218
+    ],
+    [
+      417,
+      71.0485,
+      "World Initialization",
+      218
+    ],
+    [
+      418,
+      71.2035,
+      "World Initialization",
+      218
+    ],
+    [
+      419,
+      71.3553,
+      "World Initialization",
+      218
+    ],
+    [
+      420,
+      71.5196,
+      "World Initialization",
+      218
+    ],
+    [
+      421,
+      71.6851,
+      "World Initialization",
+      218
+    ],
+    [
+      422,
+      71.832,
+      "World Initialization",
+      218
+    ],
+    [
+      423,
+      71.9833,
+      "World Initialization",
+      218
+    ],
+    [
+      424,
+      72.135,
+      "World Initialization",
+      218
+    ],
+    [
+      425,
+      72.2882,
+      "World Initialization",
+      218
+    ],
+    [
+      426,
+      72.4374,
+      "World Initialization",
+      218
+    ],
+    [
+      427,
+      72.5908,
+      "World Initialization",
+      218
+    ],
+    [
+      428,
+      72.7401,
+      "World Initialization",
+      218
+    ],
+    [
+      429,
+      72.89,
+      "World Initialization",
+      218
+    ],
+    [
+      430,
+      73.0442,
+      "World Initialization",
+      218
+    ],
+    [
+      431,
+      73.2038,
+      "World Initialization",
+      218
+    ],
+    [
+      432,
+      73.4007,
+      "World Initialization",
+      218
+    ],
+    [
+      433,
+      73.5511,
+      "World Initialization",
+      218
+    ],
+    [
+      434,
+      73.7002,
+      "World Initialization",
+      218
+    ],
+    [
+      435,
+      73.8504,
+      "World Initialization",
+      218
+    ],
+    [
+      436,
+      74.003,
+      "World Initialization",
+      218
+    ],
+    [
+      437,
+      74.1586,
+      "World Initialization",
+      218
+    ],
+    [
+      438,
+      74.3139,
+      "World Initialization",
+      218
+    ],
+    [
+      439,
+      74.4737,
+      "World Initialization",
+      218
+    ],
+    [
+      440,
+      74.6294,
+      "World Initialization",
+      218
+    ],
+    [
+      441,
+      74.7883,
+      "World Initialization",
+      218
+    ],
+    [
+      442,
+      74.9405,
+      "World Initialization",
+      218
+    ],
+    [
+      443,
+      75.0939,
+      "World Initialization",
+      218
+    ],
+    [
+      444,
+      75.2511,
+      "World Initialization",
+      218
+    ],
+    [
+      445,
+      75.4094,
+      "World Initialization",
+      218
+    ],
+    [
+      446,
+      75.5651,
+      "World Initialization",
+      218
+    ],
+    [
+      447,
+      75.7209,
+      "World Initialization",
+      218
+    ],
+    [
+      448,
+      75.8758,
+      "World Initialization",
+      218
+    ],
+    [
+      449,
+      76.0297,
+      "World Initialization",
+      218
+    ],
+    [
+      450,
+      76.1964,
+      "World Initialization",
+      218
+    ],
+    [
+      451,
+      76.3688,
+      "World Initialization",
+      218
+    ],
+    [
+      452,
+      76.5208,
+      "World Initialization",
+      218
+    ],
+    [
+      453,
+      76.674,
+      "World Initialization",
+      218
+    ],
+    [
+      454,
+      76.8272,
+      "World Initialization",
+      218
+    ],
+    [
+      455,
+      76.9848,
+      "World Initialization",
+      218
+    ],
+    [
+      456,
+      77.1402,
+      "World Initialization",
+      218
+    ],
+    [
+      457,
+      77.2969,
+      "World Initialization",
+      218
+    ],
+    [
+      458,
+      77.4535,
+      "World Initialization",
+      218
+    ],
+    [
+      459,
+      77.6105,
+      "World Initialization",
+      218
+    ],
+    [
+      460,
+      77.765,
+      "World Initialization",
+      218
+    ],
+    [
+      461,
+      77.9208,
+      "World Initialization",
+      218
+    ],
+    [
+      462,
+      78.0767,
+      "World Initialization",
+      218
+    ],
+    [
+      463,
+      78.2368,
+      "World Initialization",
+      218
+    ],
+    [
+      464,
+      78.3934,
+      "World Initialization",
+      218
+    ],
+    [
+      465,
+      78.5491,
+      "World Initialization",
+      218
+    ],
+    [
+      466,
+      78.702,
+      "World Initialization",
+      218
+    ],
+    [
+      467,
+      78.8614,
+      "World Initialization",
+      218
+    ],
+    [
+      468,
+      79.0244,
+      "World Initialization",
+      218
+    ],
+    [
+      469,
+      79.1852,
+      "World Initialization",
+      218
+    ],
+    [
+      470,
+      79.3447,
+      "World Initialization",
+      218
+    ],
+    [
+      471,
+      79.5081,
+      "World Initialization",
+      218
+    ],
+    [
+      472,
+      79.668,
+      "World Initialization",
+      218
+    ],
+    [
+      473,
+      79.8259,
+      "World Initialization",
+      218
+    ],
+    [
+      474,
+      79.9879,
+      "World Initialization",
+      218
+    ],
+    [
+      475,
+      80.146,
+      "World Initialization",
+      218
+    ],
+    [
+      476,
+      80.3083,
+      "World Initialization",
+      218
+    ],
+    [
+      477,
+      80.4658,
+      "World Initialization",
+      218
+    ],
+    [
+      478,
+      80.6203,
+      "World Initialization",
+      218
+    ],
+    [
+      479,
+      80.7776,
+      "World Initialization",
+      218
+    ],
+    [
+      480,
+      80.9492,
+      "World Initialization",
+      218
+    ],
+    [
+      481,
+      81.1187,
+      "World Initialization",
+      218
+    ],
+    [
+      482,
+      81.2722,
+      "World Initialization",
+      218
+    ],
+    [
+      483,
+      81.4218,
+      "World Initialization",
+      218
+    ],
+    [
+      484,
+      81.5669,
+      "World Initialization",
+      218
+    ],
+    [
+      485,
+      81.7154,
+      "World Initialization",
+      218
+    ],
+    [
+      486,
+      81.8609,
+      "World Initialization",
+      218
+    ],
+    [
+      487,
+      82.004,
+      "World Initialization",
+      218
+    ],
+    [
+      488,
+      82.1458,
+      "World Initialization",
+      218
+    ],
+    [
+      489,
+      82.2895,
+      "World Initialization",
+      218
+    ],
+    [
+      490,
+      82.4365,
+      "World Initialization",
+      218
+    ],
+    [
+      491,
+      82.5837,
+      "World Initialization",
+      218
+    ],
+    [
+      492,
+      82.7269,
+      "World Initialization",
+      218
+    ],
+    [
+      493,
+      82.8711,
+      "World Initialization",
+      218
+    ],
+    [
+      494,
+      83.0159,
+      "World Initialization",
+      218
+    ],
+    [
+      495,
+      83.1589,
+      "World Initialization",
+      218
+    ],
+    [
+      496,
+      83.3031,
+      "World Initialization",
+      218
+    ],
+    [
+      497,
+      83.4495,
+      "World Initialization",
+      218
+    ],
+    [
+      498,
+      83.5918,
+      "World Initialization",
+      218
+    ],
+    [
+      499,
+      83.7338,
+      "World Initialization",
+      218
+    ],
+    [
+      500,
+      84.1776,
+      "World Initialization",
+      218
+    ],
+    [
+      501,
+      84.3186,
+      "World Initialization",
+      218
+    ],
+    [
+      502,
+      84.4632,
+      "World Initialization",
+      218
+    ],
+    [
+      503,
+      84.6092,
+      "World Initialization",
+      218
+    ],
+    [
+      504,
+      84.7573,
+      "World Initialization",
+      218
+    ],
+    [
+      505,
+      84.9016,
+      "World Initialization",
+      218
+    ],
+    [
+      506,
+      85.0506,
+      "World Initialization",
+      218
+    ],
+    [
+      507,
+      85.1955,
+      "World Initialization",
+      218
+    ],
+    [
+      508,
+      85.3399,
+      "World Initialization",
+      218
+    ],
+    [
+      509,
+      85.4868,
+      "World Initialization",
+      218
+    ],
+    [
+      510,
+      85.6427,
+      "World Initialization",
+      218
+    ],
+    [
+      511,
+      85.804,
+      "World Initialization",
+      218
+    ],
+    [
+      512,
+      85.9453,
+      "World Initialization",
+      218
+    ],
+    [
+      513,
+      86.0946,
+      "World Initialization",
+      218
+    ],
+    [
+      514,
+      86.2363,
+      "World Initialization",
+      218
+    ],
+    [
+      515,
+      86.3805,
+      "World Initialization",
+      218
+    ],
+    [
+      516,
+      86.5274,
+      "World Initialization",
+      218
+    ],
+    [
+      517,
+      86.6737,
+      "World Initialization",
+      218
+    ],
+    [
+      518,
+      86.8167,
+      "World Initialization",
+      218
+    ],
+    [
+      519,
+      86.9585,
+      "World Initialization",
+      218
+    ],
+    [
+      520,
+      87.1016,
+      "World Initialization",
+      218
+    ],
+    [
+      521,
+      87.2471,
+      "World Initialization",
+      218
+    ],
+    [
+      522,
+      87.3931,
+      "World Initialization",
+      218
+    ],
+    [
+      523,
+      87.5359,
+      "World Initialization",
+      218
+    ],
+    [
+      524,
+      87.6782,
+      "World Initialization",
+      218
+    ],
+    [
+      525,
+      87.8197,
+      "World Initialization",
+      218
+    ],
+    [
+      526,
+      87.9639,
+      "World Initialization",
+      218
+    ],
+    [
+      527,
+      88.1042,
+      "World Initialization",
+      218
+    ],
+    [
+      528,
+      88.2494,
+      "World Initialization",
+      218
+    ],
+    [
+      529,
+      88.3935,
+      "World Initialization",
+      218
+    ],
+    [
+      530,
+      88.5404,
+      "World Initialization",
+      218
+    ],
+    [
+      531,
+      88.682,
+      "World Initialization",
+      218
+    ],
+    [
+      532,
+      88.8287,
+      "World Initialization",
+      218
+    ],
+    [
+      533,
+      88.9776,
+      "World Initialization",
+      218
+    ],
+    [
+      534,
+      89.1237,
+      "World Initialization",
+      218
+    ],
+    [
+      535,
+      89.267,
+      "World Initialization",
+      218
+    ],
+    [
+      536,
+      89.4103,
+      "World Initialization",
+      218
+    ],
+    [
+      537,
+      89.5547,
+      "World Initialization",
+      218
+    ],
+    [
+      538,
+      89.7017,
+      "World Initialization",
+      218
+    ],
+    [
+      539,
+      89.8476,
+      "World Initialization",
+      218
+    ],
+    [
+      540,
+      90.0046,
+      "World Initialization",
+      218
+    ],
+    [
+      541,
+      90.1629,
+      "World Initialization",
+      218
+    ],
+    [
+      542,
+      90.3045,
+      "World Initialization",
+      218
+    ],
+    [
+      543,
+      90.4464,
+      "World Initialization",
+      218
+    ],
+    [
+      544,
+      90.5906,
+      "World Initialization",
+      218
+    ],
+    [
+      545,
+      90.7304,
+      "World Initialization",
+      218
+    ],
+    [
+      546,
+      90.8718,
+      "World Initialization",
+      218
+    ],
+    [
+      547,
+      91.0136,
+      "World Initialization",
+      218
+    ],
+    [
+      548,
+      91.1583,
+      "World Initialization",
+      218
+    ],
+    [
+      549,
+      91.2994,
+      "World Initialization",
+      218
+    ],
+    [
+      550,
+      91.441,
+      "World Initialization",
+      218
+    ],
+    [
+      551,
+      91.5836,
+      "World Initialization",
+      218
+    ],
+    [
+      552,
+      91.7224,
+      "World Initialization",
+      218
+    ],
+    [
+      553,
+      91.8631,
+      "World Initialization",
+      218
+    ],
+    [
+      554,
+      92.0033,
+      "World Initialization",
+      218
+    ],
+    [
+      555,
+      92.1454,
+      "World Initialization",
+      218
+    ],
+    [
+      556,
+      92.2862,
+      "World Initialization",
+      218
+    ],
+    [
+      557,
+      92.4258,
+      "World Initialization",
+      218
+    ],
+    [
+      558,
+      92.5662,
+      "World Initialization",
+      218
+    ],
+    [
+      559,
+      92.7121,
+      "World Initialization",
+      218
+    ],
+    [
+      560,
+      92.8535,
+      "World Initialization",
+      218
+    ],
+    [
+      561,
+      93.0008,
+      "World Initialization",
+      218
+    ],
+    [
+      562,
+      93.1445,
+      "World Initialization",
+      218
+    ],
+    [
+      563,
+      93.2961,
+      "World Initialization",
+      218
+    ],
+    [
+      564,
+      93.4898,
+      "World Initialization",
+      218
+    ],
+    [
+      565,
+      93.638,
+      "World Initialization",
+      218
+    ],
+    [
+      566,
+      93.7841,
+      "World Initialization",
+      218
+    ],
+    [
+      567,
+      93.9261,
+      "World Initialization",
+      218
+    ],
+    [
+      568,
+      94.0735,
+      "World Initialization",
+      218
+    ],
+    [
+      569,
+      94.2185,
+      "World Initialization",
+      218
+    ],
+    [
+      570,
+      94.3754,
+      "World Initialization",
+      218
+    ],
+    [
+      571,
+      94.5397,
+      "World Initialization",
+      218
+    ],
+    [
+      572,
+      94.6859,
+      "World Initialization",
+      218
+    ],
+    [
+      573,
+      94.8323,
+      "World Initialization",
+      218
+    ],
+    [
+      574,
+      94.9762,
+      "World Initialization",
+      218
+    ],
+    [
+      575,
+      95.1231,
+      "World Initialization",
+      218
+    ],
+    [
+      576,
+      95.2684,
+      "World Initialization",
+      218
+    ],
+    [
+      577,
+      95.4132,
+      "World Initialization",
+      218
+    ],
+    [
+      578,
+      95.5525,
+      "World Initialization",
+      218
+    ],
+    [
+      579,
+      95.6938,
+      "World Initialization",
+      218
+    ],
+    [
+      580,
+      95.8353,
+      "World Initialization",
+      218
+    ],
+    [
+      581,
+      95.9787,
+      "World Initialization",
+      218
+    ],
+    [
+      582,
+      96.1222,
+      "World Initialization",
+      218
+    ],
+    [
+      583,
+      96.2665,
+      "World Initialization",
+      218
+    ],
+    [
+      584,
+      96.4115,
+      "World Initialization",
+      218
+    ],
+    [
+      585,
+      96.5611,
+      "World Initialization",
+      218
+    ],
+    [
+      586,
+      96.707,
+      "World Initialization",
+      218
+    ],
+    [
+      587,
+      96.8595,
+      "World Initialization",
+      218
+    ],
+    [
+      588,
+      97.0137,
+      "World Initialization",
+      218
+    ],
+    [
+      589,
+      97.1649,
+      "World Initialization",
+      218
+    ],
+    [
+      590,
+      97.3179,
+      "World Initialization",
+      218
+    ],
+    [
+      591,
+      97.4692,
+      "World Initialization",
+      218
+    ],
+    [
+      592,
+      97.6218,
+      "World Initialization",
+      218
+    ],
+    [
+      593,
+      97.7762,
+      "World Initialization",
+      218
+    ],
+    [
+      594,
+      97.929,
+      "World Initialization",
+      218
+    ],
+    [
+      595,
+      98.0782,
+      "World Initialization",
+      218
+    ],
+    [
+      596,
+      98.2303,
+      "World Initialization",
+      218
+    ],
+    [
+      597,
+      98.3836,
+      "World Initialization",
+      218
+    ],
+    [
+      598,
+      98.5364,
+      "World Initialization",
+      218
+    ],
+    [
+      599,
+      98.6873,
+      "World Initialization",
+      218
+    ],
+    [
+      600,
+      98.9135,
+      "World Initialization",
+      218
+    ],
+    [
+      601,
+      99.0801,
+      "World Initialization",
+      218
+    ],
+    [
+      602,
+      99.2347,
+      "World Initialization",
+      218
+    ],
+    [
+      603,
+      99.385,
+      "World Initialization",
+      218
+    ],
+    [
+      604,
+      99.5373,
+      "World Initialization",
+      218
+    ],
+    [
+      605,
+      99.6879,
+      "World Initialization",
+      218
+    ],
+    [
+      606,
+      99.8358,
+      "World Initialization",
+      218
+    ],
+    [
+      607,
+      99.9857,
+      "World Initialization",
+      218
+    ],
+    [
+      608,
+      100.1331,
+      "World Initialization",
+      218
+    ],
+    [
+      609,
+      100.2816,
+      "World Initialization",
+      218
+    ],
+    [
+      610,
+      100.4317,
+      "World Initialization",
+      218
+    ],
+    [
+      611,
+      100.5863,
+      "World Initialization",
+      218
+    ],
+    [
+      612,
+      100.7375,
+      "World Initialization",
+      218
+    ],
+    [
+      613,
+      100.8986,
+      "World Initialization",
+      218
+    ],
+    [
+      614,
+      101.0471,
+      "World Initialization",
+      218
+    ],
+    [
+      615,
+      101.1964,
+      "World Initialization",
+      218
+    ],
+    [
+      616,
+      101.3436,
+      "World Initialization",
+      218
+    ],
+    [
+      617,
+      101.4922,
+      "World Initialization",
+      218
+    ],
+    [
+      618,
+      101.6365,
+      "World Initialization",
+      218
+    ],
+    [
+      619,
+      101.7815,
+      "World Initialization",
+      218
+    ],
+    [
+      620,
+      101.9242,
+      "World Initialization",
+      218
+    ],
+    [
+      621,
+      102.0673,
+      "World Initialization",
+      218
+    ],
+    [
+      622,
+      102.2147,
+      "World Initialization",
+      218
+    ],
+    [
+      623,
+      102.3632,
+      "World Initialization",
+      218
+    ],
+    [
+      624,
+      102.5214,
+      "World Initialization",
+      218
+    ],
+    [
+      625,
+      102.6807,
+      "World Initialization",
+      218
+    ],
+    [
+      626,
+      102.8367,
+      "World Initialization",
+      218
+    ],
+    [
+      627,
+      102.9938,
+      "World Initialization",
+      218
+    ],
+    [
+      628,
+      103.1481,
+      "World Initialization",
+      218
+    ],
+    [
+      629,
+      103.301,
+      "World Initialization",
+      218
+    ],
+    [
+      630,
+      103.4653,
+      "World Initialization",
+      218
+    ],
+    [
+      631,
+      103.6357,
+      "World Initialization",
+      218
+    ],
+    [
+      632,
+      103.7821,
+      "World Initialization",
+      218
+    ],
+    [
+      633,
+      103.9244,
+      "World Initialization",
+      218
+    ],
+    [
+      634,
+      104.0683,
+      "World Initialization",
+      218
+    ],
+    [
+      635,
+      104.2128,
+      "World Initialization",
+      218
+    ],
+    [
+      636,
+      104.3627,
+      "World Initialization",
+      218
+    ],
+    [
+      637,
+      104.5167,
+      "World Initialization",
+      218
+    ],
+    [
+      638,
+      104.6689,
+      "World Initialization",
+      218
+    ],
+    [
+      639,
+      104.8179,
+      "World Initialization",
+      218
+    ],
+    [
+      640,
+      104.9675,
+      "World Initialization",
+      218
+    ],
+    [
+      641,
+      105.1155,
+      "World Initialization",
+      218
+    ],
+    [
+      642,
+      105.2649,
+      "World Initialization",
+      218
+    ],
+    [
+      643,
+      105.4162,
+      "World Initialization",
+      218
+    ],
+    [
+      644,
+      105.5618,
+      "World Initialization",
+      218
+    ],
+    [
+      645,
+      105.7108,
+      "World Initialization",
+      218
+    ],
+    [
+      646,
+      105.8553,
+      "World Initialization",
+      218
+    ],
+    [
+      647,
+      106.0028,
+      "World Initialization",
+      218
+    ],
+    [
+      648,
+      106.1498,
+      "World Initialization",
+      218
+    ],
+    [
+      649,
+      106.2929,
+      "World Initialization",
+      218
+    ],
+    [
+      650,
+      106.4384,
+      "World Initialization",
+      218
+    ],
+    [
+      651,
+      106.5852,
+      "World Initialization",
+      218
+    ],
+    [
+      652,
+      106.7282,
+      "World Initialization",
+      218
+    ],
+    [
+      653,
+      106.8708,
+      "World Initialization",
+      218
+    ],
+    [
+      654,
+      107.017,
+      "World Initialization",
+      218
+    ],
+    [
+      655,
+      107.163,
+      "World Initialization",
+      218
+    ],
+    [
+      656,
+      107.3076,
+      "World Initialization",
+      218
+    ],
+    [
+      657,
+      107.4484,
+      "World Initialization",
+      218
+    ],
+    [
+      658,
+      107.5888,
+      "World Initialization",
+      218
+    ],
+    [
+      659,
+      107.734,
+      "World Initialization",
+      218
+    ],
+    [
+      660,
+      107.8878,
+      "World Initialization",
+      218
+    ],
+    [
+      661,
+      108.0482,
+      "World Initialization",
+      218
+    ],
+    [
+      662,
+      108.1917,
+      "World Initialization",
+      218
+    ],
+    [
+      663,
+      108.3373,
+      "World Initialization",
+      218
+    ],
+    [
+      664,
+      108.4886,
+      "World Initialization",
+      218
+    ],
+    [
+      665,
+      108.6333,
+      "World Initialization",
+      218
+    ],
+    [
+      666,
+      108.7755,
+      "World Initialization",
+      218
+    ],
+    [
+      667,
+      108.9149,
+      "World Initialization",
+      218
+    ],
+    [
+      668,
+      109.0558,
+      "World Initialization",
+      218
+    ],
+    [
+      669,
+      109.1958,
+      "World Initialization",
+      218
+    ],
+    [
+      670,
+      109.3391,
+      "World Initialization",
+      218
+    ],
+    [
+      671,
+      109.4822,
+      "World Initialization",
+      218
+    ],
+    [
+      672,
+      109.6287,
+      "World Initialization",
+      218
+    ],
+    [
+      673,
+      109.7708,
+      "World Initialization",
+      218
+    ],
+    [
+      674,
+      109.9122,
+      "World Initialization",
+      218
+    ],
+    [
+      675,
+      110.0564,
+      "World Initialization",
+      218
+    ],
+    [
+      676,
+      110.2009,
+      "World Initialization",
+      218
+    ],
+    [
+      677,
+      110.3447,
+      "World Initialization",
+      218
+    ],
+    [
+      678,
+      110.4907,
+      "World Initialization",
+      218
+    ],
+    [
+      679,
+      110.6343,
+      "World Initialization",
+      218
+    ],
+    [
+      680,
+      110.7748,
+      "World Initialization",
+      218
+    ],
+    [
+      681,
+      110.966,
+      "World Initialization",
+      218
+    ],
+    [
+      682,
+      111.1091,
+      "World Initialization",
+      218
+    ],
+    [
+      683,
+      111.2541,
+      "World Initialization",
+      218
+    ],
+    [
+      684,
+      111.3995,
+      "World Initialization",
+      218
+    ],
+    [
+      685,
+      111.5434,
+      "World Initialization",
+      218
+    ],
+    [
+      686,
+      111.6874,
+      "World Initialization",
+      218
+    ],
+    [
+      687,
+      111.8302,
+      "World Initialization",
+      218
+    ],
+    [
+      688,
+      111.9723,
+      "World Initialization",
+      218
+    ],
+    [
+      689,
+      112.1168,
+      "World Initialization",
+      218
+    ],
+    [
+      690,
+      112.2794,
+      "World Initialization",
+      218
+    ],
+    [
+      691,
+      112.4471,
+      "World Initialization",
+      218
+    ],
+    [
+      692,
+      112.5964,
+      "World Initialization",
+      218
+    ],
+    [
+      693,
+      112.7584,
+      "World Initialization",
+      218
+    ],
+    [
+      694,
+      112.9015,
+      "World Initialization",
+      218
+    ],
+    [
+      695,
+      113.0502,
+      "World Initialization",
+      218
+    ],
+    [
+      696,
+      113.1974,
+      "World Initialization",
+      218
+    ],
+    [
+      697,
+      113.347,
+      "World Initialization",
+      218
+    ],
+    [
+      698,
+      113.4965,
+      "World Initialization",
+      218
+    ],
+    [
+      699,
+      113.6449,
+      "World Initialization",
+      218
+    ],
+    [
+      700,
+      113.7975,
+      "World Initialization",
+      218
+    ],
+    [
+      701,
+      113.9472,
+      "World Initialization",
+      218
+    ],
+    [
+      702,
+      114.0956,
+      "World Initialization",
+      218
+    ],
+    [
+      703,
+      114.2438,
+      "World Initialization",
+      218
+    ],
+    [
+      704,
+      114.3925,
+      "World Initialization",
+      218
+    ],
+    [
+      705,
+      114.5444,
+      "World Initialization",
+      218
+    ],
+    [
+      706,
+      114.6947,
+      "World Initialization",
+      218
+    ],
+    [
+      707,
+      114.85,
+      "World Initialization",
+      218
+    ],
+    [
+      708,
+      115.0051,
+      "World Initialization",
+      218
+    ],
+    [
+      709,
+      115.1581,
+      "World Initialization",
+      218
+    ],
+    [
+      710,
+      115.3142,
+      "World Initialization",
+      218
+    ],
+    [
+      711,
+      115.4688,
+      "World Initialization",
+      218
+    ],
+    [
+      712,
+      115.6186,
+      "World Initialization",
+      218
+    ],
+    [
+      713,
+      115.7705,
+      "World Initialization",
+      218
+    ],
+    [
+      714,
+      115.9212,
+      "World Initialization",
+      218
+    ],
+    [
+      715,
+      116.0768,
+      "World Initialization",
+      218
+    ],
+    [
+      716,
+      116.2283,
+      "World Initialization",
+      218
+    ],
+    [
+      717,
+      116.3774,
+      "World Initialization",
+      218
+    ],
+    [
+      718,
+      116.5282,
+      "World Initialization",
+      218
+    ],
+    [
+      719,
+      116.6817,
+      "World Initialization",
+      218
+    ],
+    [
+      720,
+      116.9129,
+      "World Initialization",
+      218
+    ],
+    [
+      721,
+      117.1068,
+      "World Initialization",
+      218
+    ],
+    [
+      722,
+      117.269,
+      "World Initialization",
+      218
+    ],
+    [
+      723,
+      117.4218,
+      "World Initialization",
+      218
+    ],
+    [
+      724,
+      117.5757,
+      "World Initialization",
+      218
+    ],
+    [
+      725,
+      117.7271,
+      "World Initialization",
+      218
+    ],
+    [
+      726,
+      117.8725,
+      "World Initialization",
+      218
+    ],
+    [
+      727,
+      118.0219,
+      "World Initialization",
+      218
+    ],
+    [
+      728,
+      118.1742,
+      "World Initialization",
+      218
+    ],
+    [
+      729,
+      118.3316,
+      "World Initialization",
+      218
+    ],
+    [
+      730,
+      118.4833,
+      "World Initialization",
+      218
+    ],
+    [
+      731,
+      118.6375,
+      "World Initialization",
+      218
+    ],
+    [
+      732,
+      118.7903,
+      "World Initialization",
+      218
+    ],
+    [
+      733,
+      118.9438,
+      "World Initialization",
+      218
+    ],
+    [
+      734,
+      119.0964,
+      "World Initialization",
+      218
+    ],
+    [
+      735,
+      119.2538,
+      "World Initialization",
+      218
+    ],
+    [
+      736,
+      119.4128,
+      "World Initialization",
+      218
+    ],
+    [
+      737,
+      119.569,
+      "World Initialization",
+      218
+    ],
+    [
+      738,
+      119.7231,
+      "World Initialization",
+      218
+    ],
+    [
+      739,
+      119.8865,
+      "World Initialization",
+      218
+    ],
+    [
+      740,
+      120.0377,
+      "World Initialization",
+      218
+    ],
+    [
+      741,
+      120.1944,
+      "World Initialization",
+      218
+    ],
+    [
+      742,
+      120.3532,
+      "World Initialization",
+      218
+    ],
+    [
+      743,
+      120.5126,
+      "World Initialization",
+      218
+    ],
+    [
+      744,
+      120.6677,
+      "World Initialization",
+      218
+    ],
+    [
+      745,
+      120.8171,
+      "World Initialization",
+      218
+    ],
+    [
+      746,
+      120.9713,
+      "World Initialization",
+      218
+    ],
+    [
+      747,
+      121.1267,
+      "World Initialization",
+      218
+    ],
+    [
+      748,
+      121.2845,
+      "World Initialization",
+      218
+    ],
+    [
+      749,
+      121.4386,
+      "World Initialization",
+      218
+    ],
+    [
+      750,
+      121.5971,
+      "World Initialization",
+      218
+    ],
+    [
+      751,
+      121.7662,
+      "World Initialization",
+      218
+    ],
+    [
+      752,
+      121.9191,
+      "World Initialization",
+      218
+    ],
+    [
+      753,
+      122.0724,
+      "World Initialization",
+      218
+    ],
+    [
+      754,
+      122.2247,
+      "World Initialization",
+      218
+    ],
+    [
+      755,
+      122.3754,
+      "World Initialization",
+      218
+    ],
+    [
+      756,
+      122.5295,
+      "World Initialization",
+      218
+    ],
+    [
+      757,
+      122.6829,
+      "World Initialization",
+      218
+    ],
+    [
+      758,
+      122.8343,
+      "World Initialization",
+      218
+    ],
+    [
+      759,
+      122.9878,
+      "World Initialization",
+      218
+    ],
+    [
+      760,
+      123.1421,
+      "World Initialization",
+      218
+    ],
+    [
+      761,
+      123.2968,
+      "World Initialization",
+      218
+    ],
+    [
+      762,
+      123.4483,
+      "World Initialization",
+      218
+    ],
+    [
+      763,
+      123.6063,
+      "World Initialization",
+      218
+    ],
+    [
+      764,
+      123.7633,
+      "World Initialization",
+      218
+    ],
+    [
+      765,
+      123.9217,
+      "World Initialization",
+      218
+    ],
+    [
+      766,
+      124.0809,
+      "World Initialization",
+      218
+    ],
+    [
+      767,
+      124.2409,
+      "World Initialization",
+      218
+    ],
+    [
+      768,
+      124.4004,
+      "World Initialization",
+      218
+    ],
+    [
+      769,
+      124.5634,
+      "World Initialization",
+      218
+    ],
+    [
+      770,
+      124.7212,
+      "World Initialization",
+      218
+    ],
+    [
+      771,
+      124.8776,
+      "World Initialization",
+      218
+    ],
+    [
+      772,
+      125.0366,
+      "World Initialization",
+      218
+    ],
+    [
+      773,
+      125.196,
+      "World Initialization",
+      218
+    ],
+    [
+      774,
+      125.356,
+      "World Initialization",
+      218
+    ],
+    [
+      775,
+      125.5141,
+      "World Initialization",
+      218
+    ],
+    [
+      776,
+      125.6716,
+      "World Initialization",
+      218
+    ],
+    [
+      777,
+      125.83,
+      "World Initialization",
+      218
+    ],
+    [
+      778,
+      125.9865,
+      "World Initialization",
+      218
+    ],
+    [
+      779,
+      126.1425,
+      "World Initialization",
+      218
+    ],
+    [
+      780,
+      126.3143,
+      "World Initialization",
+      218
+    ],
+    [
+      781,
+      126.4911,
+      "World Initialization",
+      218
+    ],
+    [
+      782,
+      126.652,
+      "World Initialization",
+      218
+    ],
+    [
+      783,
+      126.8094,
+      "World Initialization",
+      218
+    ],
+    [
+      784,
+      126.9742,
+      "World Initialization",
+      218
+    ],
+    [
+      785,
+      127.1342,
+      "World Initialization",
+      218
+    ],
+    [
+      786,
+      127.2962,
+      "World Initialization",
+      218
+    ],
+    [
+      787,
+      127.4587,
+      "World Initialization",
+      218
+    ],
+    [
+      788,
+      127.6187,
+      "World Initialization",
+      218
+    ],
+    [
+      789,
+      127.7823,
+      "World Initialization",
+      218
+    ],
+    [
+      790,
+      127.9445,
+      "World Initialization",
+      218
+    ],
+    [
+      791,
+      128.1075,
+      "World Initialization",
+      218
+    ],
+    [
+      792,
+      128.271,
+      "World Initialization",
+      218
+    ],
+    [
+      793,
+      128.4334,
+      "World Initialization",
+      218
+    ],
+    [
+      794,
+      128.5992,
+      "World Initialization",
+      218
+    ],
+    [
+      795,
+      128.7621,
+      "World Initialization",
+      218
+    ],
+    [
+      796,
+      128.9231,
+      "World Initialization",
+      218
+    ],
+    [
+      797,
+      129.0842,
+      "World Initialization",
+      218
+    ],
+    [
+      798,
+      129.2466,
+      "World Initialization",
+      218
+    ],
+    [
+      799,
+      129.4108,
+      "World Initialization",
+      218
+    ],
+    [
+      800,
+      129.5747,
+      "World Initialization",
+      218
+    ],
+    [
+      801,
+      129.7432,
+      "World Initialization",
+      218
+    ],
+    [
+      802,
+      129.9022,
+      "World Initialization",
+      218
+    ],
+    [
+      803,
+      130.0641,
+      "World Initialization",
+      218
+    ],
+    [
+      804,
+      130.2238,
+      "World Initialization",
+      218
+    ],
+    [
+      805,
+      130.3803,
+      "World Initialization",
+      218
+    ],
+    [
+      806,
+      130.534,
+      "World Initialization",
+      218
+    ],
+    [
+      807,
+      130.6881,
+      "World Initialization",
+      218
+    ],
+    [
+      808,
+      130.8401,
+      "World Initialization",
+      218
+    ],
+    [
+      809,
+      130.9919,
+      "World Initialization",
+      218
+    ],
+    [
+      810,
+      131.1522,
+      "World Initialization",
+      218
+    ],
+    [
+      811,
+      131.3237,
+      "World Initialization",
+      218
+    ],
+    [
+      812,
+      131.4758,
+      "World Initialization",
+      218
+    ],
+    [
+      813,
+      131.6302,
+      "World Initialization",
+      218
+    ],
+    [
+      814,
+      131.8492,
+      "World Initialization",
+      218
+    ],
+    [
+      815,
+      132.0021,
+      "World Initialization",
+      218
+    ],
+    [
+      816,
+      132.1537,
+      "World Initialization",
+      218
+    ],
+    [
+      817,
+      132.3092,
+      "World Initialization",
+      218
+    ],
+    [
+      818,
+      132.4602,
+      "World Initialization",
+      218
+    ],
+    [
+      819,
+      132.611,
+      "World Initialization",
+      218
+    ],
+    [
+      820,
+      132.7636,
+      "World Initialization",
+      218
+    ],
+    [
+      821,
+      132.9187,
+      "World Initialization",
+      218
+    ],
+    [
+      822,
+      133.0743,
+      "World Initialization",
+      218
+    ],
+    [
+      823,
+      133.2292,
+      "World Initialization",
+      218
+    ],
+    [
+      824,
+      133.3861,
+      "World Initialization",
+      218
+    ],
+    [
+      825,
+      133.5383,
+      "World Initialization",
+      218
+    ],
+    [
+      826,
+      133.6894,
+      "World Initialization",
+      218
+    ],
+    [
+      827,
+      133.8376,
+      "World Initialization",
+      218
+    ],
+    [
+      828,
+      133.9902,
+      "World Initialization",
+      218
+    ],
+    [
+      829,
+      134.1393,
+      "World Initialization",
+      218
+    ],
+    [
+      830,
+      134.2918,
+      "World Initialization",
+      218
+    ],
+    [
+      831,
+      134.441,
+      "World Initialization",
+      218
+    ],
+    [
+      832,
+      134.5873,
+      "World Initialization",
+      218
+    ],
+    [
+      833,
+      134.7366,
+      "World Initialization",
+      218
+    ],
+    [
+      834,
+      134.8866,
+      "World Initialization",
+      218
+    ],
+    [
+      835,
+      135.0386,
+      "World Initialization",
+      218
+    ],
+    [
+      836,
+      135.1868,
+      "World Initialization",
+      218
+    ],
+    [
+      837,
+      135.3349,
+      "World Initialization",
+      218
+    ],
+    [
+      838,
+      135.4858,
+      "World Initialization",
+      218
+    ],
+    [
+      839,
+      135.6389,
+      "World Initialization",
+      218
+    ],
+    [
+      840,
+      135.8136,
+      "World Initialization",
+      218
+    ],
+    [
+      841,
+      135.9873,
+      "World Initialization",
+      218
+    ],
+    [
+      842,
+      136.1528,
+      "World Initialization",
+      218
+    ],
+    [
+      843,
+      136.3031,
+      "World Initialization",
+      218
+    ],
+    [
+      844,
+      136.4554,
+      "World Initialization",
+      218
+    ],
+    [
+      845,
+      136.6083,
+      "World Initialization",
+      218
+    ],
+    [
+      846,
+      136.761,
+      "World Initialization",
+      218
+    ],
+    [
+      847,
+      136.9134,
+      "World Initialization",
+      218
+    ],
+    [
+      848,
+      137.0637,
+      "World Initialization",
+      218
+    ],
+    [
+      849,
+      137.2167,
+      "World Initialization",
+      218
+    ],
+    [
+      850,
+      137.3676,
+      "World Initialization",
+      218
+    ],
+    [
+      851,
+      137.5203,
+      "World Initialization",
+      218
+    ],
+    [
+      852,
+      137.6767,
+      "World Initialization",
+      218
+    ],
+    [
+      853,
+      137.83,
+      "World Initialization",
+      218
+    ],
+    [
+      854,
+      137.982,
+      "World Initialization",
+      218
+    ],
+    [
+      855,
+      138.1372,
+      "World Initialization",
+      218
+    ],
+    [
+      856,
+      138.292,
+      "World Initialization",
+      218
+    ],
+    [
+      857,
+      138.4474,
+      "World Initialization",
+      218
+    ],
+    [
+      858,
+      138.602,
+      "World Initialization",
+      218
+    ],
+    [
+      859,
+      138.761,
+      "World Initialization",
+      218
+    ],
+    [
+      860,
+      138.9171,
+      "World Initialization",
+      218
+    ],
+    [
+      861,
+      139.0708,
+      "World Initialization",
+      218
+    ],
+    [
+      862,
+      139.2277,
+      "World Initialization",
+      218
+    ],
+    [
+      863,
+      139.3814,
+      "World Initialization",
+      218
+    ],
+    [
+      864,
+      139.5329,
+      "World Initialization",
+      218
+    ],
+    [
+      865,
+      139.6837,
+      "World Initialization",
+      218
+    ],
+    [
+      866,
+      139.8366,
+      "World Initialization",
+      218
+    ],
+    [
+      867,
+      139.9861,
+      "World Initialization",
+      218
+    ],
+    [
+      868,
+      140.134,
+      "World Initialization",
+      218
+    ],
+    [
+      869,
+      140.2832,
+      "World Initialization",
+      218
+    ],
+    [
+      870,
+      140.4483,
+      "World Initialization",
+      218
+    ],
+    [
+      871,
+      140.6189,
+      "World Initialization",
+      218
+    ],
+    [
+      872,
+      140.772,
+      "World Initialization",
+      218
+    ],
+    [
+      873,
+      140.9248,
+      "World Initialization",
+      218
+    ],
+    [
+      874,
+      141.0815,
+      "World Initialization",
+      218
+    ],
+    [
+      875,
+      141.2422,
+      "World Initialization",
+      218
+    ],
+    [
+      876,
+      141.3993,
+      "World Initialization",
+      218
+    ],
+    [
+      877,
+      141.5621,
+      "World Initialization",
+      218
+    ],
+    [
+      878,
+      141.723,
+      "World Initialization",
+      218
+    ],
+    [
+      879,
+      141.8845,
+      "World Initialization",
+      218
+    ],
+    [
+      880,
+      142.0464,
+      "World Initialization",
+      218
+    ],
+    [
+      881,
+      142.2056,
+      "World Initialization",
+      218
+    ],
+    [
+      882,
+      142.3658,
+      "World Initialization",
+      218
+    ],
+    [
+      883,
+      142.5231,
+      "World Initialization",
+      218
+    ],
+    [
+      884,
+      142.6803,
+      "World Initialization",
+      218
+    ],
+    [
+      885,
+      142.8377,
+      "World Initialization",
+      218
+    ],
+    [
+      886,
+      142.9974,
+      "World Initialization",
+      218
+    ],
+    [
+      887,
+      143.1515,
+      "World Initialization",
+      218
+    ],
+    [
+      888,
+      143.3157,
+      "World Initialization",
+      218
+    ],
+    [
+      889,
+      143.4722,
+      "World Initialization",
+      218
+    ],
+    [
+      890,
+      143.6304,
+      "World Initialization",
+      218
+    ],
+    [
+      891,
+      143.7882,
+      "World Initialization",
+      218
+    ],
+    [
+      892,
+      143.9434,
+      "World Initialization",
+      218
+    ],
+    [
+      893,
+      144.0937,
+      "World Initialization",
+      218
+    ],
+    [
+      894,
+      144.249,
+      "World Initialization",
+      218
+    ],
+    [
+      895,
+      144.4347,
+      "World Initialization",
+      218
+    ],
+    [
+      896,
+      144.5963,
+      "World Initialization",
+      218
+    ],
+    [
+      897,
+      144.7499,
+      "World Initialization",
+      218
+    ],
+    [
+      898,
+      144.9056,
+      "World Initialization",
+      218
+    ],
+    [
+      899,
+      145.0598,
+      "World Initialization",
+      218
+    ],
+    [
+      900,
+      145.2998,
+      "World Initialization",
+      218
+    ],
+    [
+      901,
+      145.4714,
+      "World Initialization",
+      218
+    ],
+    [
+      902,
+      145.6305,
+      "World Initialization",
+      218
+    ],
+    [
+      903,
+      145.7897,
+      "World Initialization",
+      218
+    ],
+    [
+      904,
+      145.9458,
+      "World Initialization",
+      218
+    ],
+    [
+      905,
+      146.1032,
+      "World Initialization",
+      218
+    ],
+    [
+      906,
+      146.2634,
+      "World Initialization",
+      218
+    ],
+    [
+      907,
+      146.4236,
+      "World Initialization",
+      218
+    ],
+    [
+      908,
+      146.5799,
+      "World Initialization",
+      218
+    ],
+    [
+      909,
+      146.7403,
+      "World Initialization",
+      218
+    ],
+    [
+      910,
+      146.8939,
+      "World Initialization",
+      218
+    ],
+    [
+      911,
+      147.0512,
+      "World Initialization",
+      218
+    ],
+    [
+      912,
+      147.2079,
+      "World Initialization",
+      218
+    ],
+    [
+      913,
+      147.3648,
+      "World Initialization",
+      218
+    ],
+    [
+      914,
+      147.5238,
+      "World Initialization",
+      218
+    ],
+    [
+      915,
+      147.6825,
+      "World Initialization",
+      218
+    ],
+    [
+      916,
+      147.8435,
+      "World Initialization",
+      218
+    ],
+    [
+      917,
+      148.0071,
+      "World Initialization",
+      218
+    ],
+    [
+      918,
+      148.1677,
+      "World Initialization",
+      218
+    ],
+    [
+      919,
+      148.3293,
+      "World Initialization",
+      218
+    ],
+    [
+      920,
+      148.4918,
+      "World Initialization",
+      218
+    ],
+    [
+      921,
+      148.6511,
+      "World Initialization",
+      218
+    ],
+    [
+      922,
+      148.8138,
+      "World Initialization",
+      218
+    ],
+    [
+      923,
+      148.9703,
+      "World Initialization",
+      218
+    ],
+    [
+      924,
+      149.132,
+      "World Initialization",
+      218
+    ],
+    [
+      925,
+      149.2911,
+      "World Initialization",
+      218
+    ],
+    [
+      926,
+      149.4536,
+      "World Initialization",
+      218
+    ],
+    [
+      927,
+      149.6192,
+      "World Initialization",
+      218
+    ],
+    [
+      928,
+      149.7867,
+      "World Initialization",
+      218
+    ],
+    [
+      929,
+      149.9527,
+      "World Initialization",
+      218
+    ],
+    [
+      930,
+      150.1298,
+      "World Initialization",
+      218
+    ],
+    [
+      931,
+      150.3099,
+      "World Initialization",
+      218
+    ],
+    [
+      932,
+      150.4658,
+      "World Initialization",
+      218
+    ],
+    [
+      933,
+      150.623,
+      "World Initialization",
+      218
+    ],
+    [
+      934,
+      150.7835,
+      "World Initialization",
+      218
+    ],
+    [
+      935,
+      150.9493,
+      "World Initialization",
+      218
+    ],
+    [
+      936,
+      151.1116,
+      "World Initialization",
+      218
+    ],
+    [
+      937,
+      151.275,
+      "World Initialization",
+      218
+    ],
+    [
+      938,
+      151.4432,
+      "World Initialization",
+      218
+    ],
+    [
+      939,
+      151.6094,
+      "World Initialization",
+      218
+    ],
+    [
+      940,
+      151.773,
+      "World Initialization",
+      218
+    ],
+    [
+      941,
+      151.9378,
+      "World Initialization",
+      218
+    ],
+    [
+      942,
+      152.1092,
+      "World Initialization",
+      217
+    ],
+    [
+      943,
+      152.2756,
+      "World Initialization",
+      217
+    ],
+    [
+      944,
+      152.4453,
+      "World Initialization",
+      217
+    ],
+    [
+      945,
+      152.6184,
+      "World Initialization",
+      217
+    ],
+    [
+      946,
+      152.7845,
+      "World Initialization",
+      217
+    ],
+    [
+      947,
+      152.9956,
+      "World Initialization",
+      217
+    ],
+    [
+      948,
+      153.1604,
+      "World Initialization",
+      217
+    ],
+    [
+      949,
+      153.3268,
+      "World Initialization",
+      217
+    ],
+    [
+      950,
+      153.4961,
+      "World Initialization",
+      217
+    ],
+    [
+      951,
+      153.6677,
+      "World Initialization",
+      217
+    ],
+    [
+      952,
+      153.8376,
+      "World Initialization",
+      217
+    ],
+    [
+      953,
+      154.0041,
+      "World Initialization",
+      217
+    ],
+    [
+      954,
+      154.1702,
+      "World Initialization",
+      217
+    ],
+    [
+      955,
+      154.3372,
+      "World Initialization",
+      217
+    ],
+    [
+      956,
+      154.5024,
+      "World Initialization",
+      217
+    ],
+    [
+      957,
+      154.6707,
+      "World Initialization",
+      217
+    ],
+    [
+      958,
+      154.842,
+      "World Initialization",
+      217
+    ],
+    [
+      959,
+      155.0074,
+      "World Initialization",
+      217
+    ],
+    [
+      960,
+      155.193,
+      "World Initialization",
+      217
+    ],
+    [
+      961,
+      155.3717,
+      "World Initialization",
+      217
+    ],
+    [
+      962,
+      155.5396,
+      "World Initialization",
+      217
+    ],
+    [
+      963,
+      155.7059,
+      "World Initialization",
+      217
+    ],
+    [
+      964,
+      155.8713,
+      "World Initialization",
+      217
+    ],
+    [
+      965,
+      156.0401,
+      "World Initialization",
+      217
+    ],
+    [
+      966,
+      156.2095,
+      "World Initialization",
+      217
+    ],
+    [
+      967,
+      156.3774,
+      "World Initialization",
+      217
+    ],
+    [
+      968,
+      156.5481,
+      "World Initialization",
+      217
+    ],
+    [
+      969,
+      156.7187,
+      "World Initialization",
+      217
+    ],
+    [
+      970,
+      156.8916,
+      "World Initialization",
+      217
+    ],
+    [
+      971,
+      157.0626,
+      "World Initialization",
+      217
+    ],
+    [
+      972,
+      157.2335,
+      "World Initialization",
+      217
+    ],
+    [
+      973,
+      157.4046,
+      "World Initialization",
+      217
+    ],
+    [
+      974,
+      157.576,
+      "World Initialization",
+      217
+    ],
+    [
+      975,
+      157.7467,
+      "World Initialization",
+      217
+    ],
+    [
+      976,
+      157.9173,
+      "World Initialization",
+      217
+    ],
+    [
+      977,
+      158.0902,
+      "World Initialization",
+      217
+    ],
+    [
+      978,
+      158.2638,
+      "World Initialization",
+      217
+    ],
+    [
+      979,
+      158.4358,
+      "World Initialization",
+      217
+    ],
+    [
+      980,
+      158.6104,
+      "World Initialization",
+      217
+    ],
+    [
+      981,
+      158.7851,
+      "World Initialization",
+      217
+    ],
+    [
+      982,
+      158.9576,
+      "World Initialization",
+      217
+    ],
+    [
+      983,
+      159.1306,
+      "World Initialization",
+      217
+    ],
+    [
+      984,
+      159.2992,
+      "World Initialization",
+      217
+    ],
+    [
+      985,
+      159.4667,
+      "World Initialization",
+      217
+    ],
+    [
+      986,
+      159.6359,
+      "World Initialization",
+      217
+    ],
+    [
+      987,
+      159.8137,
+      "World Initialization",
+      216
+    ],
+    [
+      988,
+      159.9823,
+      "World Initialization",
+      216
+    ],
+    [
+      989,
+      160.1521,
+      "World Initialization",
+      216
+    ],
+    [
+      990,
+      160.3308,
+      "World Initialization",
+      216
+    ],
+    [
+      991,
+      160.5145,
+      "World Initialization",
+      216
+    ],
+    [
+      992,
+      160.6854,
+      "World Initialization",
+      216
+    ],
+    [
+      993,
+      160.8567,
+      "World Initialization",
+      216
+    ],
+    [
+      994,
+      161.0303,
+      "World Initialization",
+      216
+    ],
+    [
+      995,
+      161.2046,
+      "World Initialization",
+      216
+    ],
+    [
+      996,
+      161.3798,
+      "World Initialization",
+      216
+    ],
+    [
+      997,
+      161.5513,
+      "World Initialization",
+      216
+    ],
+    [
+      998,
+      161.723,
+      "World Initialization",
+      216
+    ],
+    [
+      999,
+      161.8979,
+      "World Initialization",
+      216
+    ],
+    [
+      1000,
+      162.4333,
+      "Founder Exploration",
+      216
+    ]
+  ],
+  "profiler": {
+    "perception": {
+      "calls": 218231,
+      "time": 71399.51300007124,
+      "max": 2.339399999982561,
+      "worst_tick": 958
+    },
+    "decision": {
+      "calls": 58944,
+      "time": 40804.87950000679,
+      "max": 10.915599999862025,
+      "worst_tick": 7
+    },
+    "movement": {
+      "calls": 218231,
+      "time": 3829.686400069477,
+      "max": 0.37460000021383166,
+      "worst_tick": 247
+    },
+    "drives_relationships": {
+      "calls": 218231,
+      "time": 7212.538699770448,
+      "max": 0.7265000003826572,
+      "worst_tick": 502
+    },
+    "emotion_clock": {
+      "calls": 7204,
+      "time": 326.8369000070379,
+      "max": 0.12000000060652383,
+      "worst_tick": 450
+    },
+    "relationship_clock": {
+      "calls": 1746,
+      "time": 57.526000007783296,
+      "max": 0.09750000026542693,
+      "worst_tick": 840
+    },
+    "motivation_clock": {
+      "calls": 434,
+      "time": 48.006399996666005,
+      "max": 0.3202999996574363,
+      "worst_tick": 500
+    },
+    "neural_predictor": {
+      "calls": 14380,
+      "time": 646.491299950867,
+      "max": 0.0,
+      "worst_tick": -1
+    },
+    "memory_pruning": {
+      "calls": 437,
+      "time": 101.93090002940153,
+      "max": 0.4425000006449409,
+      "worst_tick": 360
+    },
+    "reproduction": {
+      "calls": 1000,
+      "time": 1669.0367999799491,
+      "max": 282.4817000000621,
+      "worst_tick": 1000
+    },
+    "ecology": {
+      "calls": 1000,
+      "time": 1330.4010999800084,
+      "max": 60.59770000138087,
+      "worst_tick": 814
+    },
+    "logging": {
+      "calls": 1000,
+      "time": 0.8497999860992422,
+      "max": 0.05810000038763974,
+      "worst_tick": 100
+    },
+    "callback": {
+      "calls": 1000,
+      "time": 21.034799981862307,
+      "max": 0.06050000047252979,
+      "worst_tick": 446
+    }
+  }
+}

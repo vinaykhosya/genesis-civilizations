@@ -57,6 +57,7 @@ Transient caches cleared on resume (rebuilt on first tick):
 """
 
 from __future__ import annotations
+import os
 import json
 import random
 import numpy as np
