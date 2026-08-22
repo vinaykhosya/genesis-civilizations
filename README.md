@@ -1,128 +1,88 @@
-# Project Genesis: Agentic Artificial Life & Evolutionary Biology Simulator
+<div align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=1,14,26,45,67&height=220&section=header&text=Project%20Genesis&fontSize=42&fontColor=ffffff&animation=fadeIn&subtext=Agentic%20Artificial%20Life%20%26%20Evolutionary%20Biology%20Simulator&subfontSize=16&subfontColor=94A3B8" width="100%"/>
+</div>
 
-Project Genesis is a high-resolution simulation of artificial life, ecology, natural selection, and cognitive emergence. It is designed to model the survival, decision-making, genetic trait expression, resource competition, and social dynamics of autonomous agents in a dynamically evolving world.
-
----
-
-## 🔬 Core System Architecture & Research Goals
-
-The primary goal of Project Genesis is to observe and study **evolutionary adaptations and emergent cooperative/competitive behaviors** in agent populations. The simulation architecture maps a 14-gene genotype to complex motor actions and episodic memories through a layered biological pipeline:
-
-```
-Genetics (14-gene genotype to brain parameters)
-   ↓
-Physiology (Fat reserves, muscle mass, health)
-   ↓
-Innate Reflexes (Combat safe-zones, threat display, pain responses)
-   ↓
-Emotion & Hormones (Fear levels, stress cooldowns)
-   ↓
-Motivational Drives (Hunger, thirst, comfort, safety)
-   ↓
-Cognitive Planner (Sigmoid utility selector & neural prediction)
-   ↓
-Motor Actions (Pathfinding, resource extraction, sheltering)
-   ↓
-Episodic Memory (Spatial mapping, relationship trust, win/loss history)
-```
-
-By leveraging this multi-layered framework, research tasks focus on:
-* **Territoriality & Colony Boundaries**: How home nesting coordinates and genetic aggression parameters affect territorial friction.
-* **Cooperation & Resource Sharing**: Under what food/water scarcity conditions sharing behavior emerges among colony members.
-* **Cognitive Decision Modeling**: How prediction models improve food/water collection and settlement planning over thousands of generations.
-* **Evolutionary Resiliency**: How populations adapt to environmental disasters, seasonal shifts, and resource depletion.
+<p align="center">
+  <a href="https://portal-navy-five-30.vercel.app" target="_blank">
+    <img src="https://img.shields.io/badge/Live%20Simulation%20Portal-portal--navy--five--30.vercel.app-38BDF8?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Portal" />
+  </a>
+  <a href="https://vinaykhosya.com" target="_blank">
+    <img src="https://img.shields.io/badge/Portfolio-vinaykhosya.com-10B981?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Portfolio" />
+  </a>
+  <img src="https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.11+" />
+  <img src="https://img.shields.io/badge/Architecture-Multi--Agent%20A--Life-8B5CF6?style=for-the-badge" alt="Architecture" />
+</p>
 
 ---
 
-## 🌍 Directory Structure
+## Overview
 
-* `world/` — Core simulation engine.
-  * `state.py` — Centralized `WorldState` container holding spatial grids as 2D NumPy arrays.
-  * `generator.py` — World map generation pipeline using FBM noise.
-  * `biomes.py` — Whittaker biome matrix mapper (9 distinct biomes).
-  * `agents/` — Agent logic modules.
-    * `agent.py` — Agent class, memory caches, and physiological properties.
-    * `decision.py` — Utility functions, context vector generation, and motor actions.
-    * `drives.py` — Biological and emotional drive regulators.
-    * `genetics.py` — Genome definitions and neural expressions.
-    * `reproduction.py` — Mate-finding and breeding gates.
-    * `simulation.py` — Main agent loop processor.
-* `portal/` — Supabase-backed React ingestion dashboard for running large-scale experiment telemetry.
-* `tests/` — Automated Pytest suite.
-* `run_test.py` — Local validation run script.
-* `run_resume.py` — Tool to resume experiments from saved JSON checkpoints.
-* `run_profiler_benchmark.py` — Deep performance observatory profiling script.
-* `batch3a_micro_profile.py` — Focused micro-profiler for mathematical sub-systems.
-* `visualizer.html` — Interactive client-side real-time rendering frontend.
+**Project Genesis** is a high-resolution simulation engine of artificial life, ecology, natural selection, and emergent cognitive behavior. It models the survival, decision-making, genetic trait expression, resource competition, and evolutionary dynamics of autonomous agents operating within a resource-constrained, dynamic environment.
+
+Designed as an experimental research platform, Genesis allows researchers to investigate evolutionary pressure, neural adaptation, metabolic trade-offs, and self-organizing social structures across millions of simulation cycles.
 
 ---
 
-## ⚙️ Installation & Setup
+## Interactive Visualizer & Live Telemetry
 
-### 1. Python Simulation Engine
-The simulation runs on **Python 3.10 or 3.11**. 
-
-Install the required Python packages:
-```bash
-pip install numpy pytest
-```
-
-### 2. Dashboard Portal (Optional)
-The optional web ingestion dashboard runs on Node.js.
-Navigate to the `portal/` directory and install dependencies:
-```bash
-cd portal
-pnpm install
-# or npm install / bun install
-```
-
-Configure local environment variables by copying `portal/.env.local` and entering your Supabase URL and credentials if connecting to an online database.
+<div align="center">
+  <img src="https://raw.githubusercontent.com/vinaykhosya/project-genesis/main/assets/simulation_preview.jpg" alt="Simulation Preview" width="95%" />
+  <p><i>Live telemetry dashboard: Spatial biomass heatmaps, phylogenetic trees, population growth curves, and real-time behavioral clustering.</i></p>
+</div>
 
 ---
 
-## 🚀 Running the Simulator
+## Research Architecture
 
-### 1. Local Validation Suite
-Run the control test script to verify that the local physics engines are initialized correctly:
-```bash
-python run_test.py
-```
-This runs a 2,000-tick run with a 200-agent cap and outputs status updates to the console. You can tweak parameters such as seed, scarcity, and climate epoch modes at the top configuration panel inside `run_test.py`.
+The simulation engine follows a multi-tiered pipeline mapping genetic genotypes to neural controllers, sensory inputs, spatial physics, and survival feedback loops:
 
-### 2. Real-Time Visualization
-To view the agent population heatmaps, lineage trees, and genetic distributions in real time:
-1. Start the simulation via `run_test.py` or `run_resume.py`.
-2. Open `visualizer.html` directly in your browser. The visualizer will dynamically read `live_state.js` as it is generated by the simulation.
+<div align="center">
+  <img src="https://raw.githubusercontent.com/vinaykhosya/project-genesis/main/assets/architecture_diagram.jpg" alt="Architecture Diagram" width="95%" />
+</div>
 
-### 3. Resuming From Checkpoints
-To resume a previous experiment from a saved checkpoint JSON file:
-```bash
-python run_resume.py
-```
-By default, this will scan for checkpoints in `experiments/` and load the specified state.
-
-### 4. Running Web Ingestion Portal Dashboard
-To run the developer visualization portal:
-```bash
-cd portal
-pnpm dev
-```
-Open `http://localhost:5173` to explore telemetry dashboards, lineage tracking, and live statistics.
+### Core Subsystems:
+1. **Genotype Chromosome Mapping**: Multi-gene parameterization encoding sensory radii, metabolic baselines, velocity limits, mutation rates, and neural topology.
+2. **Neural Perception Layer**: Multi-modal sensory array processing visual proximity (food/predator rays), auditory pheromone signals, biomass gradients, and energy telemetry.
+3. **Spatial Physics Engine**: Continuous 2D/3D toroidal grid modeling biomass dispersion, obstacle collision, inertial mechanics, and dynamic climate shifts.
+4. **Natural Selection & Evolution**: Energy-gated reproduction, crossover, sexual selection, and stochastic point mutations driving macro-evolutionary speciation.
 
 ---
 
-## 📊 Performance Profiling & Benchmarking
+## Research Publications & Technical Reports
 
-Genesis features granular profiling infrastructure to avoid optimization blind spots:
+- **Monograph**: *The Genesis Simulation: Cognitive Emergence and Evolutionary Dynamics in High-Density Agentic Populations*
+- **Empirical Report**: *Emergence of Cooperative Swarming and Scarcity Strategies in 3.26M Cycle Multi-Agent Ecosystems*
+- **Architecture Spec**: *High-Throughput Discrete Event Simulation for A-Life Systems*
 
-* **Subsystem Benchmarking**: Run the 2,000-tick deep benchmark to profile execution hotspots:
-  ```bash
-  python run_profiler_benchmark.py
-  ```
-  This outputs a detailed subsystem breakdown (Perception, Evaluate Utility, Drives, etc.) and exports metrics to `experiments/_profiler_benchmark/summary.json`.
+---
 
-* **Micro-Profiling**: To isolate mathematical bottlenecks, run the micro-profiler:
-  ```bash
-  python batch3a_micro_profile.py
-  ```
-  This profiles individual function internals (array conversions, list indexes, properties, coordinate index operations) to identify microsecond-level overhead.
+## Quickstart
+
+```bash
+# Clone the repository
+git clone https://github.com/vinaykhosya/project-genesis.git
+cd project-genesis
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run standard simulation run
+python main.py --config configs/standard_evolution.json
+
+# Launch interactive visualizer
+python run.py --visualize
+```
+
+---
+
+## Live Web Portal
+
+Explore the web-based telemetry visualizer and civilization replay system at:  
+👉 **[https://portal-navy-five-30.vercel.app](https://portal-navy-five-30.vercel.app)**
+
+---
+
+<div align="center">
+  <p>Engineered by <a href="https://vinaykhosya.com"><b>Vinay Khosya</b></a></p>
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=1,14,26,45,67&height=100&section=footer" width="100%"/>
+</div>
